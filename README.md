@@ -28,3 +28,14 @@ Adm Page | Landing Page </br> Users/Role Pages </br> Classes Pages </br> Courses
 Teacher Page | Landing Page </br> Classes Pages </br> Grades Pages | 
 Student Page | Landing Page </br> Grade Page |
 Web API |  
+
+
+## Optionnal implementation
+
+Be able to put an attachment (with a maximum size) link to a note  
+Export notes to PDF  
+Calendar of exam and retake  
+Info tab from administration and class deleguate  
+See in red the note under 10  
+
+Have an update on the user databse from the AD  
