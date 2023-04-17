@@ -13,6 +13,10 @@
 Documentation for the API.
 
 
+
+Pour la partie Web API projet, doit-on mettre en place un token pour pouvoir automatiser les tâches (depuis un script par exemple)? Ou juste une interface web pour upload des fichiers (par exemple CSV)?  
+Mise en place d’un endpoint de type REST et des mesures nécessaires à sa sécurisation
+
 ## Actions
 
 
