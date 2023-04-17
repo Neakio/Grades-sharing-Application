@@ -18,9 +18,9 @@ Documentation for the API.
 
 Need | Tasks | Dev | Unit Test | Int Test | Val
 -----|-------|-----|-----------|----------|-----
-Public Page | 
-Landing Page |
-Adm Page | 
-Teacher Page | 
-Student Page | 
+Database | 
+Public Page | SSO login </br> Goal of the app |
+Adm Page | Landing Page </br> Users/Role Pages </br> Classes Pages </br> Courses Pages | 
+Teacher Page | Landing Page </br> Classes Pages </br> Grades Pages | 
+Student Page | Landing Page </br> Grade Page |
 Web API |  
