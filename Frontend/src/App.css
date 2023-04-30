@@ -7,3 +7,15 @@
   color: #eee;
   background: #121212;
 }
+
+
+
+
+
+
+
+/* CSS for the navigation panel */
+.navbar {
+  position: absolute;
+  display: inline-block;
+}
