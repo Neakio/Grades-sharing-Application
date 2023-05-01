@@ -30,6 +30,18 @@ Student Page | Landing Page </br> Grade Page |
 Web API |  
 
 
+## Need installed
+
+FRONT  
+nodejs  
+yarn  
+
+BACK  
+python3  
+pip  
+
+postman for test   
+
 ## Optionnal implementation
 
 Be able to put an attachment (with a maximum size) link to a note  
