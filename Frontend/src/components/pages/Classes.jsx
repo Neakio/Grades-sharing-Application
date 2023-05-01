@@ -6,21 +6,21 @@ import { Link } from "react-router-dom";
 function Classes() {
   return (
     <div className='d-flex flex-column justify-content-around'>
-        <Link to="/classes/M2">
-          <Button type="button" class="btn btn-outline-dark btn-block">
+      <Link to="/classes/M2">
+        <Button type="button" class="btn btn-outline-dark btn-block">
                     M2
-          </Button>
-        </Link>
-        <Link to="/classes/M1">
-          <Button type="button" class="btn btn-outline-dark btn-block">
+        </Button>
+      </Link>
+      <Link to="/classes/M1">
+        <Button type="button" class="btn btn-outline-dark btn-block">
                     M1
-          </Button>
-        </Link>
-        <Link to="/classes/L3">
-          <Button type="button" class="btn btn-outline-dark btn-block">
+        </Button>
+      </Link>
+      <Link to="/classes/L3">
+        <Button type="button" class="btn btn-outline-dark btn-block">
                     L3
-          </Button>
-        </Link>
+        </Button>
+      </Link>
     </div>
   );
 }

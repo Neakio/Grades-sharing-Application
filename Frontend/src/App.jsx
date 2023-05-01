@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { BrowserRouter, Route, Link, Routes, Outlet } from "react-router-dom";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import "./assets/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 
-import { Button } from "react-bootstrap";
 import Header from "./components/Header";
 import Home from "./components/pages/Home";
 import Classes from "./components/pages/Classes";
 import Grades from "./components/pages/Grades";
-import UsersAndRoles from "./components/pages/UsersAndRoles";
+import UsersRoot from "./components/pages/UsersRoot";
 
 function App() {
   //Verify if the user is log or not
@@ -20,6 +22,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className={"app " + (darkmode ? "" : "dark")}>
+        <ToastContainer theme={darkmode ? "light" : "dark"} />
         <Header
           darkmode={darkmode}
           setDarkmode={setDarkmode}
@@ -29,9 +32,9 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
-            <Route path="classes" element={<Classes />} />
-            <Route path="grades" element={<Grades />} />
-            <Route path="users" element={<UsersAndRoles />} />
+            <Route path="classes/*" element={<Classes />} />
+            <Route path="grades/*" element={<Grades />} />
+            <Route path="users/*" element={<UsersRoot />} />
           </Routes>
         </main>
       </div>

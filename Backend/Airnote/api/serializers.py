@@ -3,7 +3,10 @@ from rest_framework import serializers
 
 # Create your models here.
 
+
 class UserSerializer(serializers.ModelSerializer):
+    # TODO Validation doit échouer si role pas dans les choices
+
     class Meta:
         model = User
         fields = '__all__'

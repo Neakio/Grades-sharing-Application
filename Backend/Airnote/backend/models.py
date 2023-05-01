@@ -6,19 +6,20 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class User(models.Model):
     ROLES = [('AD', 'Administrator'), ('AR', 'Administrator Referent'),
-             ('TE', 'Teacher'), ('ST', 'Student'), ('NO', 'None')]
+             ('TE', 'Teacher'), ('ST', 'Student')]
 
     firstname = models.CharField(max_length=50)
     lastname = models.CharField(max_length=50)
-    role = models.CharField(max_length=2, choices=ROLES, default='NO')
-    is_deleguate = models.BooleanField(default=False)
+    role = models.CharField(max_length=2, choices=ROLES,
+                            blank=False, null=False)
+    is_delegate = models.BooleanField(default=False)
     # Ligne SSO
     group = models.ForeignKey(
         'Group', on_delete=models.PROTECT, blank=True, null=True)
 
 
 class Semester(models.Model):
-    date_CdC = models.DateField
+    date_tc = models.DateField
     number = models.IntegerField(
         choices=[(1, 'First semester'), (2, 'Second semester')])
     group = models.ForeignKey('Group', on_delete=models.CASCADE)
@@ -40,6 +41,7 @@ class Group(models.Model):
     GROUPS = [('M2', 'Master 2'), ('M1', 'Master 1'), ('L3', 'Licence')]
     title = models.CharField(max_length=2, choices=GROUPS)
     year = models.CharField(max_length=9)
+    is_active = models.BooleanField(default=True)
     referent = models.ForeignKey('User', limit_choices_to={
                                  'role': 'AR'}, on_delete=models.PROTECT, related_name='referent')
 

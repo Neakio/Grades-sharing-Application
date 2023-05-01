@@ -35,7 +35,7 @@ Web API |
 Be able to put an attachment (with a maximum size) link to a note  
 Export notes to PDF  
 Calendar of exam and retake  
-Info tab from administration and class deleguate  
+Info tab from administration and class delegate  
 See in red the note under 10  
 
 Have an update on the user databse from the AD  
