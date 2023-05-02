@@ -7,10 +7,7 @@ import { ReactComponent as Dark } from "../assets/images/dark.svg";
 
 import Menu from "./Menu";
 
-function Header({ isLoggedIn, logIn, darkmode, setDarkmode }) {
-  // Retrieve the role of the user
-  let userRole = "Admin";
-
+function Header({ isLoggedIn, logIn, darkmode, setDarkmode, userRole }) {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
