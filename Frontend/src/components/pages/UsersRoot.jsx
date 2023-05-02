@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { createUser, deleteUser, editUser, getUsers } from "../../services/api/users";
 
 import UserTable from "./Users/UserTable";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import UserForm from "./Users/UserForm";
+
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { Button, Container } from "react-bootstrap";
 import { toastError, toastSuccess } from "../../services/toasts";
+
 
 function Users() {
   const navigate = useNavigate();
