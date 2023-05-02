@@ -4,7 +4,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import Select from "react-select";
 import GLOBALS from "../../../Globals";
 import { useParams } from "react-router-dom";
-import { getClassesUser, getUser } from "../../../services/api";
+import { getClasses, getUser } from "../../../services/api";
 import { Util } from "../../../services/Util";
 
 function UserForm({ title, handleSubmitUser }) {
@@ -29,7 +29,7 @@ function UserForm({ title, handleSubmitUser }) {
     setUserData(user);
   };
   const fetchClasses = async () => {
-    let groups = await getClassesUser();
+    let groups = await getClasses();
     setClasses(groups);
   };
 

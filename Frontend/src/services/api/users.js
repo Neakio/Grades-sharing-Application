@@ -1,8 +1,20 @@
-import { toastError } from "../toasts";
 import axios from "./axios";
 
 export const getUsers = () => {
     return axios.get("api/users");
+};
+
+export const getReferent = () => {
+    return axios
+        .get("api/users")
+        .then((response) => {
+            const entries = Object.entries(response);
+            const arUsers = entries.filter(([key, val]) => val === "AR");
+            const output = Object.fromEntries(arUsers);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 };
 
 export const getUser = (userId) => {
