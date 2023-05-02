@@ -8,3 +8,12 @@ export const Util = {
         }));
     },
 };
+
+export const Class = {
+    getClassOptions() {
+        return Object.entries(GLOBALS.GROUPS).map(([key, value]) => ({
+            label: value,
+            value: key,
+        }));
+    },
+};

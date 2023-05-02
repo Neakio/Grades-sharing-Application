@@ -30,6 +30,37 @@ Student Page | Landing Page </br> Grade Page |
 Web API |  
 
 
+## Need installed
+
+FRONT  
+nodejs  
+yarn   
+
+yarn config set cafile /home/user/certificates/airbus-ca.crt
+yarn run dev
+
+npm config set cafile /home/user/certificates/airbus-ca.crt
+
+BACK  
+python3  
+pip  
+python3-virtualenv  
+
+
+
+source venv/bin/activate  
+pip install -r requirements.txt  
+
+python3 manage.py makemigrations  
+python3 manage.py migrate  
+
+python3 manage.py runserver
+
+
+postman for test  
+
+rsync -av /media/sf_Grades_sharing_app /home/user/GSA
+
 ## Optionnal implementation
 
 Be able to put an attachment (with a maximum size) link to a note  
