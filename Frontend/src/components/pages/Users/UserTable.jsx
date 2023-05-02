@@ -4,6 +4,7 @@ import ReactTable from "../../render-components/ReactTable";
 
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
+
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import GLOBALS from "../../../Globals";
