@@ -40,7 +40,3 @@ docs/_build/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-
-sqldiff.exe
-sqlite3_analyzer.exe
-sqlite3.exe

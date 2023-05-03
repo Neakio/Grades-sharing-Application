@@ -1,18 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { Button, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import ReactTable from "../../render-components/ReactTable";
+import { getClasses, getUsers } from "../../../services/api";
 
-import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
-import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
-import { ReactComponent as Plus } from "../../../assets/images/plus.svg";
-
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import GLOBALS from "../../../Globals";
-
-
-function SetTable({ title, year }) {
-
+function SetTable() {
   const [group, setGroup] = useState([]);
 
   useEffect(() => {
@@ -23,8 +17,6 @@ function SetTable({ title, year }) {
     let group = await getClasses(title);
     setGroup(group);
   };
-
-
 
   const columns = React.useMemo(
     () => [
@@ -43,7 +35,6 @@ function SetTable({ title, year }) {
 }
 
 function ClassTable(title) {
-
   const [delegates, setDelegates] = useState([]);
 
   useEffect(() => {
@@ -57,15 +48,14 @@ function ClassTable(title) {
 
   return (
     <Container>
-      <Link to={"/groups"}>
-        <Button variant="info">
-          Return
-        </Button>
-      </Link>      
+      <Link to={"/classes"}>
+        <Button variant="info">Return</Button>
+      </Link>
       <h1> {title} </h1>
       <div>Delegate : {delegates}</div>
-      <ClassTable />
-    </Container>);
+      <SetTable />
+    </Container>
+  );
 }
 
 export default ClassTable;

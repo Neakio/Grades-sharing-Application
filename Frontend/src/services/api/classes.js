@@ -23,41 +23,39 @@ export const createClass = (title, year, isActive, referent) => {
         is_active: isActive,
         referent,
     };
-    return axios.post("api/groups", payload);
+    return axios.post("api/groups" + payload);
 };
 
 export const deleteClass = (classId) => {
     return axios.delete("api/groups/" + classId);
 };
 
-
 export const getDelegate = (classId) => {
-    return axios.get("api/user/?delegate="+true+"?group="+classId)
-}
+    return axios.get("api/user/?delegate=" + true + "?group=" + classId);
+};
 
 export const editClass = (classId, title, year, isActive, referent) => {
     let payload = {
         title,
         year,
-        is_active : isActive,
+        is_active: isActive,
         referent,
     };
+    return axios.put("api/users/" + classId, payload);
 };
 
-
-
-
-export const addUser = () => {
-    let payload = {
-        firstname,
-        lastname,
-        group,
+{
+    /*export const addUser = () => {
+  let payload = {
+    firstname,
+    lastname,
+    group,
         
-    }
-    null
+  };
+  return axios.put("api/groups/" + payload);
+};*/
 }
-
 
 export const getReferent = () => {
-    return axios.get("api/users/?role=AR");    
-}
+    return axios.get("api/users/?role=AR");
+};

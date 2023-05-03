@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Header from "./components/Header";
 import Home from "./components/pages/Home";
-import Classes from "./components/pages/Classes";
+import Classes from "./components/pages/ClassesRoot";
 import Grades from "./components/pages/Grades";
 import UsersRoot from "./components/pages/UsersRoot";
 
@@ -18,6 +18,8 @@ function App() {
   //Verify if the user is log or not
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [darkmode, setDarkmode] = useState(false);
+  // Retrieve the role of the user
+  let userRole = "Admin";
 
   return (
     <BrowserRouter>
@@ -28,11 +30,12 @@ function App() {
           setDarkmode={setDarkmode}
           isLoggedIn={isLoggedIn}
           logIn={() => setIsLoggedIn(!isLoggedIn)}
+          userRole={userRole}
         />
         <main>
           <Routes>
             <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
-            <Route path="classes/*" element={<Classes />} />
+            <Route path="classes/*" element={<Classes userRole={userRole} />} />
             <Route path="grades/*" element={<Grades />} />
             <Route path="users/*" element={<UsersRoot />} />
           </Routes>
@@ -40,24 +43,6 @@ function App() {
       </div>
     </BrowserRouter>
   );
-
-  /*
-
-  return (
-    <>
-      <div className={"app " + (darkmode ? "" : "dark")}>
-        <Button
-          onClick={() => {
-            console.log(darkmode);
-            setDarkmode((prev) => !darkmode);
-          }}
-        >
-          Darkmode {darkmode ? "on" : "off"}
-        </Button>
-      </div>
-    </>
-  );
-*/
 }
 
 export default App;

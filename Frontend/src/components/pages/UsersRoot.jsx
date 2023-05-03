@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import { createUser, deleteUser, editUser, getUsers } from "../../services/api/users";
 
 import UserTable from "./Users/UserTable";
@@ -8,19 +9,9 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { Button, Container } from "react-bootstrap";
 import { toastError, toastSuccess } from "../../services/toasts";
 
-
 function Users() {
   const navigate = useNavigate();
-  const [users, setUsers] = useState([
-    {
-      id: 2,
-      firstname: "Emilie",
-      lastname: "Olivié",
-      role: "ST",
-      is_delegate: false,
-      group: null,
-    },
-  ]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     fetchUsers();
