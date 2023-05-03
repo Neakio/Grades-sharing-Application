@@ -36,13 +36,17 @@ FRONT
 nodejs  
 yarn   
 
-sudo apt remove cmdtest
-sudo apt remove yarn
+
+
+
+sudo apt-get update
+sudo apt-get install curl python3 pip python3-virtualenv -y
+
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash - 
 sudo apt-get update
-sudo apt-get install yarn -y
-
+sudo apt install -y nodejs yarn
 
 yarn run dev
 
@@ -53,7 +57,7 @@ pip
 python3-virtualenv  
 
 
- virtualenv Venv
+ virtualenv venv
 source venv/bin/activate  
 pip install -r requirements.txt  
 
