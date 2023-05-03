@@ -64,7 +64,7 @@ function CourseForm({ title, handleSubmitCourse }) {
           <Form.Label>Lead Teacher</Form.Label>
           <Select 
             placeholder="Select a lead teacher..."
-      n       options={getTeachers()}
+            options={getTeachers()}
             value={{
                 label: courseData.lteachers,
                 value: courseData.lteachers,
