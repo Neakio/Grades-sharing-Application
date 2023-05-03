@@ -36,10 +36,8 @@ FRONT
 nodejs  
 yarn   
 
-yarn config set cafile /home/user/certificates/airbus-ca.crt
 yarn run dev
 
-npm config set cafile /home/user/certificates/airbus-ca.crt
 
 BACK  
 python3  
@@ -47,7 +45,7 @@ pip
 python3-virtualenv  
 
 
-
+ virtualenv Venv
 source venv/bin/activate  
 pip install -r requirements.txt  
 
@@ -59,7 +57,6 @@ python3 manage.py runserver
 
 postman for test  
 
-rsync -av /media/sf_Grades_sharing_app /home/user/GSA
 
 ## Optionnal implementation
 
