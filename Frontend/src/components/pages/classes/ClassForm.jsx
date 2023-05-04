@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 import { Class } from "../../../services/Util";
 import { getClass } from "../../../services/api/classes";
-import { getUsers } from "../../../services/api";
+import { getUsersByRole } from "../../../services/api/users";
 
 function ClassForm({ title, handleSubmitClass }) {
   const { id } = useParams();
@@ -22,7 +22,7 @@ function ClassForm({ title, handleSubmitClass }) {
 
   useEffect(() => {
     if (id) fetchClass();
-    fetchUsers();
+    fetchReferents();
   }, [id]);
 
   const fetchClass = async () => {
@@ -30,21 +30,11 @@ function ClassForm({ title, handleSubmitClass }) {
     setGroupData(group);
   };
 
-  const fetchUsers = async () => {
-    let users = await getUsers();
-    const entries = Object.entries(users);
-    const arUsers = entries.filter(([key, val]) => val.role === "AR");
-    const output = Object.fromEntries(arUsers);
-    setReferents(output);
+  const fetchReferents = async () => {
+    let users = await getUsersByRole('AR');
+    setReferents(users);
     console.log(users);
-    console.log(entries);
-    console.log(arUsers);
-    console.log(output);
-    console.log(typeof users);
-    console.log(typeof entries);
-    console.log(typeof arUsers);
-    console.log(typeof output);
-  };
+    };
 
   const getReferentOptions = (referents) => {
     return referents.map((aReferent) => ({

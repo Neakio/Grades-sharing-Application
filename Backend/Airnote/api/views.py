@@ -14,6 +14,21 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
 
 
+#Test referent
+class UserByRoleViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing user instances.
+    """
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+        role = self.request.query_params.get('role')
+        if role is not None:
+            queryset = queryset.filter(user__role=role)
+        return queryset
+
+
 class SemesterViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.

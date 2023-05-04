@@ -3,38 +3,53 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import Select from "react-select";
 import { useParams } from "react-router-dom";
+import { getUsersByRole } from "../../../services/api/users";
 
 
 function CourseForm({ title, handleSubmitCourse }) {
   const { id } = useParams();
 
   const [courseData, setcourseData] = useState({
-    firstname: null,
-    lastname: null,
-    role: null,
-    isDelegate: false,
-    group: null,
+    title: null,
+    lteacher: null,
+    oteacher: null,
+    module: null,
   });
-  const [lteacher, setLTeacher] = useState([]);
-  const [oteacher, setOTeacher] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [modules, setModules] = useState([]);
 
   useEffect(() => {
     if (id) fetchCourse();
-    fetchLTeacher();
-    fetchOTeacher();
+    fetchTeachers();
     fetchModules();
   }, [id]);
 
-  const fetchUser = async () => {
-    let user = await getUser(id);
-    setcourseData(user);
+  const fetchCourse = async () => {
+    let course = await getCourse(id);
+    setcourseData(course);
   };
-  const fetchClasses = async () => {
-    let groups = await getClasses();
-    setClasses(groups);
+  const fetchModules = async () => {
+    let groups = await getModules();
+    setModules(groups);
+  };
+  const fetchTeachers = async () => {
+    let user = await getUsersByRole('TE');
+    setTeachers(user);
   };
 
+  const getTeachersOptions = (teachers) => {
+    return teachers.map((aTeacher) => ({
+      label: aTeacher.name,
+      value: aTeacher.id,
+    }));
+  };
+  const getModulesOptions = (modules) => {
+    return modules.map((aModule) => ({
+      label: aModule.name,
+      value: aModule.id,
+    }));
+  };
+  
 
   const handleChange = (event) => {
     let name = event.target.name;
@@ -44,7 +59,7 @@ function CourseForm({ title, handleSubmitCourse }) {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    handleSubmitUser(courseData, id);
+    handleSubmitCourse(courseData, id);
   };
 
   return (
@@ -64,12 +79,12 @@ function CourseForm({ title, handleSubmitCourse }) {
           <Form.Label>Lead Teacher</Form.Label>
           <Select 
             placeholder="Select a lead teacher..."
-            options={getTeachers()}
+            options={getTeachersOptions()}
             value={{
-                label: courseData.lteachers,
-                value: courseData.lteachers,
+                label: courseData.lteacher,
+                value: courseData.lteacher,
               }}
-            onChange={(newValue) => setcourseData({ ...courseData, lteachers: newValue.value })}
+            onChange={(newValue) => setcourseData({ ...courseData, lteacher: newValue.value })}
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -77,19 +92,19 @@ function CourseForm({ title, handleSubmitCourse }) {
           <Select 
           multiple= {true}
             placeholder="Select other(s) teacher(s)..."
-            options={getTeachers()}
+            options={getTeachersOptions()}
             value={{
-                label: courseData.oteachers,
-                value: courseData.oteachers,
+                label: courseData.oteacher,
+                value: courseData.oteacher,
               }}
-            onChange={(newValue) => setcourseData({ ...courseData, oteachers: newValue.value })}
+            onChange={(newValue) => setcourseData({ ...courseData, oteacher: newValue.value })}
           />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Module</Form.Label>
           <Select
             placeholder="Select a module..."
-            options={getModule()}
+            options={getModulesOptions()}
             value={{
               label: courseData.module,
               value: courseData.module,

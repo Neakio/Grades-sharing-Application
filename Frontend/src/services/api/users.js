@@ -4,9 +4,9 @@ export const getUsers = () => {
     return axios.get("api/users");
 };
 
-export const getReferent = () => {
-    return axios.get("api/users/?role")
-};
+export const getUsersByRole = (role) => {
+        return axios.get("/api/users/?role=", role);
+}
 
 export const getUser = (userId) => {
     return axios.get("api/users/" + userId);

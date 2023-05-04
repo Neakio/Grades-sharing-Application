@@ -13,9 +13,3 @@ router.register(r'courses', CourseViewSet)
 router.register(r'grades', GradeViewSet)
 
 urlpatterns = router.urls
-
-"""  [
-    path('users', views.getUsers),
-    path('users', views.createUser)
-]
- """
