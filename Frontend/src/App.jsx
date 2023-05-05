@@ -19,7 +19,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [darkmode, setDarkmode] = useState(false);
   // Retrieve the role of the user
-  let userRole = "Admin";
+  let userRole = "Teacher";
 
   return (
     <BrowserRouter>

@@ -1,2 +1,2 @@
-export { getUser, getUsers, createUser, deleteUser } from "./users";
-export { getClass, getClasses, createClass, deleteClass } from "./classes";
+export { getUser, getUsers, getUsersByRole, getUsersByRoleAndGroup, createUser, deleteUser, editUser } from "./users";
+export { getClasses, getClass, getUserByClass, createClass, deleteClass, editClass } from "./classes";

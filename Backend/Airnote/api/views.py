@@ -13,8 +13,9 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = User.objects.all()
         role = self.request.query_params.get('role')
+        groupid = self.request.query_params.get('groupid')
         if role is not None:
-            queryset = User.objects.filter(role=role)
+            queryset = User.objects.filter(role=role, group=groupid)
         return queryset
 
 
