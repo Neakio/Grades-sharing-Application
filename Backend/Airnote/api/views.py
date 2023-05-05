@@ -5,20 +5,19 @@ from rest_framework import viewsets
 from backend.models import User, Semester, UserSemester, Group, GroupModule, Module, ModuleCourse, Course, CourseTeacher, Grade
 from .serializers import UserSerializer, SemesterSerializer, UserSemesterSerializer, GroupSerializer, GroupModuleSerializer, ModuleSerializer, ModuleCourseSerializer, CourseSerializer, CourseTeacherSerializer, GradeSerializer
 
-"""class UserByRoleViewSet(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
-    def get_queryset(self):
-        queryset = self.queryset
-        query_set = queryset.filter(user=self.request.user)
-        return query_set"""
-
-
 class UserViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
     """
     serializer_class = UserSerializer
-    queryset = User.objects.all()
+    def get_queryset(self):
+        queryset = User.objects.all()
+        role = self.request.query_params.get('role')
+        if role is not None:
+            queryset = User.objects.filter(role=role)
+        return queryset
+
+
 
 
 

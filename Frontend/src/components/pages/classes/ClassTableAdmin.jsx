@@ -19,7 +19,7 @@ function ClassesTable({ groups, removeClass, redirectToTable }) {
     () => [
       {
         Header: "Class",
-        accessor: ({ group }) => GLOBALS.GROUPS[group],
+        accessor: ({ title }) => GLOBALS.GROUPS[title],
       },
       {
         Header: "Year",
@@ -27,7 +27,7 @@ function ClassesTable({ groups, removeClass, redirectToTable }) {
       },
       {
         Header: "Status",
-        accessor: ({ isActive }) => GLOBALS.isActive[isActive],
+        accessor: ({ is_active }) => GLOBALS.isActive[is_active],
       },
       {
         Header: "Edit",
@@ -54,13 +54,6 @@ function ClassesTable({ groups, removeClass, redirectToTable }) {
   return <ReactTable data={groups} columns={columns} />;
 }
 
-function ClassTable(redirectToTable) {
-  const removeUser = async (user, userId) => {
-    editUser(userId, (user.group = null), (user.isDelegate = false)).then(() => {
-      toastSuccess("Successfully edited");
-      redirectToTable();
-    });
-  };
-}
+
 
 export default ClassesTable;

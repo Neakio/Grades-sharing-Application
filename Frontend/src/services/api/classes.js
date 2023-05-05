@@ -10,7 +10,11 @@ export const getClasses = () => {
     return axios.get("api/groups");
 };
 
-export const getClass = (classId, filterActive = true) => {
+export const getClass = (classId) => {
+    return axios.get("api/groups/" + classId);
+};
+
+export const getClassActive = (classId, filterActive = true) => {
     let suffix = "";
     if (filterActive) suffix = "?active=" + filterActive.toString();
     return axios.get("api/groups/" + classId + suffix);
@@ -23,7 +27,7 @@ export const createClass = (title, year, isActive, referent) => {
         is_active: isActive,
         referent,
     };
-    return axios.post("api/groups" + payload);
+    return axios.post("api/groups", payload);
 };
 
 export const deleteClass = (classId) => {
@@ -41,7 +45,7 @@ export const editClass = (classId, title, year, isActive, referent) => {
         is_active: isActive,
         referent,
     };
-    return axios.put("api/users/" + classId, payload);
+    return axios.put("api/groups/" + classId, payload);
 };
 
 {

@@ -14,11 +14,12 @@ function ClassForm({ title, handleSubmitClass }) {
   const [groupData, setGroupData] = useState({
     title: null,
     year: null,
-    isActive: true,
+    isActive: false,
     referent: null,
   });
 
   const [referents, setReferents] = useState([]);
+  const [checked, setChecked] = useState();
 
   useEffect(() => {
     if (id) fetchClass();
@@ -28,12 +29,12 @@ function ClassForm({ title, handleSubmitClass }) {
   const fetchClass = async () => {
     let group = await getClass(id);
     setGroupData(group);
+    {group.is_active ? setChecked(true) : setChecked(false)};
   };
 
   const fetchReferents = async () => {
     let users = await getUsersByRole('AR');
     setReferents(users);
-    console.log(users);
     };
 
   const getReferentOptions = (referents) => {
@@ -84,6 +85,7 @@ function ClassForm({ title, handleSubmitClass }) {
           <Form.Check
             type="checkbox"
             label="Active"
+            defaultChecked={checked}
             checked={groupData.isActive}
             onChange={(event) =>
               setGroupData({
@@ -107,7 +109,6 @@ function ClassForm({ title, handleSubmitClass }) {
             }
           />
         </Form.Group>
-                ;
         <Button variant="primary" type="submit">
                     Submit
         </Button>

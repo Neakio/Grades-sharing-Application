@@ -5,7 +5,7 @@ from .views import UserViewSet, SemesterViewSet, GroupViewSet, ModuleViewSet, Co
 from rest_framework import routers
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'users', UserViewSet)
+router.register(r'users', UserViewSet, basename='User')
 router.register(r'semesters', SemesterViewSet)
 router.register(r'groups', GroupViewSet)
 router.register(r'module', ModuleViewSet)

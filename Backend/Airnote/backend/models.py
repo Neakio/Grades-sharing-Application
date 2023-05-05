@@ -43,7 +43,7 @@ class Group(models.Model):
     year = models.CharField(max_length=9)
     is_active = models.BooleanField(default=True)
     referent = models.ForeignKey('User', limit_choices_to={
-                                 'role': 'AR'}, on_delete=models.PROTECT, related_name='referent')
+                                 'role': 'AR'}, on_delete=models.PROTECT, related_name='referent', null=False)
 
     class Meta:
         unique_together = ('title', 'year', )

@@ -24,6 +24,7 @@ function Classes({ userRole }) {
   const fetchGroups = async () => {
     let groups = await getClasses();
     setGroups(groups);
+    console.log(groups)
   };
   return (
     <Container>
@@ -51,7 +52,7 @@ function Administration({ groups, fetchGroups }) {
     navigate("/classes");
   };
 
-  const addGroups = async (group) => {
+  const addGroup = async (group) => {
     createClass(group.title, group.year, group.isActive, group.referent)
       .then(() => {
         toastSuccess("Class successfully created");
@@ -96,7 +97,7 @@ function Administration({ groups, fetchGroups }) {
         />
         <Route
           path="/create"
-          element={<ClassForm title="Create class" handleSubmitClass={addGroups} />}
+          element={<ClassForm title="Create class" handleSubmitClass={addGroup} />}
         />
       </Routes>
     </Container>

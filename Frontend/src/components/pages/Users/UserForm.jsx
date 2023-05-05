@@ -18,6 +18,8 @@ function UserForm({ title, handleSubmitUser }) {
     group: null,
   });
   const [classes, setClasses] = useState([]);
+  const [checked, setChecked] = useState();
+
 
   useEffect(() => {
     if (id) fetchUser();
@@ -27,7 +29,10 @@ function UserForm({ title, handleSubmitUser }) {
   const fetchUser = async () => {
     let user = await getUser(id);
     setUserData(user);
+    {user.is_delegate ? setChecked(true) : setChecked(false)};
   };
+
+
   const fetchClasses = async () => {
     let groups = await getClasses();
     setClasses(groups);
@@ -35,7 +40,7 @@ function UserForm({ title, handleSubmitUser }) {
 
   const getClassOptions = (classes) => {
     return classes.map((aClass) => ({
-      label: aClass.name,
+      label: aClass.title + " " + aClass.year,
       value: aClass.id,
     }));
   };
@@ -51,7 +56,6 @@ function UserForm({ title, handleSubmitUser }) {
     handleSubmitUser(userData, id);
   };
 
-  console.log(Util.getRoleOptions().find((option) => option.value == userData.role));
   return (
     <Container>
       <h1 className="text-center">{title}</h1>
@@ -90,6 +94,7 @@ function UserForm({ title, handleSubmitUser }) {
             <Form.Check
               type="checkbox"
               label="Delegate"
+              defaultChecked={checked}
               checked={userData.isDelegate}
               onChange={(event) =>
                 setUserData({
