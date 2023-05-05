@@ -38,7 +38,7 @@ function ClassForm({ title, handleSubmitClass }) {
 
   const getReferentOptions = (referents) => {
     return referents.map((aReferent) => ({
-      label: aReferent.name,
+      label: aReferent.firstname + " " + aReferent.lastname,
       value: aReferent.id,
     }));
   };
@@ -94,9 +94,9 @@ function ClassForm({ title, handleSubmitClass }) {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Class</Form.Label>
+          <Form.Label>Referent</Form.Label>
           <Select
-            placeholder="Select a class..."
+            placeholder="Select a referent..."
             options={getReferentOptions(referents)}
             value={{
               label: groupData.referent,
