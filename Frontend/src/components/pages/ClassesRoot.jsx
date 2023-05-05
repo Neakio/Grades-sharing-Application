@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createClass, deleteClass, getClasses } from "../../services/api";
 
 import ClassForm from "./classes/ClassForm";
-import ClassTable from "./classes/ClassTable";
+import ClassTable from "./classes/ClassView";
 {
   /*import ClassesTable from "./classes/ClassTableAdmin";*/
 }
@@ -134,8 +134,8 @@ function Teacher(groups) {
         />
 
         <Route path="/M2" element={<ClassTable title="Master 2" year={groups.year} />} />
-        <Route path="/M1" element={<ClassTable title="Master 1" year={groups.year} />} />
-        <Route path="/L3" element={<ClassTable title="Licence" year={groups.year} />} />
+        <Route path="/M1" element={<ClassTable title="Master 1" groups={groups} />} />
+        <Route path="/L3" element={<ClassTable title="Licence" groups={groups} />} />
       </Routes>
     </Container>
   );
