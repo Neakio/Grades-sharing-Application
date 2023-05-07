@@ -4,6 +4,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import Select from "react-select";
 import { useParams } from "react-router-dom";
 import { getUsersByRole } from "../../../services/api/users";
+import { getCourses, getModules } from "../../../services/api";
 
 
 function CourseForm({ title, handleSubmitCourse }) {
@@ -25,7 +26,7 @@ function CourseForm({ title, handleSubmitCourse }) {
   }, [id]);
 
   const fetchCourse = async () => {
-    let course = await getCourse(id);
+    let course = await getCourses(id);
     setcourseData(course);
   };
   const fetchModules = async () => {
@@ -90,7 +91,7 @@ function CourseForm({ title, handleSubmitCourse }) {
         <Form.Group className="mb-3">
           <Form.Label>Other Teacher</Form.Label>
           <Select 
-          multiple= {true}
+            multiple
             placeholder="Select other(s) teacher(s)..."
             options={getTeachersOptions()}
             value={{

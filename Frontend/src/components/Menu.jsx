@@ -18,7 +18,21 @@ function Menu({ userRole, isLoggedIn }) {
           {isAdmin ? (
             <Row>
               <Link to="/users">
-                <Button>Users & Roles</Button>
+                <Button>Users</Button>
+              </Link>
+            </Row>
+          ) : null}
+          {isAdmin ? (
+            <Row>
+              <Link to="/modules">
+                <Button>Modules</Button>
+              </Link>
+            </Row>
+          ) : null}
+          {isAdmin ? (
+            <Row>
+              <Link to="/courses">
+                <Button>Courses</Button>
               </Link>
             </Row>
           ) : null}

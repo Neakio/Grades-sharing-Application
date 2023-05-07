@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'backend.apps.BackendConfig',
     'corsheaders',
+    "keycloack_auth",
 ]
 
 MIDDLEWARE = [
@@ -136,7 +137,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
     ]
 } """
 
+
+#CORS settings
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:5173',
 )
+
+
+#Keycloack settings
+#KEYCLOACK_SERVER_URL = 'https://'
+#KEYCLOACK_REALM = ''
+#AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'keycloack_auth.backend.KeycloackAuthenticationBackend',]
+
+#KEYCLOACK_AUTH_USER_MODEL = 'User'
+#KEYCLOACK_AUTH_USER_MODEL_FIRST_NAME_FIELD = 'firstname'
+#KEYCLOACK_AUTH_USER_MODEL_LAST_NAME_FIELD = 'lastname'
