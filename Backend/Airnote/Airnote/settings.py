@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'backend.apps.BackendConfig',
-    'corsheaders',
-    "keycloack_auth",
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -55,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
+    'django-keycloak-auth.middleware.KeycloakMiddleware'
 ]
 
 ROOT_URLCONF = 'Airnote.urls'
@@ -149,18 +149,24 @@ REST_FRAMEWORK = {
 }
 
 
-#CORS settings
+# CORS settings
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:5173',
 )
 
 
-#Keycloack settings
-#KEYCLOACK_SERVER_URL = 'https://'
-#KEYCLOACK_REALM = ''
-#AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'keycloack_auth.backend.KeycloackAuthenticationBackend',]
+# Keycloak settings
+# KEYCLOAK_SERVER_URL = 'https://'
+# KEYCLOAK_REALM = ''
+# AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'keycloak_auth.backend.KeycloakAuthenticationBackend',]
 
-#KEYCLOACK_AUTH_USER_MODEL = 'User'
-#KEYCLOACK_AUTH_USER_MODEL_FIRST_NAME_FIELD = 'firstname'
-#KEYCLOACK_AUTH_USER_MODEL_LAST_NAME_FIELD = 'lastname'
+# KEYCLOAK_AUTH_USER_MODEL = 'User'
+# KEYCLOAK_AUTH_USER_MODEL_FIRST_NAME_FIELD = 'firstname'
+# KEYCLOAK_AUTH_USER_MODEL_LAST_NAME_FIELD = 'lastname'
+KEYCLOAK_CONFIG = {
+    'KEYCLOAK_SERVER_URL': 'http://localhost:8080/auth',
+    'KEYCLOAK_REALM': 'TESTE',
+    'KEYCLOAK_CLIENT_ID': 'client-backend',
+    'KEYCLOAK_CLIENT_SECRET_KEY': 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+}

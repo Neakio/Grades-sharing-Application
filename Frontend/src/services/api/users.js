@@ -5,12 +5,12 @@ export const getUsers = () => {
 };
 
 export const getUsersByRole = (role) => {
-        return axios.get("/api/users?role=" + role);
-}
+    return axios.get("/api/users?role=" + role);
+};
 
-export const getUsersByRoleAndGroup = (role, groupId) => {
-    return axios.get("/api/users?role=" + role) + "&groupid=" + groupId;
-}
+export const getUserByClass = (groupId) => {
+    return axios.get("api/users?groupId=" + groupId);
+};
 
 export const getUser = (userId) => {
     return axios.get("api/users/" + userId);

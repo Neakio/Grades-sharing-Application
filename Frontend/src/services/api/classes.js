@@ -8,10 +8,6 @@ export const getClass = (classId) => {
     return axios.get("api/groups/" + classId);
 };
 
-export const getUserByClass = (groupId) => {
-    return axios.get("api/users?groupId=" + groupId);
-};
-
 export const createClass = (title, year, isActive, referent) => {
     let payload = {
         title,

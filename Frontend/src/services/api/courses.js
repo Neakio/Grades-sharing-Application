@@ -1,7 +1,7 @@
 import axios from "./axios";
 
 export const getCourses = (moduleId) => {
-    suffix="";
+    let suffix = "";
     if (moduleId) suffix = "?module=" + moduleId.toString();
     return axios.get("api/courses" + suffix);
 };
@@ -28,4 +28,4 @@ export const createCourse = (title, lead_teacher, other_teachers, modules) => {
         modules,
     };
     return axios.post("api/courses" + payload);
-}
+};

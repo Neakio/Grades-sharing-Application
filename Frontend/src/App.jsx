@@ -13,7 +13,7 @@ import Home from "./components/pages/Home";
 import Classes from "./components/pages/ClassesRoot";
 import Grades from "./components/pages/Grades";
 import UsersRoot from "./components/pages/UsersRoot";
-import { getModule } from "./services/api/modules";
+import { getModules } from "./services/api/modules";
 
 function App() {
     //Verify if the user is log or not
@@ -27,7 +27,7 @@ function App() {
     }, []);
 
     const fetchModules = async () => {
-        let modules = await getModule();
+        let modules = await getModules();
         console.log(modules);
     };
 

@@ -4,11 +4,10 @@ import { Button, Container } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
 import ReactTable from "../../render-components/ReactTable";
-import { getClass, getUserByClass, getUsersByRoleAndGroup } from "../../../services/api";
+import { getClass, getUserByClass } from "../../../services/api";
 import GLOBALS from "../../../Globals";
 
 function SetTable({ students }) {
-    console.log(students);
     const columns = React.useMemo(
         () => [
             {

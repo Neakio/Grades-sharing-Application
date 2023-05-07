@@ -1,7 +1,7 @@
 import axios from "./axios";
 
 export const getGrades = (studentId, courseId) => {
-    suffix="";
+    let suffix = "";
     if (studentId) suffix = "?student=" + studentId.toString();
     if (courseId) suffix = "?course=" + courseId.toString();
     return axios.get("api/courses" + suffix);
@@ -31,4 +31,4 @@ export const createGrade = (number, comment, exam_date, course, student) => {
         student,
     };
     return axios.post("api/grades" + payload);
-}
+};

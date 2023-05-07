@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { Button, Container } from "react-bootstrap";
 import { toastError, toastSuccess } from "../../services/toasts";
 
@@ -55,7 +55,6 @@ function Administration({ groups, fetchGroups }) {
                 redirectToTable();
             })
             .catch((error) => {
-                console.log(error);
                 toastError(error.message);
             });
     };
