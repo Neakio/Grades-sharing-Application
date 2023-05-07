@@ -1,6 +1,5 @@
 import axios from "./axios";
 
-
 export const getClasses = () => {
     return axios.get("api/groups");
 };
@@ -10,7 +9,7 @@ export const getClass = (classId) => {
 };
 
 export const getUserByClass = (groupId) => {
-    return axios.get("api/users?group=" + groupId)
+    return axios.get("api/users?groupId=" + groupId);
 };
 
 export const createClass = (title, year, isActive, referent) => {

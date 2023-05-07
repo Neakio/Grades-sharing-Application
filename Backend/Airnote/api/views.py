@@ -2,24 +2,25 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import viewsets
 
-from backend.models import User, Semester, UserSemester, Group, GroupModule, Module, ModuleCourse, Course, CourseTeacher, Grade
-from .serializers import UserSerializer, SemesterSerializer, UserSemesterSerializer, GroupSerializer, GroupModuleSerializer, ModuleSerializer, ModuleCourseSerializer, CourseSerializer, CourseTeacherSerializer, GradeSerializer
+from backend.models import User, Semester, UserSemester, Group, Module, Course, Grade
+from .serializers import UserSerializer, SemesterSerializer, UserSemesterSerializer, GroupSerializer, ModuleSerializer, CourseSerializer, GradeSerializer
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
     """
     serializer_class = UserSerializer
+
     def get_queryset(self):
         queryset = User.objects.all()
         role = self.request.query_params.get('role')
-        groupid = self.request.query_params.get('groupid')
+        groupId = self.request.query_params.get('groupId')
+        if groupId is not None:
+            queryset = User.objects.filter(group=groupId)
         if role is not None:
-            queryset = User.objects.filter(role=role, group=groupid)
+            queryset = User.objects.filter(role=role, group=groupId)
         return queryset
-
-
-
 
 
 class SemesterViewSet(viewsets.ModelViewSet):
@@ -46,14 +47,6 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
 
 
-class GroupModuleViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing user instances.
-    """
-    serializer_class = GroupModuleSerializer
-    queryset = GroupModule.objects.all()
-
-
 class ModuleViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
@@ -62,28 +55,12 @@ class ModuleViewSet(viewsets.ModelViewSet):
     queryset = Module.objects.all()
 
 
-class ModuleCourseViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing user instances.
-    """
-    serializer_class = ModuleCourseSerializer
-    queryset = ModuleCourse.objects.all()
-
-
 class CourseViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
     """
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-
-
-class CourseTeacherViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing user instances.
-    """
-    serializer_class = CourseTeacherSerializer
-    queryset = CourseTeacher.objects.all()
 
 
 class GradeViewSet(viewsets.ModelViewSet):
