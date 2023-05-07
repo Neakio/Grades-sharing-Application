@@ -22,11 +22,11 @@
         "no-unused-vars": ["warn"],
         "indent": [
             "warn",
-            2
+            4
         ],
         "linebreak-style": [
             "warn",
-            "unix"
+            "windows"
         ],
         "quotes": [
             "warn",

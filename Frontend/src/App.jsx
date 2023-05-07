@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,36 +13,46 @@ import Home from "./components/pages/Home";
 import Classes from "./components/pages/ClassesRoot";
 import Grades from "./components/pages/Grades";
 import UsersRoot from "./components/pages/UsersRoot";
+import { getModule } from "./services/api/modules";
 
 function App() {
-  //Verify if the user is log or not
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [darkmode, setDarkmode] = useState(false);
-  // Retrieve the role of the user
-  let userRole = "Admin";
+    //Verify if the user is log or not
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [darkmode, setDarkmode] = useState(false);
+    // Retrieve the role of the user
+    let userRole = "Administrator";
 
-  return (
-    <BrowserRouter>
-      <div className={"app " + (darkmode ? "" : "dark")}>
-        <ToastContainer theme={darkmode ? "light" : "dark"} />
-        <Header
-          darkmode={darkmode}
-          setDarkmode={setDarkmode}
-          isLoggedIn={isLoggedIn}
-          logIn={() => setIsLoggedIn(!isLoggedIn)}
-          userRole={userRole}
-        />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
-            <Route path="classes/*" element={<Classes userRole={userRole} />} />
-            <Route path="grades/*" element={<Grades />} />
-            <Route path="users/*" element={<UsersRoot />} />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
-  );
+    useEffect(() => {
+        fetchModules();
+    }, []);
+
+    const fetchModules = async () => {
+        let modules = await getModule();
+        console.log(modules);
+    };
+
+    return (
+        <BrowserRouter>
+            <div className={"app " + (darkmode ? "dark" : "")}>
+                <ToastContainer theme={darkmode ? "dark" : "light"} />
+                <Header
+                    darkmode={darkmode}
+                    setDarkmode={setDarkmode}
+                    isLoggedIn={isLoggedIn}
+                    logIn={() => setIsLoggedIn(!isLoggedIn)}
+                    userRole={userRole}
+                />
+                <main>
+                    <Routes>
+                        <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
+                        <Route path="classes/*" element={<Classes userRole={userRole} />} />
+                        <Route path="grades/*" element={<Grades />} />
+                        <Route path="users/*" element={<UsersRoot />} />
+                    </Routes>
+                </main>
+            </div>
+        </BrowserRouter>
+    );
 }
 
 export default App;

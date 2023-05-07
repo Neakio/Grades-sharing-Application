@@ -1,11 +1,25 @@
-from backend.models import User, Semester, UserSemester, Group, GroupModule, Module, ModuleCourse, Grade, Course, CourseTeacher
+from backend.models import User, Semester, UserSemester, Group, Module, Grade, Course
 from rest_framework import serializers
 
 # Create your models here.
 
 
+class GroupField(serializers.RelatedField):
+    def to_representation(self, value):
+        print(value)
+        group = {
+            'id': value.id,
+            'level': value.level,
+            'name': value.name,
+            'year': value.year,
+        }
+        return group
+
+
 class UserSerializer(serializers.ModelSerializer):
     # TODO Validation doit échouer si role pas dans les choices
+    # Custom GroupField because of circular dependency between User and Group
+    group = GroupField(read_only=True)
 
     class Meta:
         model = User
@@ -25,14 +39,10 @@ class UserSemesterSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
+    referent = UserSerializer()
+
     class Meta:
         model = Group
-        fields = '__all__'
-
-
-class GroupModuleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GroupModule
         fields = '__all__'
 
 
@@ -42,21 +52,9 @@ class ModuleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ModuleCourseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ModuleCourse
-        fields = '__all__'
-
-
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = '__all__'
-
-
-class CourseTeacherSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CourseTeacher
         fields = '__all__'
 
 

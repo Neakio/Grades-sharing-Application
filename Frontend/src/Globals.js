@@ -11,8 +11,8 @@ const GLOBALS = {
     L3: "Licence",
   },
   isActive: {
-    True: "Active",
-    False: "Archived",
+    true: "Active",
+    false: "Archived",
   },
 };
 

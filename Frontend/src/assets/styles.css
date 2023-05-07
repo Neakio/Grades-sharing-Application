@@ -8,3 +8,11 @@ main {
 
 .navbar {
 }
+
+.my-switch {
+    padding-top: 6px;
+}
+
+.my-switch .form-switch {
+    margin: 3px 0px 0 15px;
+}

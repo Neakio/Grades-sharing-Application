@@ -15,7 +15,7 @@ class User(models.Model):
     is_delegate = models.BooleanField(default=False)
     # Ligne SSO
     group = models.ForeignKey(
-        'Group', on_delete=models.PROTECT, blank=True, null=True)
+        'Group', on_delete=models.SET_NULL, blank=True, null=True)
 
 
 class Semester(models.Model):
@@ -39,49 +39,29 @@ class UserSemester(models.Model):
 
 class Group(models.Model):
     GROUPS = [('M2', 'Master 2'), ('M1', 'Master 1'), ('L3', 'Licence')]
-    title = models.CharField(max_length=2, choices=GROUPS)
+    level = models.CharField(max_length=2, choices=GROUPS)
+    name = models.CharField(max_length=20)
     year = models.CharField(max_length=9)
     is_active = models.BooleanField(default=True)
     referent = models.ForeignKey('User', limit_choices_to={
-                                 'role': 'AR'}, on_delete=models.PROTECT, related_name='referent')
+        'role': 'AR'}, on_delete=models.PROTECT, related_name='referent')
 
     class Meta:
-        unique_together = ('title', 'year', )
-
-
-class GroupModule(models.Model):
-    group = models.ForeignKey('Group', on_delete=models.CASCADE)
-    module = models.ForeignKey('Module', on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('group', 'module', )
+        unique_together = ('level', 'name', 'year')
 
 
 class Module(models.Model):
     title = models.CharField(max_length=100)
-
-
-class ModuleCourse(models.Model):
-    module = models.ForeignKey('Module', on_delete=models.CASCADE)
-    course = models.ForeignKey('Course', on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('module', 'course', )
+    groups = models.ManyToManyField(Group, blank=True, null=True)
 
 
 class Course(models.Model):
     title = models.CharField(max_length=100)
     lead_teacher = models.ForeignKey('User', limit_choices_to={
-                                     'role': 'TE'}, on_delete=models.PROTECT)
-
-
-class CourseTeacher(models.Model):
-    teacher = models.ForeignKey('User', limit_choices_to={
-                                'role': 'TE'}, on_delete=models.CASCADE)
-    course = models.ForeignKey('Course', on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('teacher', 'course', )
+                                     'role': 'TE'}, on_delete=models.PROTECT, related_name='lead_teacher')
+    modules = models.ManyToManyField(Module)
+    teachers = models.ManyToManyField(User, limit_choices_to={
+        'role': 'TE'}, related_name='teachers')
 
 
 class Grade(models.Model):
