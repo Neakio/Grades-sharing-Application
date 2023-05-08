@@ -1,16 +1,17 @@
 import axios from "./axios";
 
-export const getCourses = (moduleId) => {
+export const getCourses = (courseId, moduleId) => {
     let suffix = "";
-    if (moduleId) suffix = "?module=" + moduleId.toString();
+    if (courseId) suffix += "/" + courseId;
+    if (moduleId) suffix += "?module=" + moduleId.toString();
     return axios.get("api/courses" + suffix);
 };
 
-export const editCourse = (courseId, title, lead_teacher, other_teachers, modules) => {
+export const editCourse = (courseId, title, leadTeacher, otherTeachers, modules) => {
     let payload = {
         title,
-        lead_teacher,
-        other_teachers,
+        leadTeacher,
+        otherTeachers,
         modules,
     };
     return axios.put("api/courses" + courseId, payload);
@@ -20,12 +21,12 @@ export const deleteCourse = (courseId) => {
     return axios.delete("api/courses/" + courseId);
 };
 
-export const createCourse = (title, lead_teacher, other_teachers, modules) => {
+export const createCourse = (title, leadTeacher, otherTeachers, modules) => {
     let payload = {
         title,
-        lead_teacher,
-        other_teachers,
+        leadTeacher,
+        otherTeachers,
         modules,
     };
-    return axios.post("api/courses" + payload);
+    return axios.post("api/courses", payload);
 };

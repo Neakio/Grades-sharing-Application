@@ -69,17 +69,3 @@ class GradeViewSet(viewsets.ModelViewSet):
     """
     serializer_class = GradeSerializer
     queryset = Grade.objects.all()
-
-
-""" @api_view(['GET'])
-def getUsers(request):
-    users = User.objects.all()
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
-
-@api_view(['POST'])
-def createUser(request):
-    serializer = UserSerializer(data=request.data)
-    if(serializer.is_valid()):
-        serializer.save()
-    return Response(serializer.data) """

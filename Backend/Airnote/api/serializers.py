@@ -39,7 +39,7 @@ class UserSemesterSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
-    referent = UserSerializer()
+    referent = UserSerializer(required=False, allow_null=True)
 
     class Meta:
         model = Group
@@ -53,6 +53,10 @@ class ModuleSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
+    lead_teacher = UserSerializer(required=True, allow_null=False)
+    other_teachers = UserSerializer(many=True, required=False, allow_null=True)
+    modules = ModuleSerializer(many=True, required=False, allow_null=True)
+
     class Meta:
         model = Course
         fields = '__all__'

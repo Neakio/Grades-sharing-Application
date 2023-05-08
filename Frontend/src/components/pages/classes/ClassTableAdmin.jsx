@@ -1,18 +1,13 @@
 import React from "react";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import ReactTable from "../../render-components/ReactTable";
 
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
-{
-    /*import { ReactComponent as Plus } from "../../../assets/images/plus.svg";
-     */
-}
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+
 import GLOBALS from "../../../Globals";
-import { editUser } from "../../../services/api/users";
-import { toastSuccess } from "../../../services/toasts";
 
 function ClassesTable({ groups, removeClass }) {
     const columns = React.useMemo(

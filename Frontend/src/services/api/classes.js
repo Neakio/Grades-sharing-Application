@@ -8,11 +8,12 @@ export const getClass = (classId) => {
     return axios.get("api/groups/" + classId);
 };
 
-export const createClass = (title, year, isActive, referent) => {
+export const createClass = (level, name, year, isActive, referent) => {
     let payload = {
-        title,
+        level,
+        name,
         year,
-        is_active: isActive,
+        isActive,
         referent,
     };
     return axios.post("api/groups", payload);
@@ -22,11 +23,12 @@ export const deleteClass = (classId) => {
     return axios.delete("api/groups/" + classId);
 };
 
-export const editClass = (classId, title, year, isActive, referent) => {
+export const editClass = (classId, level, name, year, isActive, referent) => {
     let payload = {
-        title,
+        level,
+        name,
         year,
-        is_active: isActive,
+        isActive,
         referent,
     };
     return axios.put("api/groups/" + classId, payload);

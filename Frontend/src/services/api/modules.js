@@ -1,8 +1,9 @@
 import axios from "./axios";
 
-export const getModules = (groupId) => {
+export const getModules = (moduleId, groupId) => {
     let suffix = "";
-    if (groupId) suffix = "?group=" + groupId.toString();
+    if (moduleId) suffix += "/" + moduleId;
+    if (groupId) suffix += "?group=" + groupId.toString();
     return axios.get("api/modules" + suffix);
 };
 

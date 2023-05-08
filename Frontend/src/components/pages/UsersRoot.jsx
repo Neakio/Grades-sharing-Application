@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Button, Container } from "react-bootstrap";
+import { toastError, toastSuccess } from "../../services/toasts";
 
 import { createUser, deleteUser, editUser, getUsers } from "../../services/api/users";
 
 import UserTable from "./Users/UserTable";
 import UserForm from "./Users/UserForm";
-
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
-import { Button, Container } from "react-bootstrap";
-import { toastError, toastSuccess } from "../../services/toasts";
 
 function Users() {
     const navigate = useNavigate();
@@ -22,18 +21,6 @@ function Users() {
         setUsers(users);
     };
 
-    const removeUser = async (userId) => {
-        deleteUser(userId).then(() => {
-            toastSuccess("User successfully deleted");
-            fetchUsers();
-        });
-    };
-
-    const redirectToTable = () => {
-        fetchUsers();
-        navigate("/users");
-    };
-
     const addUser = async (user) => {
         createUser(user.firstname, user.lastname, user.group, user.isDelegate, user.role)
             .then(() => {
@@ -43,6 +30,12 @@ function Users() {
             .catch((error) => {
                 toastError(error.message);
             });
+    };
+    const removeUser = async (userId) => {
+        deleteUser(userId).then(() => {
+            toastSuccess("User successfully deleted");
+            fetchUsers();
+        });
     };
 
     const modifyUser = async (user, userId) => {
@@ -57,6 +50,11 @@ function Users() {
             toastSuccess("Successfully edited");
             redirectToTable();
         });
+    };
+
+    const redirectToTable = () => {
+        fetchUsers();
+        navigate("/users");
     };
 
     return (

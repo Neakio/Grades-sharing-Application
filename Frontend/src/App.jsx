@@ -11,9 +11,10 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 import Home from "./components/pages/Home";
 import Classes from "./components/pages/ClassesRoot";
-import Grades from "./components/pages/Grades";
+import Grades from "./components/pages/GradesRoot";
 import UsersRoot from "./components/pages/UsersRoot";
-import { getModules } from "./services/api/modules";
+import Modules from "./components/pages/ModulesRoot";
+import Courses from "./components/pages/CoursesRoot";
 
 function App() {
     //Verify if the user is log or not
@@ -21,15 +22,6 @@ function App() {
     const [darkmode, setDarkmode] = useState(false);
     // Retrieve the role of the user
     let userRole = "Administrator";
-
-    useEffect(() => {
-        fetchModules();
-    }, []);
-
-    const fetchModules = async () => {
-        let modules = await getModules();
-        console.log(modules);
-    };
 
     return (
         <BrowserRouter>
@@ -46,8 +38,10 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
                         <Route path="classes/*" element={<Classes userRole={userRole} />} />
-                        <Route path="grades/*" element={<Grades />} />
                         <Route path="users/*" element={<UsersRoot />} />
+                        <Route path="modules/*" element={<Modules />} />
+                        <Route path="courses/*" element={<Courses />} />
+                        <Route path="grades/*" element={<Grades />} />
                     </Routes>
                 </main>
             </div>

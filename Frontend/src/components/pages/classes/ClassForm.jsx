@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-
 import { Button, Container, Form } from "react-bootstrap";
 import Select from "react-select";
 import { useParams } from "react-router-dom";
 
 import { getClass } from "../../../services/api/classes";
 import { getUsersByRole } from "../../../services/api/users";
+
 import { Util } from "../../../services/Util";
 
 function ClassForm({ title, handleSubmitClass }) {
     const { id } = useParams();
 
     const [groupData, setGroupData] = useState({
-        title: null,
+        level: null,
+        name: null,
         year: null,
         isActive: false,
         referent: null,
@@ -27,7 +28,8 @@ function ClassForm({ title, handleSubmitClass }) {
 
     const fetchClass = async () => {
         let group = await getClass(id);
-        group.referent = group.referent.id;
+        console.log(group);
+        group.referent = group.referent?.id;
         setGroupData(group);
     };
 
@@ -44,9 +46,9 @@ function ClassForm({ title, handleSubmitClass }) {
     };
 
     const handleChange = (event) => {
-        let year = event.target.name;
+        let name = event.target.name;
         let value = event.target.value;
-        setGroupData({ ...groupData, [year]: value });
+        setGroupData({ ...groupData, [name]: value });
     };
 
     const onSubmit = (event) => {
@@ -76,7 +78,7 @@ function ClassForm({ title, handleSubmitClass }) {
                     <Form.Control
                         name="name"
                         placeholder="Concorde..."
-                        defaultValue={groupData.name}
+                        value={groupData.name}
                         onChange={handleChange}
                     />
                 </Form.Group>
@@ -85,7 +87,7 @@ function ClassForm({ title, handleSubmitClass }) {
                     <Form.Control
                         name="year"
                         placeholder="2022/2023"
-                        defaultValue={groupData.year}
+                        value={groupData.year}
                         onChange={handleChange}
                     />
                 </Form.Group>
