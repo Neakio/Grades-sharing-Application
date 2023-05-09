@@ -6,7 +6,6 @@ import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Util } from "../../../services/Util";
 
 function ModuleTable({ modules, removeModule }) {
     console.log(modules)
@@ -18,7 +17,7 @@ function ModuleTable({ modules, removeModule }) {
             },
             {
                 Header: "Classes linked",
-                accessor: "(modules.groups).map((group) => `${Util.groupToStr(group)} \n`)",
+                accessor: "classes",
             },
             {
                 Header: "Courses contained",
