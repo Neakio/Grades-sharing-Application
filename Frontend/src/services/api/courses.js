@@ -7,12 +7,11 @@ export const getCourses = (courseId, moduleId) => {
     return axios.get("api/courses" + suffix);
 };
 
-export const editCourse = (courseId, title, leadTeacher, otherTeachers, modules) => {
+export const editCourse = (courseId, title, leadTeacher, otherTeachers) => {
     let payload = {
         title,
         leadTeacher,
         otherTeachers,
-        modules,
     };
     return axios.put("api/courses" + courseId, payload);
 };
@@ -21,12 +20,11 @@ export const deleteCourse = (courseId) => {
     return axios.delete("api/courses/" + courseId);
 };
 
-export const createCourse = (title, leadTeacher, otherTeachers, modules) => {
+export const createCourse = (title, leadTeacher, otherTeachers) => {
     let payload = {
         title,
         leadTeacher,
         otherTeachers,
-        modules,
     };
     return axios.post("api/courses", payload);
 };

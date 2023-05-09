@@ -13,7 +13,6 @@ function CourseForm({ title, handleSubmitCourse }) {
         title: null,
         leadTeacher: null,
         otherTeachers: null,
-        modules: null,
     });
     const [teachersOptions, setTeachersOptions] = useState([]);
     const [modulesOptions, setModulesOptions] = useState([]);
@@ -107,23 +106,6 @@ function CourseForm({ title, handleSubmitCourse }) {
                             setCourseData({
                                 ...courseData,
                                 otherTeachers: newValues.map((option) => option.value),
-                            })
-                        }
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Module</Form.Label>
-                    <Select
-                        isMulti
-                        placeholder="Select a module..."
-                        options={modulesOptions}
-                        value={modulesOptions.filter((module) =>
-                            courseData.modules.includes(module.value),
-                        )}
-                        onChange={(newValues) =>
-                            setCourseData({
-                                ...courseData,
-                                modules: newValues.map((option) => option.value),
                             })
                         }
                     />

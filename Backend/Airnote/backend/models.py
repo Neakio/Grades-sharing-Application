@@ -66,14 +66,14 @@ class Course(models.Model):
                                      'role': 'TE'}, on_delete=models.PROTECT, related_name='lead_teacher',
                                      blank=False, null=False)
     other_teachers = models.ManyToManyField(User, limit_choices_to={
-        'role': 'TE'}, related_name='teachers', blank=True, null=True)
+        'role': 'TE'}, related_name='teachers', blank=True)
 
 
 class Module(models.Model):
     title = models.CharField(max_length=100,
                              blank=False, null=False)
-    groups = models.ManyToManyField(Group, blank=True, null=True)
-    courses = models.ManyToManyField(Course, blank=True, null=True)
+    groups = models.ManyToManyField(Group, blank=True,)
+    courses = models.ManyToManyField(Course, blank=True)
 
 
 class Grade(models.Model):

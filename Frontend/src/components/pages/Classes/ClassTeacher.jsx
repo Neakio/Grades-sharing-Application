@@ -15,8 +15,9 @@ function Teacher(props) {
                             <h1>Groups</h1>
 
                             <div className="d-flex flex-column justify-content-around ">
+                                
                                 {props.groups.map((group) => {
-                                    if (group.is_active) {
+                                    if (group.isActive) {
                                         return (
                                             <Link to={`/classes/${group.id}`} key={group.id}>
                                                 <Button
