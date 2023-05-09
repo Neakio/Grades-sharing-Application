@@ -4,7 +4,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import Select from "react-select";
 import { useParams } from "react-router-dom";
 import { getUsersByRole } from "../../../services/api/users";
-import { getCourses, getModules } from "../../../services/api";
+import { getCourses } from "../../../services/api";
 
 function CourseForm({ title, handleSubmitCourse }) {
     const { id } = useParams();
@@ -15,31 +15,17 @@ function CourseForm({ title, handleSubmitCourse }) {
         otherTeachers: null,
     });
     const [teachersOptions, setTeachersOptions] = useState([]);
-    const [modulesOptions, setModulesOptions] = useState([]);
 
     useEffect(() => {
         if (id) fetchCourse();
         fetchTeachers();
-        fetchModules();
     }, [id]);
 
     const fetchCourse = async () => {
         let course = await getCourses(id);
         course.leadTeacher = course.leadTeacher.id;
-        course.otherTeachers = course.otherTeachers?.map((teacher) => teacher.id);
-        course.modules = course.modules?.map((aModule) => aModule.id);
+        course.otherTeachers = course.otherTeachers.map((teacher) => teacher.id);
         setCourseData(course);
-    };
-
-    const fetchModules = async () => {
-        let modules = await getModules();
-        setModulesOptions(getModulesOptions(modules));
-    };
-    const getModulesOptions = (modules) => {
-        return modules.map((aModule) => ({
-            label: aModule.title,
-            value: aModule.id,
-        }));
     };
 
     const fetchTeachers = async () => {
@@ -84,7 +70,7 @@ function CourseForm({ title, handleSubmitCourse }) {
                         placeholder="Select a lead teacher..."
                         options={teachersOptions}
                         value={teachersOptions.find(
-                            (teach) => teach.value == courseData.leadTeacher,
+                            (option) => option.value == courseData.leadTeacher,
                         )}
                         onChange={(newValue) =>
                             setCourseData({ ...courseData, leadTeacher: newValue.value })
@@ -100,7 +86,7 @@ function CourseForm({ title, handleSubmitCourse }) {
                             (teacher) => teacher.value !== courseData.leadTeacher,
                         )}
                         value={teachersOptions.filter((teacher) =>
-                            courseData.otherTeachers.includes(teacher.value),
+                            courseData.otherTeachers?.includes(teacher.value),
                         )}
                         onChange={(newValues) =>
                             setCourseData({

@@ -28,7 +28,6 @@ function ClassForm({ title, handleSubmitClass }) {
 
     const fetchClass = async () => {
         let group = await getClass(id);
-        console.log(group);
         group.referent = group.referent?.id;
         setGroupData(group);
     };

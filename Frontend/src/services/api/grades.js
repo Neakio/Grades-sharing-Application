@@ -15,7 +15,7 @@ export const editGrade = (gradeId, number, comment, exam_date, course, student) 
         course,
         student,
     };
-    return axios.put("api/courses" + gradeId, payload);
+    return axios.put("api/grades/" + gradeId, payload);
 };
 
 export const deleteGrade = (gradeId) => {
@@ -30,5 +30,5 @@ export const createGrade = (number, comment, exam_date, course, student) => {
         course,
         student,
     };
-    return axios.post("api/grades" + payload);
+    return axios.post("api/grades", payload);
 };

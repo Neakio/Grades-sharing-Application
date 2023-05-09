@@ -21,7 +21,7 @@ export const createUser = (firstname, lastname, group, isDelegate, role) => {
         firstname,
         lastname,
         group,
-        is_delegate: isDelegate,
+        isDelegate,
         role,
     };
     return axios.post("api/users", payload);

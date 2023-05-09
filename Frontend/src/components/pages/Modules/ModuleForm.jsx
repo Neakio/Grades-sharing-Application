@@ -12,9 +12,9 @@ function ModuleForm({ title, handleSubmitModule }) {
     const [moduleData, setModuleData] = useState({
         title: null,
         groups: null,
+        courses: null,
     });
-    const [moduleCourses, setModuleCourses] = useState([]);
-    const [courses, setCourses] = useState([]);
+    const [coursesOptions, setCoursesOptions] = useState([]);
     const [classesOptions, setClassesOptions] = useState([]);
 
     useEffect(() => {
@@ -27,6 +27,7 @@ function ModuleForm({ title, handleSubmitModule }) {
         let groups = await getClasses();
         setClassesOptions(getClassOptions(groups));
     };
+
     const getClassOptions = (classes) => {
         return classes.map((aClass) => ({
             label: Util.groupToStr(aClass),
@@ -35,10 +36,8 @@ function ModuleForm({ title, handleSubmitModule }) {
     };
     const fetchCourses = async () => {
         let courses = await getCourses();
-        setModuleCourses(
-            courses.filter((course) => course.modules.map((aModule) => aModule.id).includes(id)),
-        );
-        setCourses(courses);
+        setCoursesOptions(getCourseOptions(courses));
+        console.log(courses)
     };
     const getCourseOptions = (courses) => {
         return courses.map((aCourse) => ({
@@ -78,11 +77,11 @@ function ModuleForm({ title, handleSubmitModule }) {
                 <Form.Group className="mb-3">
                     <Form.Label>Classes</Form.Label>
                     <Select
-                        isMulti={true}
+                        isMulti
                         placeholder="Select classes..."
                         options={classesOptions}
                         value={classesOptions.filter((group) =>
-                            moduleData.groups.includes(group.value),
+                            moduleData.groups?.includes(group.value),
                         )}
                         onChange={(newValues) =>
                             setModuleData({
@@ -97,9 +96,14 @@ function ModuleForm({ title, handleSubmitModule }) {
                     <Select
                         isMulti
                         placeholder="Select courses..."
-                        options={getCourseOptions(courses)}
-                        value={getCourseOptions(moduleCourses)}
-                        onChange={(newValues) => setModuleCourses}
+                        options={coursesOptions}
+                        value={coursesOptions.filter((course) =>
+                            moduleData.courses?.includes(course.value),
+                        )}
+                        onChange={(newValues) => setModuleData({
+                            ...moduleData,
+                            courses: newValues.map((option) => option.value),
+                        })}
                     />
                 </Form.Group>
                 ;

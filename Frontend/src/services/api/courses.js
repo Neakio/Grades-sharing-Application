@@ -3,7 +3,6 @@ import axios from "./axios";
 export const getCourses = (courseId, moduleId) => {
     let suffix = "";
     if (courseId) suffix += "/" + courseId;
-    if (moduleId) suffix += "?module=" + moduleId.toString();
     return axios.get("api/courses" + suffix);
 };
 
@@ -13,7 +12,7 @@ export const editCourse = (courseId, title, leadTeacher, otherTeachers) => {
         leadTeacher,
         otherTeachers,
     };
-    return axios.put("api/courses" + courseId, payload);
+    return axios.put("api/courses/" + courseId, payload);
 };
 
 export const deleteCourse = (courseId) => {

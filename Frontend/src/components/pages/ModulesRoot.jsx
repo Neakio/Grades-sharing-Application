@@ -21,7 +21,7 @@ function Modules() {
     };
 
     const addModules = async (module) => {
-        createModule(module.title, module.courses, module.classes)
+        createModule(module.title, module.groups, module.courses)
             .then(() => {
                 toastSuccess("Module successfully created");
                 redirectToTable();
@@ -39,7 +39,7 @@ function Modules() {
     };
 
     const modifyModules = async (module, moduleId) => {
-        editModule(moduleId, module.title, module.courses, module.classes).then(() => {
+        editModule(moduleId, module.title, module.groups, module.courses).then(() => {
             toastSuccess("Successfully edited");
             redirectToTable();
         });

@@ -53,9 +53,8 @@ class ModuleSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    lead_teacher = UserSerializer(required=True, allow_null=False)
-    other_teachers = UserSerializer(many=True, required=False, allow_null=True)
-    modules = ModuleSerializer(many=True, required=False, allow_null=True)
+    #? lead_teacher = UserSerializer(required=True, allow_null=False)
+    #? other_teachers = UserSerializer(many=True, required=False,  allow_null=True)
 
     class Meta:
         model = Course

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import { Button, Container } from "react-bootstrap";
-import { toastError, toastSuccess } from "../../services/toasts";
+import { toastSuccess } from "../../services/toasts";
 
-import { createCourse, getCourses, deleteModule, editModule } from "../../services/api";
+import { createCourse, getCourses, deleteCourse, editCourse } from "../../services/api";
 
 import CourseForm from "./Courses/CourseForm";
 import CourseTable from "./Courses/CourseTable";
@@ -30,14 +30,14 @@ function Courses() {
     };
 
     const removeCourse = async (courseId) => {
-        deleteModule(courseId).then(() => {
+        deleteCourse(courseId).then(() => {
             toastSuccess("Course successfully deleted");
             fetchCourses();
         });
     };
 
     const modifyCourses = async (course, courseId) => {
-        editModule(
+        editCourse(
             courseId,
             course.title,
             course.leadTeacher,
@@ -50,7 +50,7 @@ function Courses() {
 
     const redirectToTable = () => {
         fetchCourses();
-        Navigate("/course");
+        Navigate("/courses");
     };
 
     return (

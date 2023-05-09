@@ -19,7 +19,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if groupId is not None:
             queryset = User.objects.filter(group=groupId)
         if role is not None:
-            queryset = User.objects.filter(role=role, group=groupId)
+            queryset = User.objects.filter(role=role)
         return queryset
 
 
