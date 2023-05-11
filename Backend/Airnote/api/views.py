@@ -15,9 +15,9 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = User.objects.all()
         role = self.request.query_params.get('role')
-        groupId = self.request.query_params.get('groupId')
-        if groupId is not None:
-            queryset = User.objects.filter(group=groupId)
+        group_id = self.request.query_params.get('group_id')
+        if group_id is not None:
+            queryset = User.objects.filter(group_id=group_id)
         if role is not None:
             queryset = User.objects.filter(role=role)
         return queryset
@@ -52,7 +52,7 @@ class ModuleViewSet(viewsets.ModelViewSet):
     A viewset for viewing and editing user instances.
     """
     serializer_class = ModuleSerializer
-    queryset = Module.objects.all()
+    queryset = Module.objects.all().values()
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -60,6 +60,8 @@ class CourseViewSet(viewsets.ModelViewSet):
     A viewset for viewing and editing user instances.
     """
     serializer_class = CourseSerializer
+    print(Course.objects.all().values())
+
     queryset = Course.objects.all()
 
 

@@ -7,8 +7,9 @@ import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { Util } from "../../../services/Util";
 
-function CourseTable({ courses, removeCourse }) {
+function CourseTable({ courses, modules, removeCourse }) {
     const columns = React.useMemo(
         () => [
             {
@@ -17,15 +18,16 @@ function CourseTable({ courses, removeCourse }) {
             },
             {
                 Header: "Lead Teacher",
-                accessor: "lead teacher",
+                accessor: ({leadTeacher}) => Util.userName(leadTeacher),
             },
             {
                 Header: "Other Teachers",
-                accessor: "other teachers",
+                accessor: "otherTeachers",
+                Cell: ({value}) => <div>{value.map((otherTeacher, i)=><tr key={"row"+i}><td key={"td"+i}>{Util.userName(otherTeacher)}</td></tr>)}</div>
             },
             {
                 Header: "In module",
-                accessor: "in module",
+                accessor: "modules",
             },
             {
                 Header: "Edit",

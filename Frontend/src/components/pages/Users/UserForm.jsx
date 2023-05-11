@@ -26,7 +26,7 @@ function UserForm({ title, handleSubmitUser }) {
 
     const fetchUser = async () => {
         let user = await getUser(id);
-        user.group = user.group.id;
+        user.group = user.group?.id;
         setUserData(user);
     };
 

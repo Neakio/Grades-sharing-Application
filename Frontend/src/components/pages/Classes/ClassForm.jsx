@@ -16,7 +16,7 @@ function ClassForm({ title, handleSubmitClass }) {
         name: null,
         year: null,
         isActive: false,
-        referent: null,
+        referentId: null,
     });
 
     const [referentsOptions, setReferentsOptions] = useState([]);
@@ -28,7 +28,8 @@ function ClassForm({ title, handleSubmitClass }) {
 
     const fetchClass = async () => {
         let group = await getClass(id);
-        group.referent = group.referent?.id;
+        group.referentId = group.referent?.id;
+        console.log(group)
         setGroupData(group);
     };
 
@@ -108,9 +109,9 @@ function ClassForm({ title, handleSubmitClass }) {
                     <Select
                         placeholder="Select a referent..."
                         options={referentsOptions}
-                        value={referentsOptions.find((ref) => ref.value == groupData.referent)}
+                        value={referentsOptions.find((ref) => ref.value == groupData.referentId)}
                         onChange={(newValue) =>
-                            setGroupData({ ...groupData, referent: newValue.value })
+                            setGroupData({ ...groupData, referentId: newValue.value })
                         }
                     />
                 </Form.Group>

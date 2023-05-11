@@ -66,21 +66,21 @@ class Course(models.Model):
                                      'role': 'TE'}, on_delete=models.PROTECT, related_name='lead_teacher',
                                      blank=False, null=False)
     other_teachers = models.ManyToManyField(User, limit_choices_to={
-        'role': 'TE'}, related_name='teachers', blank=True, null=True)
+        'role': 'TE'}, related_name='teachers', default=[])
 
 
 class Module(models.Model):
     title = models.CharField(max_length=100,
                              blank=False, null=False)
-    groups = models.ManyToManyField(Group, blank=True, null=True)
-    courses = models.ManyToManyField(Course, blank=True, null=True)
+    groups = models.ManyToManyField(Group, blank=True)
+    courses = models.ManyToManyField(Course, blank=True)
 
 
 class Grade(models.Model):
     number = models.DecimalField(max_digits=2, decimal_places=2, validators=[
                                  MinValueValidator(0), MaxValueValidator(25)], blank=True, null=True)
     comment = models.CharField(max_length=200, blank=True, null=True)
-    exam_date = models.DateField(default=None, null=True)
+    exam_date = models.DateField(default=None, blank=True, null=True)
     course = models.ForeignKey('Course', on_delete=models.PROTECT,
                                blank=False, null=False)
     student = models.ForeignKey('User', limit_choices_to={
@@ -88,16 +88,4 @@ class Grade(models.Model):
                                 blank=False, null=False)
 
 
-"""
-class Info(models.Model):
-    Author = models.ForeignKey('User', on_delete=models.CASCADE)
-    Group = models.ForeignKey('Group', on_delete=models.CASCADE)
-    Title = models.CharField(max_length=50)
-    Text = models.CharField(max_length=250)
 
-class Exam
-    Title = models.CharField(max_length=20)
-    Course = models.ForeignKey('Course', on_delete=models.CASCADE)
-    Group = models.ForeignKey('Group', on_delete=models.CASCADE)
-    Date = models.DateField
-"""
