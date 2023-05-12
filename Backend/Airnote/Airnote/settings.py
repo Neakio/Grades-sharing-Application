@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-qmawmavk=&q&c&u)e91cimab=n0%%(y@ypl6gdc9+vhchjp^hc
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+    #www.airnote.com, keycloak ?
 
 # Application definition
 
@@ -87,6 +87,31 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# add postgre db
+'''
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "OPTIONS": {
+            "service": "my_service",
+            "passfile": ".my_pgpass",
+        },
+    }
+}
+
+OR
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'usersDB', 
+        'USER': 'sammy', 
+        'PASSWORD': 'pa$$word',
+        'HOST': '127.0.0.1', 
+        'PORT': '5432',
+    }
+}
+'''
 
 
 # Password validation

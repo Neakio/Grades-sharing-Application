@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 
 import ReactTable from "../../render-components/ReactTable";
-import { getCourses, getGrades } from "../../../services/api";
+import { getCoursesByTeacher, getGrades } from "../../../services/api";
+import TeacherTable from "./TeacherTable";
 
 
 
-function TeacherView() {
+function TeacherView(grades, courses) {
 
     const [grades, setGrades] = useState([])
     const [courses, setCourses] = useState([])
@@ -16,49 +17,20 @@ function TeacherView() {
         fetchCourses();
     }, []);
 
-    const fetchGrades = async () => {
-        let grades = await getGrades(courses.Id);
-        setGrades(grades);
-    };
     const fetchCourses = async () => {
-        let courses = await getCourses();
+        let courses = await getCoursesByTeacher(id);
         setCourses(courses);
     }
+    const fetchGrades = async () => {
+        let course = courses.map( (course) => course.id )
+        let grades = await getGrades(course.Id);
+        setGrades(grades);
+    };
 
 
 
 
-    const columns = React.useMemo(
-        () => [
-            {
-                Header: "Student",
-                accessor: "student",
-            },
-            {
-                Header: "Course",
-                accessor: "title",
-            },
-            {
-                Header: "Lead Teacher",
-                accessor: "lead teacher",
-            },
-            {
-                Header: "Other Teachers",
-                accessor: "other teachers",
-            },
-            {
-                Header: "Grade",
-                accessor: "grade",
-            },
-            {
-                Header: "Comment",
-                accessor: "Comment",
-            },
-        ],
-        [],
-    );
-
-    return <ReactTable data={grades} columns={columns} />;
+    return <TeacherTable grades={grades} courses={courses} students={students}/>;
 }
 
 export default TeacherView;

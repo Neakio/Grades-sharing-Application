@@ -9,19 +9,14 @@ function Grades({ userRole }) {
     const isTeacher = userRole === "Teacher";
 
 
-    const [grades, setGrades] = useState([])
     const [courses, setCourses] = useState([])
 
     
     useEffect(() => {
-        fetchGrades();
         fetchCourses();
     }, []);
 
-    const fetchGrades = async () => {
-        let grades = await getGrades();
-        setGrades(grades);
-    };
+
     const fetchCourses = async () => {
         let courses = await getCourses();
         setCourses(courses);
@@ -32,7 +27,7 @@ function Grades({ userRole }) {
     return (
         <Container>
             {isReferent || isTeacher ? (
-                <TeacherView grades={grades}/>
+                <TeacherView/>
             ) : (
                 <StudentView courses={courses} />
             )}
