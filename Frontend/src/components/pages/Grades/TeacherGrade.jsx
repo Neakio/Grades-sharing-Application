@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import ReactTable from "../../render-components/ReactTable";
 import { getCoursesByTeacher, getGrades } from "../../../services/api";
 import TeacherTable from "./TeacherTable";
 
 
 
-function TeacherView(grades, courses) {
+function TeacherView() {
 
     const [grades, setGrades] = useState([])
     const [courses, setCourses] = useState([])
@@ -30,7 +29,7 @@ function TeacherView(grades, courses) {
 
 
 
-    return <TeacherTable grades={grades} courses={courses} students={students}/>;
+    return <TeacherTable grades={grades} courses={courses} />;
 }
 
 export default TeacherView;

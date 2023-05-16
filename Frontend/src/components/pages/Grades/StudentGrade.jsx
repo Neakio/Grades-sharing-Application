@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 import StudentTable from "./StudentTable";
-import { getGrades } from "../../../services/api";
+import { getCourses, getGrades } from "../../../services/api";
 
-function StudentView({courses}) {
-    const [grades, setGrades] = useState([])
-    const { studentId } = useParams();
+function StudentView() {
+    const [grades, setGrades] = useState([]);
+    const [courses, setCourses] = useState([]); 
     
     useEffect(() => {
         fetchGrades();
+        fetchCourses();
     }, []);
 
+    const fetchCourses = async () => {
+        let courses = await getCourses();
+        setCourses(courses);
+    }
     const fetchGrades = async () => {
         let grades = await getGrades(studentId);
         setGrades(grades);
