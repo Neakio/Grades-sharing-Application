@@ -23,6 +23,8 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
 
     const isAdmin = userRole.startsWith("Admin");
     const isTeacher = userRole === "Teacher";
+    const isReferent = userRole === "Administrator Referent";
+
 
 
     return (
@@ -39,7 +41,12 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
 
                         {isAdmin && (
 
-                            <h2><a href="/modules">Modules</a></h2>
+                            <h2><a href="/users">Users</a></h2>
+
+                        )}
+                        {(isAdmin || isTeacher) && (
+
+                            <h2><a href="/classes">Classes</a></h2>
 
                         )}
                         {isAdmin && (
@@ -51,12 +58,7 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
                             <h2><a href="/courses">Courses</a></h2>
 
                         )}
-                        {(isAdmin || isTeacher) && (
-
-                            <h2><a href="/classes">Classes</a></h2>
-
-                        )}
-                        {!isAdmin && (
+                        {(!isAdmin || isReferent) && (
 
                             <h2><a href="/grades">Grades</a></h2>
 

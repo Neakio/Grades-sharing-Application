@@ -20,6 +20,8 @@ class UserViewSet(viewsets.ModelViewSet):
             queryset = User.objects.filter(group_id=group_id)
         if role is not None:
             queryset = User.objects.filter(role=role)
+        print(User.objects.all().values())
+
         return queryset
 
 
@@ -61,6 +63,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     """
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+    print(Course.objects.all().values())
 
 
 class GradeViewSet(viewsets.ModelViewSet):

@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import ReactTable from "../../render-components/ReactTable";
-
+import SelectColumnFilter from "../../render-components/tablefilter";
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import GLOBALS from "../../../Globals";
-import { getClass, getClasses } from "../../../services/api";
 import { Util } from "../../../services/Util";
 
 function UserTable({ users, removeUser }) {
@@ -29,6 +28,8 @@ function UserTable({ users, removeUser }) {
             {
                 Header: "Role",
                 accessor: ({ role }) => GLOBALS.USER_ROLES[role],
+                Filter: SelectColumnFilter,
+                filter: 'includes',
             },
             {
                 Header: "Class",
@@ -56,7 +57,10 @@ function UserTable({ users, removeUser }) {
         [],
     );
 
-    return <ReactTable data={users} columns={columns} />;
+    return (
+        <div>
+            <ReactTable data={users} columns={columns} />;
+        </div>)
 }
 
 export default UserTable;

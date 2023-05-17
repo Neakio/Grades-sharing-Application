@@ -15,7 +15,7 @@ class User(models.Model):
     role = models.CharField(max_length=2, choices=ROLES,
                             blank=False, null=False)
     is_delegate = models.BooleanField(default=False)
-    # Ligne SSO
+    #TODO Ligne SSO
     group = models.ForeignKey(
         'Group', on_delete=models.SET_NULL, blank=True, null=True)
 

@@ -18,13 +18,15 @@ function TeacherView() {
 
     const fetchCourses = async () => {
         let courses = await getCoursesByTeacher();
-        setCourses(courses);
+        setCourses("cours : " + courses);
     }
+    console.log(courses)
     const fetchGrades = async () => {
         let course = courses.map( (course) => course)
         let grades = await getGrades(course);
         setGrades(grades);
     };
+    console.log("notes : " + grades)
 
 
 

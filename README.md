@@ -71,4 +71,5 @@ Have an update on the user databse from the AD
 ## Links
 
 https://blog.logrocket.com/react-table-complete-guide/#use-cases-react-table  
-https://blog.openreplay.com/better-tables-with-react-table/
+https://blog.openreplay.com/better-tables-with-react-table/  
+https://testdriven.io/blog/drf-serializers/  
