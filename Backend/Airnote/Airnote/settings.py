@@ -88,30 +88,29 @@ DATABASES = {
     }
 }
 # add postgre db
-'''
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "OPTIONS": {
-            "service": "my_service",
-            "passfile": ".my_pgpass",
-        },
-    }
-}
 
-OR
+#DATABASES = {
+#    "default": {
+#       "ENGINE": "django.db.backends.postgresql",
+#        "OPTIONS": {
+#            "service": "my_service",
+#            "passfile": ".my_pgpass",
+#        },
+#    }
+#}
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'usersDB', 
-        'USER': 'sammy', 
-        'PASSWORD': 'pa$$word',
-        'HOST': '127.0.0.1', 
-        'PORT': '5432',
-    }
-}
-'''
+#OR
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'usersDB', 
+#        'USER': 'sammy', 
+#        'PASSWORD': 'pa$$word',
+#        'HOST': '127.0.0.1', 
+#        'PORT': '5432',
+#    }
+#}
 
 
 # Password validation

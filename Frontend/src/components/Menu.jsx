@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -17,10 +17,8 @@ const Menu = ({ userRole, isLoggedIn }) => {
         setVisible(!visible);
     };
 
-    const handleMouseDown = (e) => {
+    const handleMouseDown = () => {
         toggleMenu();
-        console.log("clicked");
-        e.stopPropagation();
     };
 
     const isAdmin = userRole.startsWith("Admin");
@@ -36,7 +34,7 @@ const Menu = ({ userRole, isLoggedIn }) => {
                         onMouseDown={handleMouseDown}
                         className={visible ? "show" : "hide"}
                     >
-                        <nav className="navbar">
+                        <nav >
                             <Row>
                                 <Link to="/">
                                     <Button>Home</Button>

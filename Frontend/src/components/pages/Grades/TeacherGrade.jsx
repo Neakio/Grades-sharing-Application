@@ -17,12 +17,12 @@ function TeacherView() {
     }, []);
 
     const fetchCourses = async () => {
-        let courses = await getCoursesByTeacher(id);
+        let courses = await getCoursesByTeacher();
         setCourses(courses);
     }
     const fetchGrades = async () => {
-        let course = courses.map( (course) => course.id )
-        let grades = await getGrades(course.Id);
+        let course = courses.map( (course) => course)
+        let grades = await getGrades(course);
         setGrades(grades);
     };
 

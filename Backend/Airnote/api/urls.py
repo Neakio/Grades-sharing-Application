@@ -9,7 +9,7 @@ router.register(r'users', UserViewSet, basename='User')
 router.register(r'semesters', SemesterViewSet)
 router.register(r'groups', GroupViewSet)
 router.register(r'modules', ModuleViewSet)
-router.register(r'courses', CourseViewSet)
+router.register(r'courses', CourseViewSet, basename='Course')
 router.register(r'grades', GradeViewSet)
 
 urlpatterns = router.urls

@@ -1,6 +1,5 @@
 # Grades-sharing-Application
 
-
 ## Needs
 
 - A Public page explaining the goal of the app
@@ -12,63 +11,52 @@
 
 Documentation for the API.
 
-
-
 Pour la partie Web API projet, doit-on mettre en place un token pour pouvoir automatiser les tâches (depuis un script par exemple)? Ou juste une interface web pour upload des fichiers (par exemple CSV)?  
 Mise en place d’un endpoint de type REST et des mesures nécessaires à sa sécurisation
 
 ## Actions
 
-
-Need | Tasks | Dev | Unit Test | Int Test | Val
------|-------|-----|-----------|----------|-----
-Database | 
-Public Page | SSO login </br> Goal of the app |
-Adm Page | Landing Page </br> Users/Role Pages </br> Classes Pages </br> Courses Pages | 
-Teacher Page | Landing Page </br> Classes Pages </br> Grades Pages | 
-Student Page | Landing Page </br> Grade Page |
-Web API |  
-
+| Need         | Tasks                                                                       | Dev | Unit Test | Int Test | Val |
+| ------------ | --------------------------------------------------------------------------- | --- | --------- | -------- | --- |
+| Database     |
+| Public Page  | SSO login </br> Goal of the app                                             |
+| Adm Page     | Landing Page </br> Users/Role Pages </br> Classes Pages </br> Courses Pages |
+| Teacher Page | Landing Page </br> Classes Pages </br> Grades Pages                         |
+| Student Page | Landing Page </br> Grade Page                                               |
+| Web API      |
 
 ## Need installed
 
 FRONT  
 nodejs  
-yarn   
-
-
-
+yarn
 
 sudo apt-get update
 sudo apt-get install curl python3 pip python3-virtualenv -y
 
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash - 
+curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get update
 sudo apt install -y nodejs yarn
 
 yarn run dev
 
-
 BACK  
 python3  
 pip  
-python3-virtualenv  
+python3-virtualenv
 
-
- virtualenv venv
+virtualenv venv
 source venv/bin/activate  
-pip install -r requirements.txt  
+pip install -r requirements.txt
 
 python3 manage.py makemigrations  
-python3 manage.py migrate  
+python3 manage.py migrate
 
 python3 manage.py runserver
 
-
-postman for test  
-
+postman for test
 
 ## Optionnal implementation
 
@@ -76,13 +64,11 @@ Be able to put an attachment (with a maximum size) link to a note
 Export notes to PDF  
 Calendar of exam and retake  
 Info tab from administration and class delegate  
-See in red the note under 10  
+See in red the note under 10
 
-Have an update on the user databse from the AD  
-
+Have an update on the user databse from the AD
 
 ## Links
 
-
 https://blog.logrocket.com/react-table-complete-guide/#use-cases-react-table  
-https://blog.openreplay.com/better-tables-with-react-table/  
+https://blog.openreplay.com/better-tables-with-react-table/

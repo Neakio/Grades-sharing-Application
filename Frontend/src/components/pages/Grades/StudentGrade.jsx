@@ -17,7 +17,7 @@ function StudentView() {
         setCourses(courses);
     }
     const fetchGrades = async () => {
-        let grades = await getGrades(studentId);
+        let grades = await getGrades();
         setGrades(grades);
     };
     return <StudentTable grades={grades} courses={courses}/>;

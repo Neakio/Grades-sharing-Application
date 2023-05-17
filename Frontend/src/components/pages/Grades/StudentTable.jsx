@@ -1,23 +1,31 @@
 import React from "react";
 
 import ReactTable from "../../render-components/ReactTable";
+import { Util } from "../../../services/Util";
 
-
-
-function StudentTable({ grades, courses }) {
+function StudentTable({ grades }) {
     const columns = React.useMemo(
         () => [
             {
                 Header: "Course",
-                accessor: "title",
+                accessor: "course.title",
             },
             {
                 Header: "Lead Teacher",
-                accessor: "lead teacher",
+                accessor: ({leadTeacher}) => Util.userName(leadTeacher),
             },
             {
                 Header: "Other Teachers",
-                accessor: "other teachers",
+                accessor: "course.otherTeachers",
+                Cell: ({ value }) => (
+                    <div>
+                        {value.map((otherTeacher, i) => (
+                            <tr key={"row" + i}>
+                                <td key={"td" + i}>{Util.userName(otherTeacher)}</td>
+                            </tr>
+                        ))}
+                    </div>
+                ),
             },
             {
                 Header: "Grade",
@@ -25,7 +33,7 @@ function StudentTable({ grades, courses }) {
             },
             {
                 Header: "Comment",
-                accessor: "Comment",
+                accessor: "comment",
             },
         ],
         [],
