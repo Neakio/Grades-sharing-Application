@@ -32,6 +32,16 @@
 }      
 
 
+#theMenu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translate3d(-100vw, 0, 0);
+       
+  width: 100vw;
+  height: 100vh;
+}      
+
 #roundButton {
   background-color: #96D9FF;
   margin-bottom: 20px;
@@ -54,6 +64,7 @@
   border-color: #003557;
   background-color: #FFF;
 }
+
 
 #flyoutMenu {
   width: 100vw;

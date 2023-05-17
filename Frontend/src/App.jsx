@@ -15,6 +15,7 @@ import Grades from "./components/pages/GradesRoot";
 import UsersRoot from "./components/pages/UsersRoot";
 import Modules from "./components/pages/ModulesRoot";
 import Courses from "./components/pages/CoursesRoot";
+import MenuContainer from "./components/Menu";
 
 function App() {
     //Verify if the user is log or not
@@ -27,6 +28,7 @@ function App() {
         <BrowserRouter>
             <div className={"app " + (darkmode ? "dark" : "")}>
                 <ToastContainer theme={darkmode ? "dark" : "light"} />
+                <MenuContainer />
                 <Header
                     darkmode={darkmode}
                     setDarkmode={setDarkmode}

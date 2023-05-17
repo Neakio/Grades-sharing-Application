@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import logo from "../../public/airnote.png";
 
-import Menu from "./Menu";
 import Darkmode from "./Darkmode";
 
 function Header({ isLoggedIn, logIn, darkmode, setDarkmode, userRole }) {
@@ -21,7 +20,6 @@ function Header({ isLoggedIn, logIn, darkmode, setDarkmode, userRole }) {
                     </div>
 
                     {/*  */}
-                    <Menu isOpen={showMenu} isLoggedIn={isLoggedIn} userRole={userRole} />
                 </div>
                 {/* Show the user role only if already connected */}
                 <p>{isLoggedIn ? userRole : null}</p>
