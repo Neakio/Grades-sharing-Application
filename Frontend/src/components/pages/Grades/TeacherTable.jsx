@@ -2,26 +2,24 @@ import React from "react";
 
 import ReactTable from "../../render-components/ReactTable";
 
-
-
-<<<<<<< HEAD
-function GradesTable({ grades, courses }) {
-=======
-function StudentTable({ grades, courses }) {
->>>>>>> bc0518620206a0f8355490672af5944d29064a08
+function TeacherTable ({grades, courses, students}) {
     const columns = React.useMemo(
         () => [
+            {
+                Header: "Student",
+                accessor: "student",
+            },
             {
                 Header: "Course",
                 accessor: "title",
             },
             {
                 Header: "Lead Teacher",
-                accessor: "lead teacher",
+                accessor: "leadTeacher",
             },
             {
                 Header: "Other Teachers",
-                accessor: "other teachers",
+                accessor: "otherTeachers",
             },
             {
                 Header: "Grade",
@@ -29,7 +27,7 @@ function StudentTable({ grades, courses }) {
             },
             {
                 Header: "Comment",
-                accessor: "Comment",
+                accessor: "comment",
             },
         ],
         [],
@@ -38,8 +36,4 @@ function StudentTable({ grades, courses }) {
     return <ReactTable data={grades} columns={columns} />;
 }
 
-<<<<<<< HEAD
-export default GradesTable;
-=======
-export default StudentTable;
->>>>>>> bc0518620206a0f8355490672af5944d29064a08
+export default TeacherTable

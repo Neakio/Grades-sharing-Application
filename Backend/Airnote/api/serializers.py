@@ -85,6 +85,9 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class GradeSerializer(serializers.ModelSerializer):
+    student = UserSerializer(read_only=True)
+    courses = CourseField(read_only=True, many=True)
+
     class Meta:
         model = Grade
         fields = '__all__'

@@ -6,6 +6,13 @@ export const getCourses = (courseId, moduleId) => {
     return axios.get("api/courses" + suffix);
 };
 
+<<<<<<< HEAD
+=======
+export const getCoursesByTeacher = (teacherId) => {
+    return axios.get("api/courses?leadTeacher=" + teacherId + "?otherTeachers=" + teacherId);
+}
+
+>>>>>>> bc0518620206a0f8355490672af5944d29064a08
 export const editCourse = (courseId, title, leadTeacherId, otherTeachersIds) => {
     let payload = {
         title,

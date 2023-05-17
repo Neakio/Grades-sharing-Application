@@ -9,11 +9,15 @@ function Grades({ userRole }) {
     const isTeacher = userRole === "Teacher";
 
 
+<<<<<<< HEAD
     const [grades, setGrades] = useState([])
+=======
+>>>>>>> bc0518620206a0f8355490672af5944d29064a08
     const [courses, setCourses] = useState([])
 
     
     useEffect(() => {
+<<<<<<< HEAD
         fetchGrades();
         fetchCourses();
     }, []);
@@ -22,6 +26,12 @@ function Grades({ userRole }) {
         let grades = await getGrades();
         setGrades(grades);
     };
+=======
+        fetchCourses();
+    }, []);
+
+
+>>>>>>> bc0518620206a0f8355490672af5944d29064a08
     const fetchCourses = async () => {
         let courses = await getCourses();
         setCourses(courses);
@@ -32,7 +42,11 @@ function Grades({ userRole }) {
     return (
         <Container>
             {isReferent || isTeacher ? (
+<<<<<<< HEAD
                 <TeacherView grades={grades}/>
+=======
+                <TeacherView/>
+>>>>>>> bc0518620206a0f8355490672af5944d29064a08
             ) : (
                 <StudentView courses={courses} />
             )}
