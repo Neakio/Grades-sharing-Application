@@ -6,9 +6,9 @@ import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { Util } from "../../../services/Util";
 
 function ModuleTable({ modules, removeModule }) {
-    console.log(modules)
     const columns = React.useMemo(
         () => [
             {
@@ -17,11 +17,15 @@ function ModuleTable({ modules, removeModule }) {
             },
             {
                 Header: "Classes linked",
-                accessor: "classes",
+                accessor: "groups",
+                Cell: ({value}) => <div>{value.map((group, i)=><tr key={"row"+i}><td key={"td"+i}>{Util.groupToStr(group)}</td></tr>)}</div>
+
+            
             },
             {
                 Header: "Courses contained",
-                accessor: "courses"
+                accessor: "courses",
+                Cell: ({value}) => <div>{value.map((course, i)=><tr key={"row"+i}><td key={"td"+i}>{Util.courseToStr(course)}</td></tr>)}</div>
             },
             {
                 Header: "Edit",

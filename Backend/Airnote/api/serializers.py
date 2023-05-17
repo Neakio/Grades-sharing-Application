@@ -21,10 +21,18 @@ class CourseField(serializers.RelatedField):
         course = {
             'id': value.id,
             'title': value.title,
-            'lead_teacher': value.lead_teacher,
-            'other_teachers': value.other_teachers,
         }
         return course
+
+class ModuleField(serializers.RelatedField):
+    def to_representation(self, value):
+        print(value)
+        module = {
+            'id': value.id,
+            'title': value.title,
+        }
+        return module
+    
 
 class UserSerializer(serializers.ModelSerializer):
     # TODO Validation doit échouer si role pas dans les choices
@@ -49,7 +57,8 @@ class UserSemesterSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
-    referent = UserSerializer(required=False, allow_null=True)
+    referent = UserSerializer(read_only=True)
+
 
     class Meta:
         model = Group
@@ -57,8 +66,8 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class ModuleSerializer(serializers.ModelSerializer):
-    course = CourseField(read_only=True, many=True)
-    group = GroupField(read_only=True, many=True)
+    courses = CourseField(read_only=True, many=True)
+    groups = GroupField(read_only=True, many=True)
     
     class Meta:
         model = Module
@@ -66,9 +75,10 @@ class ModuleSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    #? lead_teacher = UserSerializer(required=True, allow_null=False)
-    #? other_teachers = UserSerializer(many=True, required=False,  allow_null=True)
-    
+    lead_teacher = UserSerializer(read_only=True)
+    other_teachers = UserSerializer(read_only=True, many=True)
+    modules = ModuleField(read_only=True, many=True)
+
     class Meta:
         model = Course
         fields = '__all__'

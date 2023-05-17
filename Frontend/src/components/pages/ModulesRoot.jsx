@@ -15,6 +15,8 @@ function Modules() {
         fetchModules();
     }, []);
 
+    console.log(modules)
+
     const fetchModules = async () => {
         let modules = await getModules();
         setModules(modules);

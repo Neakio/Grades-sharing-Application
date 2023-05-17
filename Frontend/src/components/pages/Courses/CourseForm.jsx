@@ -11,8 +11,8 @@ function CourseForm({ title, handleSubmitCourse }) {
 
     const [courseData, setCourseData] = useState({
         title: null,
-        leadTeacher: null,
-        otherTeachers: null,
+        leadTeacherId: null,
+        otherTeachersIds: null,
     });
     const [teachersOptions, setTeachersOptions] = useState([]);
 
@@ -23,8 +23,8 @@ function CourseForm({ title, handleSubmitCourse }) {
 
     const fetchCourse = async () => {
         let course = await getCourses(id);
-        course.leadTeacher = course.leadTeacher.id;
-        course.otherTeachers = course.otherTeachers.map((teacher) => teacher.id);
+        course.leadTeacherId = course.leadTeacher.id;
+        course.otherTeachersIds = course.otherTeachers.map((teacher) => teacher.id);
         setCourseData(course);
     };
 
@@ -70,10 +70,10 @@ function CourseForm({ title, handleSubmitCourse }) {
                         placeholder="Select a lead teacher..."
                         options={teachersOptions}
                         value={teachersOptions.find(
-                            (option) => option.value == courseData.leadTeacher,
+                            (option) => option.value == courseData.leadTeacherId,
                         )}
                         onChange={(newValue) =>
-                            setCourseData({ ...courseData, leadTeacher: newValue.value })
+                            setCourseData({ ...courseData, leadTeacherId: newValue.value })
                         }
                     />
                 </Form.Group>
@@ -83,15 +83,15 @@ function CourseForm({ title, handleSubmitCourse }) {
                         isMulti
                         placeholder="Select other(s) teacher(s)..."
                         options={teachersOptions.filter(
-                            (teacher) => teacher.value !== courseData.leadTeacher,
+                            (teacher) => teacher.value !== courseData.leadTeacherId,
                         )}
                         value={teachersOptions.filter((teacher) =>
-                            courseData.otherTeachers?.includes(teacher.value),
+                            courseData.otherTeachersIds?.includes(teacher.value),
                         )}
                         onChange={(newValues) =>
                             setCourseData({
                                 ...courseData,
-                                otherTeachers: newValues.map((option) => option.value),
+                                otherTeachersIds: newValues.map((option) => option.value),
                             })
                         }
                     />

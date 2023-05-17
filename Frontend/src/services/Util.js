@@ -18,4 +18,16 @@ export const Util = {
             value: key,
         }));
     },
+    courseToStr(course) {
+        if (course == null) return "";
+        else return `${course.title}`;
+    },
+    moduleToStr(module) {
+        if (module == null) return "";
+        else return `${module.title}`;
+    },
+    userName(user) {
+        if (user == null) return "";
+        else return `${user.firstname} ${user.lastname}`;
+    }
 };

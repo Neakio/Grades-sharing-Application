@@ -1,37 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import ReactTable from "../../render-components/ReactTable";
+import GradesTable from "./StudentTable";
+import { getGrades } from "../../../services/api";
 
+function StudentView({courses}) {
+    const [grades, setGrades] = useState([])
+    const { id } = useParams();
+    
+    useEffect(() => {
+        fetchGrades();
+    }, []);
 
-
-function GradesTable({ grades }) {
-    const columns = React.useMemo(
-        () => [
-            {
-                Header: "Course",
-                accessor: "title",
-            },
-            {
-                Header: "Lead Teacher",
-                accessor: "lead teacher",
-            },
-            {
-                Header: "Other Teachers",
-                accessor: "other teachers",
-            },
-            {
-                Header: "Grade",
-                accessor: "grade",
-            },
-            {
-                Header: "Comment",
-                accessor: "Comment",
-            },
-        ],
-        [],
-    );
-
-    return <ReactTable data={grades} columns={columns} />;
+    const fetchGrades = async () => {
+        let grades = await getGrades(id);
+        setGrades(grades);
+    };
+    return <GradesTable grades={grades} courses={courses}/>;
 }
 
-export default GradesTable;
+export default StudentView;
