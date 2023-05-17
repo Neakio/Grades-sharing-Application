@@ -15,27 +15,31 @@ import Grades from "./components/pages/GradesRoot";
 import UsersRoot from "./components/pages/UsersRoot";
 import Modules from "./components/pages/ModulesRoot";
 import Courses from "./components/pages/CoursesRoot";
-import MenuContainer from "./components/Menu";
+import Menu from "./components/Menu";
 
 function App() {
     //Verify if the user is log or not
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [darkmode, setDarkmode] = useState(false);
     // Retrieve the role of the user
-    let userRole = "Administrator Referent";
+    let userRole = "Administrator";
 
     return (
         <BrowserRouter>
             <div className={"app " + (darkmode ? "dark" : "")}>
                 <ToastContainer theme={darkmode ? "dark" : "light"} />
-                <MenuContainer />
+
                 <Header
                     darkmode={darkmode}
-                    setDarkmode={setDarkmode}
                     isLoggedIn={isLoggedIn}
                     logIn={() => setIsLoggedIn(!isLoggedIn)}
                     userRole={userRole}
                 />
+                <Menu
+                    darkmode={darkmode}
+                    setDarkmode={setDarkmode}
+                    isLoggedIn={isLoggedIn}
+                    userRole={userRole} />
                 <main>
                     <Routes>
                         <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
@@ -43,7 +47,7 @@ function App() {
                         <Route path="users/*" element={<UsersRoot />} />
                         <Route path="modules/*" element={<Modules />} />
                         <Route path="courses/*" element={<Courses />} />
-                        <Route path="grades/*" element={<Grades />} />
+                        <Route path="grades/*" element={<Grades userRole={userRole} />} />
                     </Routes>
                 </main>
             </div>

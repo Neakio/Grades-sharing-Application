@@ -21,7 +21,7 @@ function Courses() {
     };
 
     const addCourses = async (course) => {
-        createCourse(course.title, course.leadTeacher, course.otherTeachers).then(
+        createCourse(course.title, course.leadTeacherId, course.otherTeachersIds).then(
             () => {
                 toastSuccess("Course successfully created");
                 redirectToTable();
@@ -40,8 +40,8 @@ function Courses() {
         editCourse(
             courseId,
             course.title,
-            course.leadTeacher,
-            course.otherTeachers,
+            course.leadTeacherId,
+            course.otherTeachersIds,
         ).then(() => {
             toastSuccess("Successfully edited");
             redirectToTable();

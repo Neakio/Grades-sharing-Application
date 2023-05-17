@@ -23,7 +23,7 @@ function CourseTable({ courses, modules, removeCourse }) {
             {
                 Header: "Other Teachers",
                 accessor: "otherTeachers",
-                Cell: ({value}) => <div>{value.map((otherTeacher, i)=><tr key={"row"+i}><td key={"td"+i}>{Util.userName(otherTeacher)}</td></tr>)}</div>
+                Cell: ({value}) => <div>{value?.map((otherTeacher, i)=><tr key={"row"+i}><td key={"td"+i}>{Util.userName(otherTeacher)}</td></tr>)}</div>
             },
             {
                 Header: "In module",

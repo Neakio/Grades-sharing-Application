@@ -16,6 +16,7 @@ export const editCourse = (courseId, title, leadTeacherId, otherTeachersIds) => 
         leadTeacherId,
         otherTeachersIds,
     };
+
     return axios.put("api/courses/" + courseId, payload);
 };
 
@@ -29,5 +30,11 @@ export const createCourse = (title, leadTeacherId, otherTeachersIds) => {
         leadTeacherId,
         otherTeachersIds,
     };
+    console.log("payload : " + payload)
+    console.log("title : " + title)
+    console.log("leadTeacherId : " + leadTeacherId)
+    console.log("otherTeachersIds : " + otherTeachersIds)
+
+
     return axios.post("api/courses", payload);
 };

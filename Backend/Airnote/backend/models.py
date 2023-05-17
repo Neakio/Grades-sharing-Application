@@ -80,7 +80,6 @@ class Grade(models.Model):
     number = models.DecimalField(max_digits=2, decimal_places=2, validators=[
                                  MinValueValidator(0), MaxValueValidator(25)], blank=True, null=True)
     comment = models.CharField(max_length=200, blank=True, null=True)
-    exam_date = models.DateField(default=None, blank=True, null=True)
     course = models.ForeignKey('Course', on_delete=models.PROTECT,
                                blank=False, null=False)
     student = models.ForeignKey('User', limit_choices_to={

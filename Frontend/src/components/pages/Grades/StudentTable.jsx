@@ -8,7 +8,7 @@ function StudentTable({ grades }) {
         () => [
             {
                 Header: "Course",
-                accessor: "course.title",
+                accessor: "title",
             },
             {
                 Header: "Lead Teacher",
@@ -16,10 +16,10 @@ function StudentTable({ grades }) {
             },
             {
                 Header: "Other Teachers",
-                accessor: "course.otherTeachers",
+                accessor: "otherTeachers",
                 Cell: ({ value }) => (
                     <div>
-                        {value.map((otherTeacher, i) => (
+                        {value?.map((otherTeacher, i) => (
                             <tr key={"row" + i}>
                                 <td key={"td" + i}>{Util.userName(otherTeacher)}</td>
                             </tr>

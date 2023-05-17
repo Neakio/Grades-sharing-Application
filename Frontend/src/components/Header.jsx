@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 
-import logo from "../../public/airnote.png";
+import light from "../../public/airnote_light.png";
+import dark from "../../public/airnote_dark.png";
+
 
 import Darkmode from "./Darkmode";
 
-function Header({ isLoggedIn, logIn, darkmode, setDarkmode, userRole }) {
+function Header({ darkmode, isLoggedIn, logIn, userRole }) {
     const [showMenu, setShowMenu] = useState(false);
 
     return (
@@ -16,14 +18,14 @@ function Header({ isLoggedIn, logIn, darkmode, setDarkmode, userRole }) {
                         onMouseOver={() => setShowMenu(true)}
                         onMouseOut={() => setShowMenu(false)}
                     >
-                        <img src={logo} width="50" height="50" alt="Airnote" />
+                        {darkmode ? <img src={dark} width="150" height="50" alt="Airnote" /> : <img src={light} width="150" height="50" alt="Airnote" />}
+                        
                     </div>
 
                     {/*  */}
                 </div>
                 {/* Show the user role only if already connected */}
                 <p>{isLoggedIn ? userRole : null}</p>
-                <Darkmode darkmode={darkmode} setDarkmode={setDarkmode} />
 
                 <div>
                     {/* Show the button of login/logout depending on the user status */}

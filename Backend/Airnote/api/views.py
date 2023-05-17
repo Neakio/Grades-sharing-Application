@@ -60,8 +60,6 @@ class CourseViewSet(viewsets.ModelViewSet):
     A viewset for viewing and editing user instances.
     """
     serializer_class = CourseSerializer
-    print(Course.objects.all().values())
-
     queryset = Course.objects.all()
 
 
