@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Link, Navigate, Route, Routes } from "react-router-dom";
-import { Button, Container } from "react-bootstrap";
+import React, { useState, useEffect, Fragment } from "react";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import { toastError, toastSuccess } from "../../services/toasts";
 
 import { createModule, deleteModule, editModule, getModules } from "../../services/api";
@@ -9,13 +9,12 @@ import ModuleTable from "./Modules/ModuleTable";
 import ModuleForm from "./Modules/ModuleForm";
 
 function Modules() {
+    const navigate = useNavigate();
     const [modules, setModules] = useState([]);
 
     useEffect(() => {
         fetchModules();
     }, []);
-
-    console.log(modules)
 
     const fetchModules = async () => {
         let modules = await getModules();
@@ -49,23 +48,24 @@ function Modules() {
 
     const redirectToTable = () => {
         fetchModules();
-        Navigate("/modules");
+        navigate("/modules");
     };
 
     return (
-        <Container>
+        <Fragment>
             <Routes>
                 <Route
                     path=""
                     element={
-                        <>
-                            <div className="text-center mb-3">
+                        <Fragment>
+                            <h1>Modules</h1>
+                            <div className="mb-3">
                                 <Link to="/modules/create">
                                     <Button variant="success">Create module</Button>
                                 </Link>
                             </div>
                             <ModuleTable modules={modules} removeModule={removeModule} />
-                        </>
+                        </Fragment>
                     }
                 />
 
@@ -78,7 +78,7 @@ function Modules() {
                     element={<ModuleForm title="Create module" handleSubmitModule={addModules} />}
                 />
             </Routes>
-        </Container>
+        </Fragment>
     );
 }
 

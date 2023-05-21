@@ -1,21 +1,20 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link, Route, Routes } from "react-router-dom";
-import { Button, Container } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 import ClassView from "./ClassView";
 
 function Teacher(props) {
     return (
-        <Container>
+        <Fragment>
             <Routes>
                 <Route
                     path=""
                     element={
-                        <>
+                        <Fragment>
                             <h1>Groups</h1>
 
                             <div className="d-flex flex-column justify-content-around ">
-                                
                                 {props.groups.map((group) => {
                                     if (group.isActive) {
                                         return (
@@ -33,12 +32,12 @@ function Teacher(props) {
                                     }
                                 })}
                             </div>
-                        </>
+                        </Fragment>
                     }
                 />
                 <Route path="/:id" element={<ClassView />} />
             </Routes>
-        </Container>
+        </Fragment>
     );
 }
 

@@ -16,12 +16,10 @@ export const getUser = (userId) => {
     return axios.get("api/users/" + userId);
 };
 
-export const createUser = (firstname, lastname, group, isDelegate, role) => {
+export const createUser = (firstname, lastname, role) => {
     let payload = {
         firstname,
         lastname,
-        group,
-        isDelegate,
         role,
     };
     return axios.post("api/users", payload);
@@ -31,12 +29,10 @@ export const deleteUser = (userId) => {
     return axios.delete("api/users/" + userId);
 };
 
-export const editUser = (userId, firstname, lastname, group, isDelegate, role) => {
+export const editUser = (userId, firstname, lastname, role) => {
     let payload = {
         firstname,
         lastname,
-        group,
-        is_delegate: isDelegate,
         role,
     };
     return axios.put("api/users/" + userId, payload);

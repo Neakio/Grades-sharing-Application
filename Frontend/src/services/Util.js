@@ -26,8 +26,8 @@ export const Util = {
         if (module == null) return "";
         else return `${module.title}`;
     },
-    userName(user) {
+    formatUserName(user) {
         if (user == null) return "";
         else return `${user.firstname} ${user.lastname}`;
-    }
+    },
 };

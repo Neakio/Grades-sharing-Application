@@ -1,12 +1,13 @@
 import React from "react";
 
+import { Button, Col, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 import ReactTable from "../../render-components/ReactTable";
 
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { Util } from "../../../services/Util";
 
 function CourseTable({ courses, modules, removeCourse }) {
@@ -18,12 +19,20 @@ function CourseTable({ courses, modules, removeCourse }) {
             },
             {
                 Header: "Lead Teacher",
-                accessor: ({leadTeacher}) => Util.userName(leadTeacher),
+                accessor: ({ leadTeacher }) => Util.formatUserName(leadTeacher),
             },
             {
                 Header: "Other Teachers",
                 accessor: "otherTeachers",
-                Cell: ({value}) => <div>{value?.map((otherTeacher, i)=><tr key={"row"+i}><td key={"td"+i}>{Util.userName(otherTeacher)}</td></tr>)}</div>
+                Cell: ({ value }) => (
+                    <div>
+                        {value?.map((otherTeacher, i) => (
+                            <Row key={"row" + i}>
+                                <Col key={"td" + i}>{Util.formatUserName(otherTeacher)}</Col>
+                            </Row>
+                        ))}
+                    </div>
+                ),
             },
             {
                 Header: "In module",
@@ -31,7 +40,7 @@ function CourseTable({ courses, modules, removeCourse }) {
             },
             {
                 Header: "Edit",
-                Cell: ({ row, value }) => (
+                Cell: ({ row }) => (
                     <Link to={"/courses/" + row.original.id}>
                         <Button variant="info">
                             <Edit />
@@ -41,7 +50,7 @@ function CourseTable({ courses, modules, removeCourse }) {
             },
             {
                 Header: "Delete",
-                Cell: ({ row, value }) => (
+                Cell: ({ row }) => (
                     <Button variant="danger" onClick={() => removeCourse(row.original.id)}>
                         <Trash />
                     </Button>

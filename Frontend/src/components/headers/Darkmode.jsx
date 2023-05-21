@@ -1,7 +1,7 @@
 import React from "react";
 
-import { ReactComponent as Light } from "../assets/images/light.svg";
-import { ReactComponent as Dark } from "../assets/images/dark.svg";
+import { ReactComponent as Light } from "../../assets/images/light.svg";
+import { ReactComponent as Dark } from "../../assets/images/dark.svg";
 
 function Darkmode({ darkmode, setDarkmode }) {
     return (

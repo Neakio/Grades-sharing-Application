@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Button, Container } from "react-bootstrap";
+import React, { Fragment, useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
 import ReactTable from "../../render-components/ReactTable";
-import { getClass, getUserByClass } from "../../../services/api";
+import { getClass } from "../../../services/api";
 
 import GLOBALS from "../../../Globals";
+import Loader from "../../render-components/Loader";
+import { Util } from "../../../services/Util";
 
 function SetTable({ students }) {
     const columns = React.useMemo(
@@ -25,13 +27,11 @@ function SetTable({ students }) {
 }
 
 function ClassView() {
-    const [students, setStudents] = useState([]);
-    const [group, setGroup] = useState([]);
+    const [group, setGroup] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
         fetchGroup(id);
-        fetchUserOfClass();
     }, []);
 
     const fetchGroup = async () => {
@@ -39,30 +39,21 @@ function ClassView() {
         setGroup(group);
     };
 
-    const fetchUserOfClass = async () => {
-        let students = await getUserByClass(id);
-        setStudents(students);
-    };
-    console.log(group);
+    if (!group) return <Loader />;
     return (
-        <Container>
+        <Fragment>
             <Link to={"/classes"}>
                 <Button variant="info">Return</Button>
             </Link>
             <h1>
-                {GLOBALS.GROUPS[group.level]} {"-"} {group.name} {"("}
-                {group.year}
-                {")"}
+                {GLOBALS.GROUPS[group.level]} - {group.name} ({group.year})
             </h1>
+            <div>Referent: {Util.formatUserName(group.referent)}</div>
             <div>
-                Delegate :{" "}
-                {students
-                    .filter((student) => student.isDelegate)
-                    .map((student) => student.firstname + " " + student.lastname)
-                    .join(",")}
+                Delegate: {group.delegates.map((student) => Util.formatUserName(student)).join(",")}
             </div>
-            <SetTable students={students} />
-        </Container>
+            <SetTable students={group?.students} />
+        </Fragment>
     );
 }
 

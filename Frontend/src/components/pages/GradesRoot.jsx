@@ -1,21 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import TeacherView from "./Grades/TeacherGrade";
 import StudentView from "./Grades/StudentGrade";
-import { Container } from "react-bootstrap";
 
 function Grades({ userRole }) {
     const isReferent = userRole === "Administrator Referent";
     const isTeacher = userRole === "Teacher";
 
-    return (
-        <Container>
-            {isReferent || isTeacher ? (
-                <TeacherView/>
-            ) : (
-                <StudentView  />
-            )}
-        </Container>
-    );
+    return <Fragment>{isReferent || isTeacher ? <TeacherView /> : <StudentView />}</Fragment>;
 }
 
 export default Grades;

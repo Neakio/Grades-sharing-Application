@@ -12,7 +12,7 @@ function StudentTable({ grades }) {
             },
             {
                 Header: "Lead Teacher",
-                accessor: ({leadTeacher}) => Util.userName(leadTeacher),
+                accessor: ({ leadTeacher }) => Util.formatUserName(leadTeacher),
             },
             {
                 Header: "Other Teachers",
@@ -21,7 +21,7 @@ function StudentTable({ grades }) {
                     <div>
                         {value?.map((otherTeacher, i) => (
                             <tr key={"row" + i}>
-                                <td key={"td" + i}>{Util.userName(otherTeacher)}</td>
+                                <td key={"td" + i}>{Util.formatUserName(otherTeacher)}</td>
                             </tr>
                         ))}
                     </div>

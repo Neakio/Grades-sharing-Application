@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
-import { Button, Container, Form } from "react-bootstrap";
-import Select from "react-select";
 import { useParams } from "react-router-dom";
+import { Button, Form } from "react-bootstrap";
+
+import Loader from "../../render-components/Loader";
+import { FormControl, FormSelect } from "../../render-components/Form";
+
 import { getUsersByRole } from "../../../services/api/users";
 import { getCourses } from "../../../services/api";
+import { Util } from "../../../services/Util";
 
 function CourseForm({ title, handleSubmitCourse }) {
     const { id } = useParams();
-
+    const [formValidated, setFormValidated] = useState(false);
     const [courseData, setCourseData] = useState({
         title: null,
-        leadTeacherId: null,
-        otherTeachersIds: null,
+        leadTeacher: null,
+        otherTeachers: [],
     });
-    const [teachersOptions, setTeachersOptions] = useState([]);
+    const [teachersOptions, setTeachersOptions] = useState(null);
 
     useEffect(() => {
         if (id) fetchCourse();
@@ -23,8 +27,8 @@ function CourseForm({ title, handleSubmitCourse }) {
 
     const fetchCourse = async () => {
         let course = await getCourses(id);
-        course.leadTeacherId = course.leadTeacher.id;
-        course.otherTeachersIds = course.otherTeachers.map((teacher) => teacher.id);
+        course.leadTeacher = course.leadTeacher.id;
+        course.otherTeachers = course.otherTeachers.map(({ id }) => id);
         setCourseData(course);
     };
 
@@ -35,7 +39,7 @@ function CourseForm({ title, handleSubmitCourse }) {
 
     const makeTeacherOption = (teacher) => {
         return {
-            label: teacher.firstname + " " + teacher.lastname,
+            label: Util.formatUserName(teacher),
             value: teacher.id,
         };
     };
@@ -48,60 +52,53 @@ function CourseForm({ title, handleSubmitCourse }) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        handleSubmitCourse(courseData, id);
+        if (event.target.checkValidity()) {
+            handleSubmitCourse(courseData, id);
+        }
+        setFormValidated(true);
     };
 
+    if (!teachersOptions) return <Loader />;
     return (
-        <Container>
+        <Fragment>
             <h1 className="text-center">{title}</h1>
-            <Form onSubmit={onSubmit}>
-                <Form.Group className="mb-3">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control
-                        name="title"
-                        placeholder="Python"
-                        value={courseData.title}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Lead Teacher</Form.Label>
-                    <Select
-                        placeholder="Select a lead teacher..."
-                        options={teachersOptions}
-                        value={teachersOptions.find(
-                            (option) => option.value == courseData.leadTeacherId,
-                        )}
-                        onChange={(newValue) =>
-                            setCourseData({ ...courseData, leadTeacherId: newValue.value })
-                        }
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Other Teacher</Form.Label>
-                    <Select
-                        isMulti
-                        placeholder="Select other(s) teacher(s)..."
-                        options={teachersOptions.filter(
-                            (teacher) => teacher.value !== courseData.leadTeacherId,
-                        )}
-                        value={teachersOptions.filter((teacher) =>
-                            courseData.otherTeachersIds?.includes(teacher.value),
-                        )}
-                        onChange={(newValues) =>
-                            setCourseData({
-                                ...courseData,
-                                otherTeachersIds: newValues.map((option) => option.value),
-                            })
-                        }
-                    />
-                </Form.Group>
+            <Form onSubmit={onSubmit} validated={formValidated} noValidate>
+                <FormControl
+                    label="Title"
+                    name="title"
+                    placeholder="Python"
+                    value={courseData.title}
+                    onChange={handleChange}
+                    required
+                />
+                <FormSelect
+                    label="Lead Teacher"
+                    name="leadTeacher"
+                    placeholder="Select a lead teacher..."
+                    options={teachersOptions}
+                    value={courseData.leadTeacher}
+                    onChange={(value) => setCourseData({ ...courseData, leadTeacher: value })}
+                    required
+                />
+                <FormSelect
+                    label="Other Teachers"
+                    name="otherTeachers"
+                    placeholder="Select other teachers..."
+                    options={teachersOptions.filter(
+                        (teacher) => teacher.value !== courseData.leadTeacher,
+                    )}
+                    value={courseData.otherTeachers}
+                    onChange={(value) => setCourseData({ ...courseData, otherTeachers: value })}
+                    required
+                    isMulti
+                    isClearable
+                />
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
             </Form>
-            {JSON.stringify(courseData)}
-        </Container>
+            <pre>{JSON.stringify(courseData, null, 2)}</pre>
+        </Fragment>
     );
 }
 

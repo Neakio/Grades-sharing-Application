@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
-import { Button, Container } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { toastError, toastSuccess } from "../../services/toasts";
 
 import { createUser, deleteUser, editUser, getUsers } from "../../services/api/users";
@@ -22,7 +22,7 @@ function Users() {
     };
 
     const addUser = async (user) => {
-        createUser(user.firstname, user.lastname, user.group, user.isDelegate, user.role)
+        createUser(user.firstname, user.lastname, user.role)
             .then(() => {
                 toastSuccess("User successfully created");
                 redirectToTable();
@@ -39,14 +39,7 @@ function Users() {
     };
 
     const modifyUser = async (user, userId) => {
-        editUser(
-            userId,
-            user.firstname,
-            user.lastname,
-            user.group,
-            user.isDelegate,
-            user.role,
-        ).then(() => {
+        editUser(userId, user.firstname, user.lastname, user.role).then(() => {
             toastSuccess("Successfully edited");
             redirectToTable();
         });
@@ -58,19 +51,20 @@ function Users() {
     };
 
     return (
-        <Container>
+        <Fragment>
             <Routes>
                 <Route
                     path=""
                     element={
-                        <>
-                            <div className="text-center mb-3">
+                        <Fragment>
+                            <h1>Users</h1>
+                            <div className="mb-3">
                                 <Link to="/users/create">
                                     <Button variant="success">Create User</Button>
                                 </Link>
                             </div>
                             <UserTable users={users} removeUser={removeUser} />
-                        </>
+                        </Fragment>
                     }
                 />
                 <Route
@@ -82,7 +76,7 @@ function Users() {
                     element={<UserForm title="Create user" handleSubmitUser={addUser} />}
                 />
             </Routes>
-        </Container>
+        </Fragment>
     );
 }
 

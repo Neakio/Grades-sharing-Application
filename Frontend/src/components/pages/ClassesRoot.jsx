@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import React, { useState, useEffect, Fragment } from "react";
 
 import { getClasses } from "../../services/api";
 
@@ -19,13 +18,13 @@ function Classes({ userRole }) {
         setGroups(groups);
     };
     return (
-        <Container>
+        <Fragment>
             {isAdmin ? (
                 <Administration groups={groups} fetchGroups={fetchGroups} />
             ) : (
                 <Teacher groups={groups} />
             )}
-        </Container>
+        </Fragment>
     );
 }
 

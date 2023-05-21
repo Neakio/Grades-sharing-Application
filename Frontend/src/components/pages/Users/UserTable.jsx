@@ -1,7 +1,7 @@
 import React from "react";
 
 import ReactTable from "../../render-components/ReactTable";
-import SelectColumnFilter from "../../render-components/tablefilter";
+import { SelectColumnFilter } from "../../render-components/TableFilters";
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
@@ -29,7 +29,7 @@ function UserTable({ users, removeUser }) {
                 Header: "Role",
                 accessor: ({ role }) => GLOBALS.USER_ROLES[role],
                 Filter: SelectColumnFilter,
-                filter: 'includes',
+                filter: "includes",
             },
             {
                 Header: "Class",
@@ -59,8 +59,9 @@ function UserTable({ users, removeUser }) {
 
     return (
         <div>
-            <ReactTable data={users} columns={columns} />;
-        </div>)
+            <ReactTable data={users} columns={columns} />
+        </div>
+    );
 }
 
 export default UserTable;

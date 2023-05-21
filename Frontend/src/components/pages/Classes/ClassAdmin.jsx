@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
-import { Button, Container } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { toastError, toastSuccess } from "../../../services/toasts";
 
 import { editClass, createClass, deleteClass } from "../../../services/api";
@@ -24,8 +24,16 @@ function Administration({ groups, fetchGroups }) {
         navigate("/classes");
     };
 
-    const addGroup = async (group) => {
-        createClass(group.level, group.name, group.year, group.isActive, group.referent)
+    const addGroup = (group) => {
+        createClass(
+            group.level,
+            group.name,
+            group.year,
+            group.isActive,
+            group.referent,
+            group.delegates,
+            group.students,
+        )
             .then(() => {
                 toastSuccess("Class successfully created");
                 redirectToTable();
@@ -35,7 +43,7 @@ function Administration({ groups, fetchGroups }) {
             });
     };
 
-    const modifyGroups = async (group, groupId) => {
+    const modifyGroups = (group, groupId) => {
         editClass(
             groupId,
             group.level,
@@ -43,25 +51,28 @@ function Administration({ groups, fetchGroups }) {
             group.year,
             group.isActive,
             group.referent,
+            group.delegates,
+            group.students,
         ).then(() => {
             toastSuccess("Successfully edited");
             redirectToTable();
         });
     };
     return (
-        <Container>
+        <Fragment>
             <Routes>
                 <Route
                     path=""
                     element={
-                        <>
-                            <div className="text-center mb-3">
+                        <Fragment>
+                            <h1>Classes</h1>
+                            <div className="mb-3">
                                 <Link to="/classes/create">
                                     <Button variant="success">Create class</Button>
                                 </Link>
                             </div>
                             <ClassesTable groups={groups} removeClass={removeClass} />
-                        </>
+                        </Fragment>
                     }
                 />
                 <Route path="/:id" element={<ClassView />} />
@@ -74,7 +85,7 @@ function Administration({ groups, fetchGroups }) {
                     element={<ClassForm title="Create class" handleSubmitClass={addGroup} />}
                 />
             </Routes>
-        </Container>
+        </Fragment>
     );
 }
 

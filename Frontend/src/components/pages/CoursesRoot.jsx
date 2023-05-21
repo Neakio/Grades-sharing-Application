@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Link, Navigate, Route, Routes } from "react-router-dom";
-import { Button, Container } from "react-bootstrap";
+import React, { useState, useEffect, Fragment } from "react";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import { toastSuccess } from "../../services/toasts";
 
 import { createCourse, getCourses, deleteCourse, editCourse } from "../../services/api";
@@ -9,6 +9,7 @@ import CourseForm from "./Courses/CourseForm";
 import CourseTable from "./Courses/CourseTable";
 
 function Courses() {
+    const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
@@ -21,12 +22,10 @@ function Courses() {
     };
 
     const addCourses = async (course) => {
-        createCourse(course.title, course.leadTeacherId, course.otherTeachersIds).then(
-            () => {
-                toastSuccess("Course successfully created");
-                redirectToTable();
-            },
-        );
+        createCourse(course.title, course.leadTeacher, course.otherTeachers).then(() => {
+            toastSuccess("Course successfully created");
+            redirectToTable();
+        });
     };
 
     const removeCourse = async (courseId) => {
@@ -37,12 +36,7 @@ function Courses() {
     };
 
     const modifyCourses = async (course, courseId) => {
-        editCourse(
-            courseId,
-            course.title,
-            course.leadTeacherId,
-            course.otherTeachersIds,
-        ).then(() => {
+        editCourse(courseId, course.title, course.leadTeacher, course.otherTeachers).then(() => {
             toastSuccess("Successfully edited");
             redirectToTable();
         });
@@ -50,23 +44,24 @@ function Courses() {
 
     const redirectToTable = () => {
         fetchCourses();
-        Navigate("/courses");
+        navigate("/courses");
     };
 
     return (
-        <Container>
+        <Fragment>
             <Routes>
                 <Route
                     path=""
                     element={
-                        <>
-                            <div className="text-center mb-3">
+                        <Fragment>
+                            <h1>Courses</h1>
+                            <div className="mb-3">
                                 <Link to="/courses/create">
                                     <Button variant="success">Create course</Button>
                                 </Link>
                             </div>
                             <CourseTable courses={courses} removeCourse={removeCourse} />
-                        </>
+                        </Fragment>
                     }
                 />
 
@@ -79,7 +74,7 @@ function Courses() {
                     element={<CourseForm title="Create course" handleSubmitCourse={addCourses} />}
                 />
             </Routes>
-        </Container>
+        </Fragment>
     );
 }
 

@@ -15,7 +15,7 @@ function StudentView() {
     const fetchCourses = async () => {
         let courses = await getCourses();
         setCourses(courses);
-    }
+    };
     const fetchGrades = async () => {
         let grades = await getGrades();
         setGrades(grades);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 function Home({ isLoggedIn }) {
     const [quote, setQuote] = useState({});
@@ -9,11 +9,11 @@ function Home({ isLoggedIn }) {
             .then((data) => setQuote(data[0]))
             .catch((error) => console.error(error));
     }, []);
-    console.log(quote);
+
     return (
-        <>
+        <Fragment>
             {isLoggedIn ? (
-                <>
+                <Fragment>
                     <div>
                         <p>
                             <i>{quote.q}</i>, <b>{quote.a}</b>
@@ -23,14 +23,14 @@ function Home({ isLoggedIn }) {
                         <h1>App Context</h1>
                         <p></p>
                     </div>
-                </>
+                </Fragment>
             ) : (
-                <>
+                <Fragment>
                     <h1>Goal of the App</h1>
                     <p></p>
-                </>
+                </Fragment>
             )}
-        </>
+        </Fragment>
     );
 }
 

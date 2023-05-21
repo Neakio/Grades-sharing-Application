@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
-import { Button, Container, Form } from "react-bootstrap";
-import Select from "react-select";
+import { Button, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+
+import Loader from "../../render-components/Loader";
+import { FormControl, FormSelect } from "../../render-components/Form";
+
 import { getClasses, getCourses, getModules } from "../../../services/api";
 import { Util } from "../../../services/Util";
 
 function ModuleForm({ title, handleSubmitModule }) {
     const { id } = useParams();
-
+    const [formValidated, setFormValidated] = useState(false);
     const [moduleData, setModuleData] = useState({
         title: null,
-        groups: null,
-        courses: null,
+        groups: [],
+        courses: [],
     });
-    const [coursesOptions, setCoursesOptions] = useState([]);
-    const [classesOptions, setClassesOptions] = useState([]);
+    const [coursesOptions, setCoursesOptions] = useState(null);
+    const [classesOptions, setClassesOptions] = useState(null);
 
     useEffect(() => {
         if (id) fetchModule();
@@ -25,28 +28,31 @@ function ModuleForm({ title, handleSubmitModule }) {
 
     const fetchClasses = async () => {
         let groups = await getClasses();
-        setClassesOptions(getClassOptions(groups));
+        setClassesOptions(groups.map((group) => makeClassOption(group)));
     };
 
-    const getClassOptions = (classes) => {
-        return classes.map((aClass) => ({
-            label: Util.groupToStr(aClass),
-            value: aClass.id,
-        }));
+    const makeClassOption = (group) => {
+        return {
+            label: Util.groupToStr(group),
+            value: group.id,
+        };
     };
+
     const fetchCourses = async () => {
         let courses = await getCourses();
-        setCoursesOptions(getCourseOptions(courses));
-        console.log(courses)
+        setCoursesOptions(courses.map((course) => makeCourseOption(course)));
     };
-    const getCourseOptions = (courses) => {
-        return courses.map((aCourse) => ({
-            label: aCourse.title,
-            value: aCourse.id,
-        }));
+
+    const makeCourseOption = (course) => {
+        return {
+            label: course.title,
+            value: course.id,
+        };
     };
     const fetchModule = async () => {
         let module = await getModules(id);
+        module.groups = module.groups.map(({ id }) => id);
+        module.courses = module.courses.map(({ id }) => id);
         setModuleData(module);
     };
 
@@ -58,61 +64,51 @@ function ModuleForm({ title, handleSubmitModule }) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        handleSubmitModule(moduleData, id);
+        if (event.target.checkValidity()) {
+            handleSubmitModule(moduleData, id);
+        }
+        setFormValidated(true);
     };
 
+    if (!coursesOptions || !classesOptions) return <Loader />;
     return (
-        <Container>
+        <Fragment>
             <h1 className="text-center">{title}</h1>
-            <Form onSubmit={onSubmit}>
-                <Form.Group className="mb-3">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control
-                        name="title"
-                        placeholder="Name ..."
-                        value={moduleData.title ?? ""}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Classes</Form.Label>
-                    <Select
-                        isMulti
-                        placeholder="Select classes..."
-                        options={classesOptions}
-                        value={classesOptions.filter((group) =>
-                            moduleData.groups?.includes(group.value),
-                        )}
-                        onChange={(newValues) =>
-                            setModuleData({
-                                ...moduleData,
-                                groups: newValues.map((option) => option.value),
-                            })
-                        }
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Courses</Form.Label>
-                    <Select
-                        isMulti
-                        placeholder="Select courses..."
-                        options={coursesOptions}
-                        value={coursesOptions.filter((course) =>
-                            moduleData.courses?.includes(course.value),
-                        )}
-                        onChange={(newValues) => setModuleData({
-                            ...moduleData,
-                            courses: newValues.map((option) => option.value),
-                        })}
-                    />
-                </Form.Group>
-                ;
+            <Form onSubmit={onSubmit} validated={formValidated} noValidate>
+                <FormControl
+                    label="Title"
+                    name="title"
+                    placeholder="Programmation..."
+                    value={moduleData.title}
+                    onChange={handleChange}
+                    required
+                />
+                <FormSelect
+                    label="Classes"
+                    name="groups"
+                    placeholder="Select classes..."
+                    options={classesOptions}
+                    value={moduleData.groups}
+                    onChange={(value) => setModuleData({ ...moduleData, groups: value })}
+                    isMulti
+                    isClearable
+                />
+                <FormSelect
+                    label="Courses"
+                    name="courses"
+                    placeholder="Select courses..."
+                    options={coursesOptions}
+                    value={moduleData.courses}
+                    onChange={(value) => setModuleData({ ...moduleData, courses: value })}
+                    isMulti
+                    isClearable
+                />
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
             </Form>
-            {JSON.stringify(moduleData)}
-        </Container>
+            <pre>{JSON.stringify(moduleData, null, 2)}</pre>
+        </Fragment>
     );
 }
 

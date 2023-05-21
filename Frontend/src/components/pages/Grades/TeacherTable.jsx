@@ -15,7 +15,7 @@ function TeacherTable({ grades }) {
         );
 
         return <ReactTable data={grades} columns={columns} updateMyData={updateMyData} />;
-    }
+    };
 }
 
 export default TeacherTable;

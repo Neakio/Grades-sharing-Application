@@ -8,13 +8,13 @@ export const getCourses = (courseId, moduleId) => {
 
 export const getCoursesByTeacher = (teacherId) => {
     return axios.get("api/courses?leadTeacher=" + teacherId + "?otherTeachers=" + teacherId);
-}
+};
 
-export const editCourse = (courseId, title, leadTeacherId, otherTeachersIds) => {
+export const editCourse = (courseId, title, leadTeacher, otherTeachers) => {
     let payload = {
         title,
-        leadTeacherId,
-        otherTeachersIds,
+        leadTeacher,
+        otherTeachers,
     };
 
     return axios.put("api/courses/" + courseId, payload);
@@ -24,17 +24,12 @@ export const deleteCourse = (courseId) => {
     return axios.delete("api/courses/" + courseId);
 };
 
-export const createCourse = (title, leadTeacherId, otherTeachersIds) => {
+export const createCourse = (title, leadTeacher, otherTeachers) => {
     let payload = {
         title,
-        leadTeacherId,
-        otherTeachersIds,
+        leadTeacher,
+        otherTeachers,
     };
-    console.log("payload : " + payload)
-    console.log("title : " + title)
-    console.log("leadTeacherId : " + leadTeacherId)
-    console.log("otherTeachersIds : " + otherTeachersIds)
-
 
     return axios.post("api/courses", payload);
 };

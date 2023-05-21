@@ -8,6 +8,7 @@ import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
 import GLOBALS from "../../../Globals";
+import { SelectColumnFilter } from "../../render-components/TableFilters";
 
 function ClassesTable({ groups, removeClass }) {
     const columns = React.useMemo(
@@ -19,6 +20,8 @@ function ClassesTable({ groups, removeClass }) {
             {
                 Header: "Level",
                 accessor: "level",
+                Filter: SelectColumnFilter,
+                filter: "includes",
             },
             {
                 Header: "Class",
@@ -33,10 +36,14 @@ function ClassesTable({ groups, removeClass }) {
             {
                 Header: "Year",
                 accessor: "year",
+                Filter: SelectColumnFilter,
+                filter: "includes",
             },
             {
                 Header: "Status",
                 accessor: ({ isActive }) => GLOBALS.isActive[isActive],
+                Filter: SelectColumnFilter,
+                filter: "includes",
             },
             {
                 Header: "Edit",
