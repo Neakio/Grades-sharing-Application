@@ -1,43 +1,44 @@
 from backend.models import User, Semester, UserSemester, Group, Module, Grade, Course
 from rest_framework import serializers
-
+from collections import OrderedDict
 # Create your models here.
 
 
-class GroupField(serializers.RelatedField):
-    def to_representation(self, value):
-        print(value)
-        group = {
-            'id': value.id,
-            'level': value.level,
-            'name': value.name,
-            'year': value.year,
-        }
-        return group
+class RefField(serializers.PrimaryKeyRelatedField):
+    def __init__(self, model, serializer, **kwargs):
+        super().__init__(**kwargs)
+        self.model = model
+        self.serializer = serializer
 
-class CourseField(serializers.RelatedField):
     def to_representation(self, value):
-        print(value)
-        course = {
-            'id': value.id,
-            'title': value.title,
-        }
-        return course
+        return self.serializer(value).data
 
-class ModuleField(serializers.RelatedField):
-    def to_representation(self, value):
-        print(value)
-        module = {
-            'id': value.id,
-            'title': value.title,
-        }
-        return module
-    
+    def get_queryset(self):
+        if self.queryset:
+            return self.queryset
+        return self.model.objects.all()
+
+    def get_choices(self, cutoff=None):
+        queryset = self.get_queryset()
+        if queryset is None:
+            return {}
+        if cutoff is not None:
+            queryset = queryset[:cutoff]
+
+        return OrderedDict([
+            (
+                item.pk,
+                self.display_value(item)
+            )
+            for item in queryset
+        ])
+
+    def use_pk_only_optimization(self):
+        pass
+
 
 class UserSerializer(serializers.ModelSerializer):
     # TODO Validation doit échouer si role pas dans les choices
-    # Custom GroupField because of circular dependency between User and Group
-    group = GroupField(read_only=True)
 
     class Meta:
         model = User
@@ -57,36 +58,42 @@ class UserSemesterSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
-    referent = UserSerializer(read_only=True)
-
+    referent = RefField(model=User, serializer=UserSerializer,
+                        required=False, allow_null=True)
+    delegates = RefField(model=User, serializer=UserSerializer,
+                         required=False, many=True)
+    students = RefField(model=User, serializer=UserSerializer,
+                        required=False, many=True)
 
     class Meta:
         model = Group
         fields = '__all__'
 
 
-class ModuleSerializer(serializers.ModelSerializer):
-    courses = CourseField(read_only=True, many=True)
-    groups = GroupField(read_only=True, many=True)
-    
-    class Meta:
-        model = Module
-        fields = '__all__'
-
-
 class CourseSerializer(serializers.ModelSerializer):
-    lead_teacher = UserSerializer(read_only=True)
-    other_teachers = UserSerializer(read_only=True, many=True)
-    modules = ModuleField(read_only=True, many=True)
+    lead_teacher = RefField(model=User, serializer=UserSerializer,
+                            required=False, allow_null=True)
+    other_teachers = RefField(model=User, serializer=UserSerializer, many=True)
 
     class Meta:
         model = Course
         fields = '__all__'
 
 
+class ModuleSerializer(serializers.ModelSerializer):
+    groups = RefField(model=Group, serializer=GroupSerializer, many=True)
+    courses = RefField(model=Course, serializer=CourseSerializer, many=True)
+
+    class Meta:
+        model = Module
+        fields = '__all__'
+
+
 class GradeSerializer(serializers.ModelSerializer):
-    student = UserSerializer(read_only=True)
-    courses = CourseField(read_only=True, many=True)
+    student = RefField(model=User, serializer=UserSerializer,
+                       required=True, allow_null=False)
+    courses = RefField(model=Course, serializer=CourseSerializer,
+                       required=True, allow_null=False, many=True)
 
     class Meta:
         model = Grade

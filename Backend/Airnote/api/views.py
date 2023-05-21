@@ -20,7 +20,6 @@ class UserViewSet(viewsets.ModelViewSet):
             queryset = User.objects.filter(group_id=group_id)
         if role is not None:
             queryset = User.objects.filter(role=role)
-        print(User.objects.all().values())
 
         return queryset
 
@@ -54,7 +53,7 @@ class ModuleViewSet(viewsets.ModelViewSet):
     A viewset for viewing and editing user instances.
     """
     serializer_class = ModuleSerializer
-    queryset = Module.objects.all().values()
+    queryset = Module.objects.all()
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -63,7 +62,6 @@ class CourseViewSet(viewsets.ModelViewSet):
     """
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-    print(Course.objects.all().values())
 
 
 class GradeViewSet(viewsets.ModelViewSet):

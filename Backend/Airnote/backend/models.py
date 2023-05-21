@@ -14,10 +14,10 @@ class User(models.Model):
                                 blank=False, null=False)
     role = models.CharField(max_length=2, choices=ROLES,
                             blank=False, null=False)
-    is_delegate = models.BooleanField(default=False)
-    #TODO Ligne SSO
-    group = models.ForeignKey(
-        'Group', on_delete=models.SET_NULL, blank=True, null=True)
+    # TODO Ligne SSO
+
+    class Meta:
+        unique_together = ('firstname', 'lastname', )
 
 
 class Semester(models.Model):
@@ -54,6 +54,10 @@ class Group(models.Model):
     is_active = models.BooleanField(default=True)
     referent = models.ForeignKey('User', limit_choices_to={
         'role': 'AR'}, on_delete=models.PROTECT, related_name='referent', blank=True, null=True)
+    delegates = models.ManyToManyField('User', limit_choices_to={
+        'role': 'ST'}, related_name='delegates', default=[], blank=True)
+    students = models.ManyToManyField('User', limit_choices_to={
+        'role': 'ST'}, related_name='students', default=[], blank=True)
 
     class Meta:
         unique_together = ('level', 'name', 'year')
@@ -66,14 +70,16 @@ class Course(models.Model):
                                      'role': 'TE'}, on_delete=models.PROTECT, related_name='lead_teacher',
                                      blank=False, null=False)
     other_teachers = models.ManyToManyField(User, limit_choices_to={
-        'role': 'TE'}, related_name='teachers', default=[])
+        'role': 'TE'}, related_name='teachers', default=[], blank=True)
 
 
 class Module(models.Model):
     title = models.CharField(max_length=100,
                              blank=False, null=False)
-    groups = models.ManyToManyField(Group, blank=True)
-    courses = models.ManyToManyField(Course, blank=True)
+    groups = models.ManyToManyField(
+        Group, related_name='groups', default=[], blank=True)
+    courses = models.ManyToManyField(
+        Course, related_name='courses', default=[], blank=True)
 
 
 class Grade(models.Model):
@@ -85,6 +91,3 @@ class Grade(models.Model):
     student = models.ForeignKey('User', limit_choices_to={
                                 'role': 'ST'}, on_delete=models.CASCADE,
                                 blank=False, null=False)
-
-
-
