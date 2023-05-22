@@ -2,8 +2,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import viewsets
 
-from backend.models import User, Semester, UserSemester, Group, Module, Course, Grade
-from .serializers import UserSerializer, SemesterSerializer, UserSemesterSerializer, GroupSerializer, ModuleSerializer, CourseSerializer, GradeSerializer
+from backend.models import User, Comment, Group, Module, Course, Grade
+from .serializers import UserSerializer, CommentSerializer, GroupSerializer, ModuleSerializer, CourseSerializer, GradeSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -24,28 +24,21 @@ class UserViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class SemesterViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing user instances.
-    """
-    serializer_class = SemesterSerializer
-    queryset = Semester.objects.all()
-
-
-class UserSemesterViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing user instances.
-    """
-    serializer_class = UserSemesterSerializer
-    queryset = UserSemester.objects.all()
-
-
 class GroupViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
     """
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing user instances.
+    """
+    serializer_class = CommentSerializer
+    queryset = Comment.objects.all()
+
 
 
 class ModuleViewSet(viewsets.ModelViewSet):

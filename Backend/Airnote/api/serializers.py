@@ -1,4 +1,4 @@
-from backend.models import User, Semester, UserSemester, Group, Module, Grade, Course
+from backend.models import User, Comment, Group, Module, Grade, Course
 from rest_framework import serializers
 from collections import OrderedDict
 # Create your models here.
@@ -45,18 +45,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SemesterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Semester
-        fields = '__all__'
-
-
-class UserSemesterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserSemester
-        fields = '__all__'
-
-
 class GroupSerializer(serializers.ModelSerializer):
     referent = RefField(model=User, serializer=UserSerializer,
                         required=False, allow_null=True)
@@ -69,6 +57,15 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = '__all__'
 
+
+class CommentSerializer(Comment.ModelSerializer):
+    student = RefField(model=User, serializer=UserSerializer,
+                        required=False, allow_null=False)
+    group = RefField(model=Group, serializer=GroupSerializer,
+                        required=True, allow_null=False)
+    class Meta:
+        model = Comment
+        fields = '__all__'
 
 class CourseSerializer(serializers.ModelSerializer):
     lead_teacher = RefField(model=User, serializer=UserSerializer,

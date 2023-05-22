@@ -8,6 +8,9 @@ export const getClass = (classId) => {
     return axios.get("api/groups/" + classId);
 };
 
+export const getUserfromClass = (studentId) => {
+    return axios.get("api/groups?student=" + studentId)
+}
 export const createClass = (level, name, year, isActive, referent, delegates, students) => {
     let payload = {
         level,

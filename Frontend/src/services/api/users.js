@@ -8,9 +8,6 @@ export const getUsersByRole = (role) => {
     return axios.get("/api/users?role=" + role);
 };
 
-export const getUserByClass = (groupId) => {
-    return axios.get("api/users?groupId=" + groupId);
-};
 
 export const getUser = (userId) => {
     return axios.get("api/users/" + userId);

@@ -20,29 +20,6 @@ class User(models.Model):
         unique_together = ('firstname', 'lastname', )
 
 
-class Semester(models.Model):
-    date_tc = models.DateField(
-        blank=False, null=False)
-    number = models.IntegerField(
-        choices=[(1, 'First semester'), (2, 'Second semester')],
-        blank=False, null=False)
-    group = models.ForeignKey('Group', on_delete=models.CASCADE,
-                              blank=False, null=False)
-
-    class Meta:
-        unique_together = ('number', 'group', )
-
-
-class UserSemester(models.Model):
-    comment = models.CharField(max_length=200,
-                               blank=True, null=True)
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
-    semester = models.ForeignKey('Semester', on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('user', 'semester', )
-
-
 class Group(models.Model):
     GROUPS = [('M2', 'Master 2'), ('M1', 'Master 1'), ('L3', 'Licence')]
     level = models.CharField(max_length=2, choices=GROUPS,
@@ -63,6 +40,17 @@ class Group(models.Model):
         unique_together = ('level', 'name', 'year')
 
 
+class Comment(models.Model):
+    comment = models.CharField(max_length=200,
+                               blank=True, null=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    group = models.ForeignKey('Group', on_delete=models.CASCADE,
+                              blank=False, null=False)
+
+    class Meta:
+        unique_together = ('user', 'group', )
+
+        
 class Course(models.Model):
     title = models.CharField(max_length=100,
                              blank=False, null=False)

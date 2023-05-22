@@ -11,6 +11,11 @@ import GLOBALS from "../../../Globals";
 import { Util } from "../../../services/Util";
 
 function UserTable({ users, removeUser }) {
+    const [active, setActive] = useState(false);
+    const handleClick = () => {
+        setActive(!active);
+    };
+
     const columns = React.useMemo(
         () => [
             {
@@ -30,6 +35,7 @@ function UserTable({ users, removeUser }) {
                 accessor: ({ role }) => GLOBALS.USER_ROLES[role],
                 Filter: SelectColumnFilter,
                 filter: "includes",
+                isVisible: {active},
             },
             {
                 Header: "Class",
@@ -58,9 +64,14 @@ function UserTable({ users, removeUser }) {
     );
 
     return (
-        <div>
-            <ReactTable data={users} columns={columns} />
-        </div>
+        <>
+            <button onClick={handleClick}>
+                {active ? "Show role" : "Hide role"}
+            </button>
+            <div>
+                <ReactTable data={users} columns={columns} />
+            </div>
+        </>
     );
 }
 
