@@ -1,22 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ReactTable from "../../render-components/ReactTable";
 import { SelectColumnFilter } from "../../render-components/TableFilters";
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
-import { Button } from "react-bootstrap";
+import { Badge, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import GLOBALS from "../../../Globals";
 import { Util } from "../../../services/Util";
 
-function UserTable({ users, removeUser }) {
+function UserTable({ data, removeUser }) {
     const [active, setActive] = useState(false);
     const handleClick = () => {
         setActive(!active);
     };
-
-    const columns = React.useMemo(
+    const defaultColumns = React.useMemo(
         () => [
             {
                 accessor: "id",
@@ -32,14 +31,9 @@ function UserTable({ users, removeUser }) {
             },
             {
                 Header: "Role",
+                id: "role",
                 accessor: ({ role }) => GLOBALS.USER_ROLES[role],
                 Filter: SelectColumnFilter,
-                filter: "includes",
-                isVisible: {active},
-            },
-            {
-                Header: "Class",
-                accessor: ({ group }) => Util.groupToStr(group),
             },
             {
                 Header: "Edit",
@@ -62,14 +56,37 @@ function UserTable({ users, removeUser }) {
         ],
         [],
     );
-
+    const columns = active
+        ? [
+            ...defaultColumns.slice(0, 3),
+            {
+                Header: "Class",
+                accessor: "groups",
+                Cell: ({ value }) => (
+                    <div>
+                        {value?.map((group, i) => (
+                            <tr key={"row" + i}>
+                                <td
+                                    key={"td" + i}
+                                    className={`badge rounded-pill ${
+                                        group.state ? "text-bg-success" : "text-bg-danger"
+                                    }`}
+                                >
+                                    {group.title}
+                                </td>
+                            </tr>
+                        ))}
+                    </div>
+                ),
+            },
+            ...defaultColumns.slice(3),
+        ]
+        : defaultColumns;
     return (
         <>
-            <button onClick={handleClick}>
-                {active ? "Show role" : "Hide role"}
-            </button>
+            <button onClick={handleClick}>{active ? "Hide class" : "Show class"}</button>
             <div>
-                <ReactTable data={users} columns={columns} />
+                <ReactTable data={data} columns={columns} />
             </div>
         </>
     );

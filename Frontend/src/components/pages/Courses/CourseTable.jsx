@@ -4,14 +4,14 @@ import { Button, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import ReactTable from "../../render-components/ReactTable";
-import Badges from "../../render-components/TableCustom";
 
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
 import { Util } from "../../../services/Util";
+import { SelectColumnFilter } from "../../render-components/TableFilters";
 
-function CourseTable({ courses, modules, removeCourse }) {
+function CourseTable({ data, removeCourse }) {
     const columns = React.useMemo(
         () => [
             {
@@ -38,7 +38,7 @@ function CourseTable({ courses, modules, removeCourse }) {
             {
                 Header: "In module",
                 accessor: "modules",
-                Cell: ({ cell: { value } }) => <Badges values={value}/>
+                Filter: SelectColumnFilter,
             },
             {
                 Header: "Edit",
@@ -62,7 +62,7 @@ function CourseTable({ courses, modules, removeCourse }) {
         [],
     );
 
-    return <ReactTable data={courses} columns={columns} />;
+    return <ReactTable data={data} columns={columns} />;
 }
 
 export default CourseTable;

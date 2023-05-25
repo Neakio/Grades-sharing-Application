@@ -58,7 +58,7 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CommentSerializer(Comment.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     student = RefField(model=User, serializer=UserSerializer,
                         required=False, allow_null=False)
     group = RefField(model=Group, serializer=GroupSerializer,
@@ -89,8 +89,8 @@ class ModuleSerializer(serializers.ModelSerializer):
 class GradeSerializer(serializers.ModelSerializer):
     student = RefField(model=User, serializer=UserSerializer,
                        required=True, allow_null=False)
-    courses = RefField(model=Course, serializer=CourseSerializer,
-                       required=True, allow_null=False, many=True)
+    course = RefField(model=Course, serializer=CourseSerializer,
+                       required=True, allow_null=False)
 
     class Meta:
         model = Grade

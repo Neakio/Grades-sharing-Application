@@ -71,7 +71,7 @@ class Module(models.Model):
 
 
 class Grade(models.Model):
-    number = models.DecimalField(max_digits=2, decimal_places=2, validators=[
+    number = models.DecimalField(max_digits=4, decimal_places=2, validators=[
                                  MinValueValidator(0), MaxValueValidator(25)], blank=True, null=True)
     comment = models.CharField(max_length=200, blank=True, null=True)
     course = models.ForeignKey('Course', on_delete=models.PROTECT,

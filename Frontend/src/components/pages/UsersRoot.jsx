@@ -7,19 +7,42 @@ import { createUser, deleteUser, editUser, getUsers } from "../../services/api/u
 
 import UserTable from "./Users/UserTable";
 import UserForm from "./Users/UserForm";
+import { getClasses } from "../../services/api";
+import { Util } from "../../services/Util";
 
 function Users() {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
+    const [groups, setGroups] = useState([]);
 
     useEffect(() => {
         fetchUsers();
+        fetchGroups();
     }, []);
 
     const fetchUsers = async () => {
         let users = await getUsers();
         setUsers(users);
     };
+    const fetchGroups = async () => {
+        let groups = await getClasses();
+        setGroups(groups);
+    };
+    console.log("Groups : ", groups);
+
+    // Perform join operation to match user's ID with group information (Name and state)
+    const data = users.map((user) => {
+        const userGroups = groups.filter((group) => {
+            const groupUserIds = group.students.map((user) => user.id);
+            return groupUserIds.includes(user.id);
+        });
+        const groupsinfo = userGroups.map((group) => {
+            const groupState = group.isActive;
+            const groupString = Util.groupToStr(group);
+            return { state: groupState, title: groupString };
+        });
+        return { ...user, groups: groupsinfo };
+    });
 
     const addUser = async (user) => {
         createUser(user.firstname, user.lastname, user.role)
@@ -63,7 +86,7 @@ function Users() {
                                     <Button variant="success">Create User</Button>
                                 </Link>
                             </div>
-                            <UserTable users={users} removeUser={removeUser} />
+                            <UserTable data={data} removeUser={removeUser} />
                         </Fragment>
                     }
                 />

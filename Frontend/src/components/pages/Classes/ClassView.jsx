@@ -26,10 +26,9 @@ function SetTable({ students }) {
     return <ReactTable data={students} columns={columns} />;
 }
 
-function ClassView() {
+function ClassView(isAdmin) {
     const [group, setGroup] = useState(null);
     const { id } = useParams();
-
     useEffect(() => {
         fetchGroup(id);
     }, []);
@@ -52,6 +51,13 @@ function ClassView() {
             <div>
                 Delegate: {group.delegates.map((student) => Util.formatUserName(student)).join(",")}
             </div>
+            {isAdmin ? (
+                <div className="mb-3">
+                    <Link to="adduser">
+                        <Button variant="success">Manage class</Button>
+                    </Link>
+                </div>
+            ) : null}
             <SetTable students={group?.students} />
         </Fragment>
     );

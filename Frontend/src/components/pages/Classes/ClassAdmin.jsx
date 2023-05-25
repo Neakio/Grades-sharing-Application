@@ -3,13 +3,14 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { toastError, toastSuccess } from "../../../services/toasts";
 
-import { editClass, createClass, deleteClass } from "../../../services/api";
+import { editClass, createClass, deleteClass, classUser } from "../../../services/api";
 
 import ClassForm from "./ClassForm";
 import ClassView from "./ClassView";
 import ClassesTable from "./ClassTableAdmin";
+import ClassUserForm from "./ClassUserForm";
 
-function Administration({ groups, fetchGroups }) {
+function Administration({ groups, fetchGroups }, isAdmin) {
     const navigate = useNavigate();
 
     const removeClass = async (groupId) => {
@@ -22,6 +23,9 @@ function Administration({ groups, fetchGroups }) {
     const redirectToTable = () => {
         fetchGroups();
         navigate("/classes");
+    };
+    const redirectToGroup = (groupId) => {
+        navigate(`/classes/${groupId}`);
     };
 
     const addGroup = (group) => {
@@ -44,7 +48,15 @@ function Administration({ groups, fetchGroups }) {
     };
 
     const modifyGroups = (group, groupId) => {
-        editClass(
+        editClass(groupId, group.level, group.name, group.year, group.isActive).then(() => {
+            toastSuccess("Successfully edited");
+            redirectToTable();
+        });
+    };
+    const addUser = (group, groupId) => {
+        //Check if the delegates are still in the group
+        group.delegates = group.delegates.filter((student) => group.students.includes(student));
+        classUser(
             groupId,
             group.level,
             group.name,
@@ -54,8 +66,8 @@ function Administration({ groups, fetchGroups }) {
             group.delegates,
             group.students,
         ).then(() => {
-            toastSuccess("Successfully edited");
-            redirectToTable();
+            toastSuccess("Successfully added");
+            redirectToGroup(groupId);
         });
     };
     return (
@@ -75,10 +87,14 @@ function Administration({ groups, fetchGroups }) {
                         </Fragment>
                     }
                 />
-                <Route path="/:id" element={<ClassView />} />
+                <Route path="/:id" element={<ClassView isAdmin={isAdmin} />} />
                 <Route
                     path="/edit/:id"
                     element={<ClassForm title="Edit class" handleSubmitClass={modifyGroups} />}
+                />
+                <Route
+                    path="/:id/adduser"
+                    element={<ClassUserForm title="Manage class" handleSubmitClass={addUser} />}
                 />
                 <Route
                     path="/create"

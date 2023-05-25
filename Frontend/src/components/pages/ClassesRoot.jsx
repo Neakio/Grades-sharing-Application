@@ -20,7 +20,7 @@ function Classes({ userRole }) {
     return (
         <Fragment>
             {isAdmin ? (
-                <Administration groups={groups} fetchGroups={fetchGroups} />
+                <Administration groups={groups} fetchGroups={fetchGroups} isAdmin={isAdmin} />
             ) : (
                 <Teacher groups={groups} />
             )}

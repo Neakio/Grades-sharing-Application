@@ -1,6 +1,7 @@
 import axios from "./axios";
 
 export const getModules = (moduleId, groupId) => {
+    console.log(getModules);
     let suffix = "";
     if (moduleId) suffix += "/" + moduleId;
     if (groupId) suffix += "?group=" + groupId.toString();
@@ -28,5 +29,3 @@ export const editModule = (moduleId, title, groups, courses) => {
 export const deleteModule = (moduleId) => {
     return axios.delete("api/modules/" + moduleId);
 };
-
-

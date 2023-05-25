@@ -4,14 +4,13 @@ export const getGrades = (studentId, courseId) => {
     let suffix = "";
     if (studentId) suffix = "?student=" + studentId.toString();
     if (courseId) suffix = "?course=" + courseId.toString();
-    return axios.get("api/courses" + suffix);
+    return axios.get("api/grades" + suffix);
 };
 
-export const editGrade = (gradeId, number, comment, exam_date, course, student) => {
+export const editGrade = (gradeId, number, comment, course, student) => {
     let payload = {
         number,
         comment,
-        exam_date,
         course,
         student,
     };
@@ -22,13 +21,12 @@ export const deleteGrade = (gradeId) => {
     return axios.delete("api/grades/" + gradeId);
 };
 
-export const createGrade = (number, comment, exam_date, course, student) => {
+export const createGrade = (number, comment, course, student) => {
     let payload = {
         number,
         comment,
-        exam_date,
         course,
         student,
     };
-    return axios.post("api/grades", payload);
+    return axios.post("api/grades/", payload);
 };
