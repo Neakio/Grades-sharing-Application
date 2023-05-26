@@ -21,13 +21,18 @@ function Home({ isLoggedIn }) {
                     </div>
                     <div>
                         <h1>App Context</h1>
-                        <p></p>
+                        <p>
+                            Currently an excel file is used to share grades with the students. In
+                            order to modernize this process this web application has been created.
+                            Single Sign On for students / teachers / the administration is
+                            implemented to log in to the app and is redundant in terms of failures.
+                        </p>
                     </div>
                 </Fragment>
             ) : (
                 <Fragment>
                     <h1>Goal of the App</h1>
-                    <p></p>
+                    <p>This app has been created for our passage en M1 for les plus chanceux. <br /> <i>-Matthieu TINTURIER-</i></p>
                 </Fragment>
             )}
         </Fragment>

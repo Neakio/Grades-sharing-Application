@@ -10,7 +10,7 @@ import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 import GLOBALS from "../../../Globals";
 import { SelectColumnFilter } from "../../render-components/TableFilters";
 
-function ClassesTable({ groups, removeClass }) {
+function ClassesTable({ groups, removeClass}, darkmode ) {
     const columns = React.useMemo(
         () => [
             {
@@ -28,7 +28,7 @@ function ClassesTable({ groups, removeClass }) {
                 accessor: "name",
                 Cell: ({ row, value }) => (
                     <Link to={"/classes/" + row.original.id}>
-                        <Button variant="info">{value}</Button>
+                        <button className={`btn btn-outline-${darkmode ? "dark" : "light"}`}>{value}</button>
                     </Link>
                 ),
             },

@@ -2,10 +2,6 @@ import React, { useState, useRef, Fragment } from "react";
 
 import Darkmode from "./Darkmode";
 
-// const MenuButton = ({ handleMouseDown }) => {
-//     return <button id="rContaineroundButton" onMouseDown={handleMouseDown}></button>;
-// };
-
 const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
     const [visible, setVisible] = useState(false);
     const menuRef = useRef(null);
@@ -23,7 +19,7 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
     const isReferent = userRole === "Administrator Referent";
 
     return (
-        <Fragment>
+        <Fragment >
             {isLoggedIn ? (
                 <Fragment>
                     <div
@@ -39,7 +35,7 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
                     <div
                         id="flyoutMenu"
                         onMouseLeave={handleMouseDown}
-                        className={visible ? "show" : "hide"}
+                        className={`${visible ? "show" : "hide"} ${darkmode ? "d" : "light"}`}
                     >
                         <h2>
                             <a href="/">Home</a>

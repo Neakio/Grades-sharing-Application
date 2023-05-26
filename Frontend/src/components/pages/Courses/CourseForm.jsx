@@ -93,9 +93,11 @@ function CourseForm({ title, handleSubmitCourse }) {
                     isMulti
                     isClearable
                 />
-                <Button variant="primary" type="submit">
+                <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                <Button variant="btn btn-outline-success me-md-2" type="submit">
                     Submit
                 </Button>
+                </div>
             </Form>
             <pre>{JSON.stringify(courseData, null, 2)}</pre>
         </Fragment>

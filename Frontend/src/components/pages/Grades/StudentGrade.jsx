@@ -5,7 +5,7 @@ import { getCourses, getGrades, getModules, getUserfromClass } from "../../../se
 import { Util } from "../../../services/Util";
 
 function StudentView() {
-    const [grades, setGrades] = useState([]);
+{/*}    const [grades, setGrades] = useState([]);
     const [modules, setCourses] = useState([]);
     const [groupId, setGroupId] = useState([]);
     let studentId = 2;
@@ -63,7 +63,8 @@ function StudentView() {
     data.map;
     console.log(data);
 
-    return <StudentTable data={data} courses={courses} />;
+return <StudentTable data={data} courses={courses} />;*/}
+return null;
 }
 
 export default StudentView;
