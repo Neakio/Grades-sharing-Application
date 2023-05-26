@@ -1,11 +1,13 @@
-html, body {
+html,
+body {
     width: 100%;
     height: 100%;
---text-color-normal: #0a244d;
+    --text-color-normal: #0a244d;
     --text-color-light: #8cabd9;
     color: #121212 !important;
-    background:#F5F5F5 !important;
-    background-color: #F5F5F5 !important;}
+    background: #f5f5f5 !important;
+    background-color: #f5f5f5 !important;
+}
 
 .app {
     min-height: 100vh;
@@ -21,7 +23,7 @@ main {
 
 header {
     grid-area: header;
-    background-color: #E0E0E0;
+    background-color: #e0e0e0;
     padding: 0.5rem;
 }
 header.dark {
@@ -43,4 +45,13 @@ footer {
 h1 {
     text-align: center;
     padding-bottom: 1rem;
+}
+
+.unicorn {
+    position: absolute;
+    transform: rotate(-40deg);
+    height: 20%;
+    width: 8%;
+    bottom: -20px;
+    right: -10px;
 }

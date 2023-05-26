@@ -33,6 +33,7 @@ function Home({ isLoggedIn }) {
                 <Fragment>
                     <h1>Goal of the App</h1>
                     <p>This app has been created for our passage en M1 for les plus chanceux. <br /> <i>-Matthieu TINTURIER-</i></p>
+                    <img src="/unicorn.png" className="unicorn"></img>
                 </Fragment>
             )}
         </Fragment>
