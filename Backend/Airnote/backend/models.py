@@ -79,3 +79,5 @@ class Grade(models.Model):
     student = models.ForeignKey('User', limit_choices_to={
                                 'role': 'ST'}, on_delete=models.CASCADE,
                                 blank=False, null=False)
+    group = models.ForeignKey('Group', on_delete=models.PROTECT,
+                                blank=False, null=False)

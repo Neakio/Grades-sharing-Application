@@ -1,6 +1,6 @@
 import axios from "./axios";
 
-export const getCourses = (courseId, moduleId) => {
+export const getCourses = (courseId) => {
     let suffix = "";
     if (courseId) suffix += "/" + courseId;
     return axios.get("api/courses" + suffix);

@@ -24,7 +24,7 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [darkmode, setDarkmode] = useState(false);
     // Retrieve the role of the user
-    let userRole = "Administrator Referent";
+    let userRole = "Teacher";
 
     const logIn = () => {
         if (isLoggedIn) navigate("/");

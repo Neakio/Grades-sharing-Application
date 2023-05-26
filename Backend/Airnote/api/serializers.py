@@ -91,6 +91,8 @@ class GradeSerializer(serializers.ModelSerializer):
                        required=True, allow_null=False)
     course = RefField(model=Course, serializer=CourseSerializer,
                        required=True, allow_null=False)
+    group = RefField(model=Group, serializer=GroupSerializer,
+                       required=True, allow_null=False)
 
     class Meta:
         model = Grade

@@ -32,11 +32,11 @@ function Courses() {
             const modulesCourseIds = module.courses.map((course) => course.id);
             return modulesCourseIds.includes(course.id);
         });
+        
 
         const modulesNames = courseModules.map((module) => module.title);
         return { ...course, modules: modulesNames };
     });
-
     const addCourses = async (course) => {
         createCourse(course.title, course.leadTeacher, course.otherTeachers).then(() => {
             toastSuccess("Course successfully created");
