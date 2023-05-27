@@ -7,6 +7,7 @@ from django.db.models import Q
 from backend.models import User, Comment, Group, Module, Course, Grade
 from .serializers import UserSerializer, CommentSerializer, GroupSerializer, ModuleSerializer, CourseSerializer, GradeSerializer
 
+import json
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -35,24 +36,36 @@ class GroupViewSet(viewsets.ModelViewSet):
         queryset = Group.objects.all()
         is_active = self.request.query_params.get('is_active')
         student_id = self.request.query_params.get('student')
+        courses = self.request.query_params.get('courses')
+        referent = self.request.query_params.get('referent')
         if is_active=="true":
-            queryset = Group.objects.filter(is_active=True)
+            queryset = queryset.filter(is_active=True)
         if is_active=="false":
-            queryset = Group.objects.filter(is_active=False)
+            queryset = queryset.filter(is_active=False)
         if student_id is not None :
-            queryset = Group.objects.filter(students__in=[student_id])
+            queryset = queryset.filter(students__in=[student_id])
+        if courses is not None:
+            queryset = queryset.filter(modules__courses__in=courses)
+        if referent is not None:
+            queryset = queryset.filter(referent=referent)
         return queryset
     
-
-
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
     """
     serializer_class = CommentSerializer
-    queryset = Comment.objects.all()
+    
+    def get_queryset(self):
+        queryset = Comment.objects.all()
+        student_id = self.request.query_params.get('student')
+        group_id = self.request.query_params.get('group')
+        if student_id is not None and group_id is not None:
+            queryset = Comment.objects.filter(student_id=student_id, group_id=group_id)
+        return queryset
 
+    
 
 
 class ModuleViewSet(viewsets.ModelViewSet):
@@ -88,97 +101,50 @@ class GradeViewSet(viewsets.ModelViewSet):
     serializer_class = GradeSerializer
     
     def get_queryset(self):
-        queryset = Grade.objects.all()
-        id= 3
-        user = User.objects.get(id=id)
-        print(User.objects.get(id=id))
-        role = user.role
-        print(role)
-
+        student_id = self.request.query_params.get('student')
+        group_id = self.request.query_params.get('group')
+        course_id = self.request.query_params.get('course')
+        if course_id is not None and group_id is not None:
+            queryset = Grade.objects.filter(group_id=group_id, course_id=course_id)
+        if student_id is not None:
+            queryset = Grade.objects.filter(student=student_id)
+        return queryset
 
         #Return filtered grades according to the role
-        match role :
+"""        match role :
                 case "AR" :
                     groups = Group.objects.filter(referent_id=id)
-                    modules = Module.objects.filter(groups__in=groups)
 
-                    # Create a dictionary to store the formatted data
-                    administrator_data = {
-                        'administrator_id': user.id,
-                        'administrator_name': user.name,
-                        'group': None
-                    }
-
-                    # Iterate over each group
-                    for group in groups:
-                        # Get the related grades for the group and prefetch related fields to avoid additional queries
-                        grades = Grade.objects.filter(group=group).select_related('student', 'course')
-
-                        # Create a dictionary for the group's data
-                        group_data = {
-                            'group_id': group.id,
-                            'group_name': group.name,
-                            'students': []
-                        }
-
-                        # Iterate over each grade
-                        for grade in grades:
-                            # Create a dictionary for the student's data
-                            student_data = {
-                                'student_id': grade.student.id,
-                                'student_name': grade.student.name,
-                                'course_id': grade.course.id,
-                                'course_title': grade.course.title,
-                                'grade': grade.number,
-                                'comment': grade.comment
-                            }
-
-                            # Append the student's data to the group's data
-                            group_data['students'].append(student_data)
-
-                        # Append the group's data to the administrator's data
-                        administrator_data['groups'].append(group_data)
-
-                        queryset=JsonResponse(administrator_data)
+                    
 
 
                 case "TE" :
                     courses = Course.objects.filter(Q(other_teachers__in=[id]) | Q(lead_teacher=id))
+                    course_serializer = CourseSerializer(courses, many=True)
+                    formatted_data = []
+                    for course in courses.values():
+                        formatted_course = course
+                        print(course, "\n")
+                        modules = Module.objects.filter(courses__in=courses)
+                        module_serializer = ModuleSerializer(modules, many=True)
+                        groups = Group.objects.filter(modules__in=modules)
+                        group_serializer = GroupSerializer(groups, many=True)
+                        groups_data = json.dumps(group_serializer.data)
+                        for group in group_serializer.data:
+                            group.pop('modules')
+                            print(group)
+                        formatted_course['groups'] = json.dumps(groups_data)
+                        courses_json = json.dumps(course_serializer.data)
+                        modules_json = json.dumps(module_serializer.data)
+                        groups_json = json.dumps(group_serializer.data)
+                        print("\n", formatted_course)
+                        #print("courses", courses_json)
+                        #print("modules", modules_json)
+                        #print("groups", groups_json)
+                        #formatted_data.append()
+                        return JsonResponse(formatted_course)
 
-                    # Create a dictionary to store the formatted data
-                    teacher_data = {
-                        'teacher_id': user.id,
-                        'teacher_name': user.lastname,
-                        'students': []
-                    }
 
-                    # Iterate over each course
-                    for course in courses:
-                        # Get the related grades for the course and prefetch related fields to avoid additional queries
-                        grades = Grade.objects.filter(course=course).select_related('student', 'group')
-
-                        # Iterate over each grade
-                        for grade in grades:
-                            # Create a dictionary for the student's data
-                            student_data = {
-                                'student_id': grade.student.id,
-                                'student_firstname': grade.student.firstname,
-                                'student_lastname': grade.student.lastname,
-                                'course_id': course.id,
-                                'course_title': course.title,
-                                'grade': grade.number,
-                                'comment': grade.comment
-                            }
-
-                            # Get the student's groups and append them to the student's data
-                            student_data['groups'] = list(grade.group.students.filter(role='ST').values('id', 'firstname', 'lastname'))
-
-                            # Get the student's courses and append them to the student's data
-                            student_data['courses'] = list(Module.objects.filter(groups=grade.group).values('courses__id', 'courses__title'))
-
-                            # Append the student's data to the teacher's data
-                            teacher_data['students'].append(student_data)
-                    queryset=JsonResponse(teacher_data)
 
                 case "ST" : 
                     group_data = []
@@ -201,12 +167,7 @@ class GradeViewSet(viewsets.ModelViewSet):
                     return JsonResponse({'student': user.name, 'groups': group_data})
                 case _ :
                     queryset = ""
-        return queryset
-
-
-
-
-        """match role :
+match role :
             case "AR" :
                 groups = Group.objects.filter(referent_id=id)
                 queryset = Grade.objects.filter(group__in=[groups])
@@ -220,10 +181,10 @@ class GradeViewSet(viewsets.ModelViewSet):
 
             case _ : 
                 queryset = Grade.objects.filter(student_id=id)
-        return queryset"""
+        return queryset
 
         #Filter by Group
-        """group_by = self.request.query_params.get('group_by')
+group_by = self.request.query_params.get('group_by')
         if group_by is not None and group_by=="module" : 
             courses=[]
             for grade in queryset.values() :

@@ -8,7 +8,7 @@ import { createCourse, getCourses, deleteCourse, editCourse, getModules } from "
 import CourseForm from "./Courses/CourseForm";
 import CourseTable from "./Courses/CourseTable";
 
-function Courses() {
+function Courses(userRole, userId) {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [modules, setModules] = useState([]);
@@ -32,7 +32,6 @@ function Courses() {
             const modulesCourseIds = module.courses.map((course) => course.id);
             return modulesCourseIds.includes(course.id);
         });
-        
 
         const modulesNames = courseModules.map((module) => module.title);
         return { ...course, modules: modulesNames };

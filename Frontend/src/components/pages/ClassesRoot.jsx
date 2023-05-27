@@ -5,7 +5,7 @@ import { getClasses } from "../../services/api";
 import Administration from "./Classes/ClassAdmin";
 import Teacher from "./Classes/ClassTeacher";
 
-function Classes({ userRole }) {
+function Classes({ userRole, userId }) {
     const [groups, setGroups] = useState([]);
     const isAdmin = userRole.startsWith("Admin");
 
@@ -20,9 +20,14 @@ function Classes({ userRole }) {
     return (
         <Fragment>
             {isAdmin ? (
-                <Administration groups={groups} fetchGroups={fetchGroups} isAdmin={isAdmin} />
+                <Administration
+                    groups={groups}
+                    fetchGroups={fetchGroups}
+                    isAdmin={isAdmin}
+                    userId={userId}
+                />
             ) : (
-                <Teacher groups={groups} />
+                <Teacher groups={groups} userId={userId} />
             )}
         </Fragment>
     );

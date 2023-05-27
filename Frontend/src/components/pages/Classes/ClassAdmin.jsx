@@ -10,7 +10,7 @@ import ClassView from "./ClassView";
 import ClassesTable from "./ClassTableAdmin";
 import ClassUserForm from "./ClassUserForm";
 
-function Administration({ groups, fetchGroups }, isAdmin) {
+function Administration({ groups, fetchGroups, isAdmin, userId }) {
     const navigate = useNavigate();
 
     const removeClass = async (groupId) => {
@@ -83,11 +83,15 @@ function Administration({ groups, fetchGroups }, isAdmin) {
                                     <Button variant="success">Create class</Button>
                                 </Link>
                             </div>
-                            <ClassesTable groups={groups} removeClass={removeClass} />
+                            <ClassesTable
+                                groups={groups}
+                                removeClass={removeClass}
+                                userId={userId}
+                            />
                         </Fragment>
                     }
                 />
-                <Route path="/:id" element={<ClassView isAdmin={isAdmin} />} />
+                <Route path="/:id" element={<ClassView isAdmin={isAdmin} userId={userId} />} />
                 <Route
                     path="/edit/:id"
                     element={<ClassForm title="Edit class" handleSubmitClass={modifyGroups} />}

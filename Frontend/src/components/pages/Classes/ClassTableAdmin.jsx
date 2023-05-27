@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -9,9 +9,14 @@ import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
 import GLOBALS from "../../../Globals";
 import { SelectColumnFilter } from "../../render-components/TableFilters";
+import { Util } from "../../../services/Util";
 
-function ClassesTable({ groups, removeClass }) {
-    const columns = React.useMemo(
+function ClassesTable({ groups, removeClass, userId }) {
+    const [active, setActive] = useState(false);
+    const handleClick = () => {
+        setActive(!active);
+    };
+    const defaultColumns = React.useMemo(
         () => [
             {
                 accessor: "id",
@@ -32,7 +37,6 @@ function ClassesTable({ groups, removeClass }) {
                     </Link>
                 ),
             },
-
             {
                 Header: "Year",
                 accessor: "year",
@@ -66,8 +70,32 @@ function ClassesTable({ groups, removeClass }) {
         ],
         [],
     );
+    const columns = active
+        ? [
+            ...defaultColumns.slice(0, 3),
+            {
+                Header: "Modules",
+                accessor: "modules",
+                Cell: ({ value }) => (
+                    <div>
+                        {value?.map((module, i) => (
+                            <tr key={"row" + i}>
+                                <td>{Util.moduleToStr(module)}</td>
+                            </tr>
+                        ))}
+                    </div>
+                ),
+            },
+            ...defaultColumns.slice(3),
+        ]
+        : defaultColumns;
 
-    return <ReactTable data={groups} columns={columns} />;
+    return (
+        <>
+            <button onClick={handleClick}>{active ? "Hide modules" : "Show modules"}</button>
+            <ReactTable data={groups} columns={columns} />;
+        </>
+    );
 }
 
 export default ClassesTable;

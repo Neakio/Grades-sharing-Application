@@ -1,16 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ReactTable from "../../render-components/ReactTable";
 import { Util } from "../../../services/Util";
 import { NumberRangeColumnFilter, SelectColumnFilter } from "../../render-components/TableFilters";
+import { getTeacherGrades } from "../../../services/api";
 
-function TeacherTable({ data, handleSubmit }) {
+function TeacherTable({ course, group, handleSubmit, updateMyData }) {
     const [gradeData, setGradeData] = useState({
         studentId: null,
-        courseId: null,
+        courseId: course,
+        groupId: group,
         number: null,
         comment: null,
     });
+
+    useEffect(() => {
+        fetchGrades(course.id, group.id);
+    }, []);
+    const fetchGrades = async () => {
+        let grades = await getTeacherGrades(group.id, course.id);
+    };
 
     const handleChange = (row, event) => {
         let data = row.original;
@@ -25,18 +34,7 @@ function TeacherTable({ data, handleSubmit }) {
                 Header: "Student",
                 accessor: ({ student }) => Util.formatUserName(student),
                 filter: "includes",
-            },
-            {
-                Header: "Class",
-                accessor: "group",
-                Filter: SelectColumnFilter,
-                filter: "includes",
-            },
-            {
-                Header: "Course",
-                accessor: ({ course }) => Util.courseToStr(course),
-                Filter: SelectColumnFilter,
-                filter: "includes",
+                value: group["student.id"],
             },
             {
                 Header: "Grade",
@@ -46,7 +44,7 @@ function TeacherTable({ data, handleSubmit }) {
                 Cell: ({ row, value }) => (
                     <input
                         name="number"
-                        defaultValue={value}
+                        defaultValue={gradeData?.grade}
                         onBlur={(event) => handleChange(row, event)}
                     />
                 ),
@@ -58,7 +56,7 @@ function TeacherTable({ data, handleSubmit }) {
                 Cell: ({ row, value }) => (
                     <input
                         name="comment"
-                        defaultValue={value}
+                        defaultValue={gradeData?.comment}
                         onBlur={(event) => handleChange(row, event)}
                     />
                 ),
@@ -69,12 +67,7 @@ function TeacherTable({ data, handleSubmit }) {
 
     return (
         <>
-            <ReactTable data={data} columns={columns} />
-            <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button className="btn btn-outline-success me-md-2" type="submit">
-                    Submit
-                </button>
-            </div>
+            <ReactTable data={gradeData} columns={columns} />
         </>
     );
 }

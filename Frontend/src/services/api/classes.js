@@ -8,12 +8,22 @@ export const getActiveClasses = (isActive) => {
     return axios.get("api/groups?isActive=" + isActive);
 };
 
+export const getClassesByCourses = (courses) => {
+    return axios.get("api/groups?courses=" + courses);
+};
+
+export const getClassesByReferent = (userId) => {
+    return axios.get("api/groups?referent=" + userId);
+};
+
 export const getClass = (classId) => {
     return axios.get("api/groups/" + classId);
 };
 
-export const getUserfromClass = (studentId) => {
-    return axios.get("api/groups?student=" + studentId);
+export const getClassFromUser = (studentId, isActive = true) => {
+    let suffix = "?student=" + studentId;
+    if (isActive !== null) suffix += "&isActive=" + isActive.toString();
+    return axios.get("api/groups" + suffix);
 };
 export const createClass = (level, name, year, isActive) => {
     let payload = {
