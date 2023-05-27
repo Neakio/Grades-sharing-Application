@@ -1,7 +1,13 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+
+class CustomUser(AbstractUser):
+    # Add your additional fields here if needed
+    pass
+
 
 class User(models.Model):
     ROLES = [('AD', 'Administrator'), ('AR', 'Administrator Referent'),
@@ -13,8 +19,6 @@ class User(models.Model):
                                 blank=False, null=False)
     role = models.CharField(max_length=2, choices=ROLES,
                             blank=False, null=False)
-    # TODO Ligne SSO
-
     class Meta:
         unique_together = ('firstname', 'lastname', )
 

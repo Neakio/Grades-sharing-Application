@@ -1,13 +1,25 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework import viewsets
-from django.http import JsonResponse
 from django.db.models import Q
 
 from backend.models import User, Comment, Group, Module, Course, Grade
 from .serializers import UserSerializer, CommentSerializer, GroupSerializer, ModuleSerializer, CourseSerializer, GradeSerializer
+from rest_framework import generics
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import UserSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+from django.contrib.auth import get_user_model
+from rest_framework.response import Response
 
-import json
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate, login, logout
+from .serializers import UserSerializer
+
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -29,7 +41,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing user instances.
+    A viewset for viewing and editing group instances.
     """
     serializer_class = GroupSerializer
     def get_queryset(self):
@@ -53,7 +65,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing user instances.
+    A viewset for viewing and editing comment instances.
     """
     serializer_class = CommentSerializer
     
@@ -70,7 +82,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 class ModuleViewSet(viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing user instances.
+    A viewset for viewing and editing modules instances.
     """
     serializer_class = ModuleSerializer
     def get_queryset(self):
@@ -83,7 +95,7 @@ class ModuleViewSet(viewsets.ModelViewSet):
 
 class CourseViewSet(viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing user instances.
+    A viewset for viewing and editing courses instances.
     """
     serializer_class = CourseSerializer
     def get_queryset(self):
@@ -96,7 +108,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 class GradeViewSet(viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing user instances.
+    A viewset for viewing and editing grades instances.
     """
     serializer_class = GradeSerializer
     
@@ -109,93 +121,28 @@ class GradeViewSet(viewsets.ModelViewSet):
         if student_id is not None:
             queryset = Grade.objects.filter(student=student_id)
         return queryset
-
-        #Return filtered grades according to the role
-"""        match role :
-                case "AR" :
-                    groups = Group.objects.filter(referent_id=id)
-
-                    
-
-
-                case "TE" :
-                    courses = Course.objects.filter(Q(other_teachers__in=[id]) | Q(lead_teacher=id))
-                    course_serializer = CourseSerializer(courses, many=True)
-                    formatted_data = []
-                    for course in courses.values():
-                        formatted_course = course
-                        print(course, "\n")
-                        modules = Module.objects.filter(courses__in=courses)
-                        module_serializer = ModuleSerializer(modules, many=True)
-                        groups = Group.objects.filter(modules__in=modules)
-                        group_serializer = GroupSerializer(groups, many=True)
-                        groups_data = json.dumps(group_serializer.data)
-                        for group in group_serializer.data:
-                            group.pop('modules')
-                            print(group)
-                        formatted_course['groups'] = json.dumps(groups_data)
-                        courses_json = json.dumps(course_serializer.data)
-                        modules_json = json.dumps(module_serializer.data)
-                        groups_json = json.dumps(group_serializer.data)
-                        print("\n", formatted_course)
-                        #print("courses", courses_json)
-                        #print("modules", modules_json)
-                        #print("groups", groups_json)
-                        #formatted_data.append()
-                        return JsonResponse(formatted_course)
+    
 
 
 
-                case "ST" : 
-                    group_data = []
-                    for group in user.groups.all():
-                        group_courses = []
-                        for course in group.courses.all():
-                            grade = Grade.objects.filter(course=course, student=user, group=group).first()
-                            course_data = {
-                                'title': course.title,
-                                'grade': grade.number if grade else None,
-                                'comment': grade.comment if grade else None,
-                            }
-                            group_courses.append(course_data)
 
-                        group_data.append({
-                            'group_name': group.name,
-                            'courses': group_courses,
-                        })
 
-                    return JsonResponse({'student': user.name, 'groups': group_data})
-                case _ :
-                    queryset = ""
-match role :
-            case "AR" :
-                groups = Group.objects.filter(referent_id=id)
-                queryset = Grade.objects.filter(group__in=[groups])
+class UserRegistrationView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-            case "TE" :
-                courses = Course.objects.filter(Q(other_teachers__in=[id]) | Q(lead_teacher=id)).values()
-                courses_ids = []
-                for i in range(len(courses)):
-                    courses_ids.append(courses[i]['id'])
-                queryset = Grade.objects.filter(course__in=courses_ids)
+class UserLoginView(TokenObtainPairView):
+    pass
 
-            case _ : 
-                queryset = Grade.objects.filter(student_id=id)
-        return queryset
+User = get_user_model()
 
-        #Filter by Group
-group_by = self.request.query_params.get('group_by')
-        if group_by is not None and group_by=="module" : 
-            courses=[]
-            for grade in queryset.values() :
-                print("Grades : ", grade) 
-                if grade["course_id"] not in courses:
-                    courses.append(grade["course_id"])
-                    print("courses : ", courses) 
-            modules = Module.objects.filter(courses__in=courses)
-            print("modules : ", modules.values()) 
-            for module in modules.values():
-                print("module : ", module) 
-                module["grades"] = Grade.objects.filter(course__in=module["courses"])
-            print(modules.values())
-            return modules"""
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_info(request):
+    authentication_classes = [JWTAuthentication]
+    user = request.user
+    serialized_user = UserSerializer(user)  # Assuming you have a UserSerializer defined
+    return Response(serialized_user.data)
+
+

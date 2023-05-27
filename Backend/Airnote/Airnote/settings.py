@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'backend.apps.BackendConfig',
     'corsheaders'
 ]
@@ -76,6 +77,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Airnote.wsgi.application'
+
+
+#Auth
+AUTH_USER_MODEL = 'backend.CustomUser'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 
 # Database
@@ -181,13 +189,6 @@ CORS_ORIGIN_WHITELIST = (
 
 
 # Keycloak settings
-# KEYCLOAK_SERVER_URL = 'https://'
-# KEYCLOAK_REALM = ''
-# AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'keycloak_auth.backend.KeycloakAuthenticationBackend',]
-
-# KEYCLOAK_AUTH_USER_MODEL = 'User'
-# KEYCLOAK_AUTH_USER_MODEL_FIRST_NAME_FIELD = 'firstname'
-# KEYCLOAK_AUTH_USER_MODEL_LAST_NAME_FIELD = 'lastname'
 KEYCLOAK_CONFIG = {
     'KEYCLOAK_SERVER_URL': 'http://localhost:8080/auth',
     'KEYCLOAK_REALM': 'TESTE',

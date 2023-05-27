@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import LoginForm from "../render-components/Form/LogForm";
 
 function Home({ isLoggedIn }) {
     const [quote, setQuote] = useState({});
@@ -26,6 +27,7 @@ function Home({ isLoggedIn }) {
                 </Fragment>
             ) : (
                 <Fragment>
+                    <LoginForm></LoginForm>
                     <h1>Goal of the App</h1>
                     <p></p>
                 </Fragment>
