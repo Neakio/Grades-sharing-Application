@@ -19,6 +19,11 @@ class User(models.Model):
                                 blank=False, null=False)
     role = models.CharField(max_length=2, choices=ROLES,
                             blank=False, null=False)
+    username = models.CharField(max_length=50,
+                                 blank=False, null=False)
+    password = models.CharField(max_length=50,
+                                 blank=False, null=False)
+    
     class Meta:
         unique_together = ('firstname', 'lastname', )
 

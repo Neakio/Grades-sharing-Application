@@ -6,9 +6,21 @@ import dark from "/airnote_dark.png";
 import Menu from "./Menu";
 import { Button } from "react-bootstrap";
 import UserInfo from "../render-components/Form/Info";
+import { useNavigate } from "react-router-dom";
 
 function Header({ setDarkmode, darkmode, isLoggedIn, userRole }) {
+    const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
+
+    const logOut = () => {
+        localStorage.removeItem("token");
+        navigate("/");
+    };
+
+    const logIn = () => {
+        navigate("/login");
+    };
+
     return (
         <Fragment>
             <div className="d-flex justify-content-between header">
@@ -39,11 +51,11 @@ function Header({ setDarkmode, darkmode, isLoggedIn, userRole }) {
                 <div>
                     {/* Show the button of login/logout depending on the user status */}
                     {isLoggedIn ? (
-                        <Button variant="dark" onClick={<UserInfo logout={true} />}>
+                        <Button variant="dark" onClick={logOut}>
                             Logout
                         </Button>
                     ) : (
-                        <Button variant="dark" onClick={(window.location.href = "/login")}>
+                        <Button variant="dark" onClick={logIn}>
                             Login
                         </Button>
                     )}

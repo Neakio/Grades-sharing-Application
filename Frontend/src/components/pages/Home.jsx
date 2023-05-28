@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react";
-import LoginForm from "../render-components/Form/LogForm";
 
 function Home({ isLoggedIn }) {
     const [quote, setQuote] = useState({});

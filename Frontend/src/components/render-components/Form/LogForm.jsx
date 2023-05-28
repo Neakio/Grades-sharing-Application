@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { login } from "../../../services/api/log";
 import { useNavigate } from "react-router-dom";
-const LoginForm = (setIsLoggedIn) => {
+
+const LoginForm = ({ setIsLoggedIn }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    const handleLogin = () => {
+
+    const handleLogin = async () => {
         login(username, password)
             .then(() => {
                 navigate("/");
@@ -17,11 +19,17 @@ const LoginForm = (setIsLoggedIn) => {
     };
 
     return (
-        <div>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button onClick={handleLogin}>Login</button>
-        </div>
+        <>
+            <div>
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button onClick={handleLogin}>Login</button>
+            </div>
+        </>
     );
 };
 

@@ -53,6 +53,7 @@ function App() {
                 <main>
                     <Container className="h-100">
                         <Routes>
+                            <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
                             <Route
                                 path="/login"
                                 element={
@@ -62,7 +63,6 @@ function App() {
                                     />
                                 }
                             />
-                            <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
                             <Route
                                 path="classes/*"
                                 element={<Classes userRole={userRole} userId={userId} />}
