@@ -9,7 +9,7 @@ export const getActiveClasses = (isActive) => {
 };
 
 export const getClassesByCourses = (courses) => {
-    return axios.get("api/groups?courses=" + courses);
+    return axios.get("api/groups?courses=" + courses + "&isActive=true");
 };
 
 export const getClassesByReferent = (userId) => {

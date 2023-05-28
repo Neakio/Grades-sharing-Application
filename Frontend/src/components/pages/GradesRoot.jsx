@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import TeacherGrades from "./Grades/TeacherGrades";
 import StudentGrades from "./Grades/StudentGrades";
 import { Route, Routes } from "react-router-dom";
+import ReferentGrades from "./Grades/ReferentGrades";
 
 function Grades({ userId, userRole }) {
     const isReferent = userRole === "Administrator Referent";
@@ -10,7 +11,7 @@ function Grades({ userId, userRole }) {
     const getGradesView = () => {
         switch (userRole) {
         case "Administrator Referent":
-            return <div></div>;
+            return <ReferentGrades userRole={userRole} userId={userId} />;
         case "Teacher":
             return <TeacherGrades userRole={userRole} userId={userId} />;
         case "Student":

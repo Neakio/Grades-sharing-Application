@@ -7,8 +7,8 @@ export const getModules = (moduleId) => {
 };
 
 export const getModulesByGroup = (groupId) => {
-    return axios.get("api/modules?groups" + groupId );
-}
+    return axios.get("api/modules?groups" + groupId);
+};
 
 export const createModule = (title, groups, courses) => {
     let payload = {

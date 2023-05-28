@@ -8,13 +8,10 @@ export const getTeacherGrades = (groupId, courseId) => {
     return axios.get("api/grades?group=" + groupId + "&course=" + courseId);
 };
 
-export const editGrade = (gradeId, number, comment, course, student, group) => {
+export const editGrade = (gradeId, number, comment) => {
     let payload = {
         number,
         comment,
-        course,
-        student,
-        group,
     };
     return axios.put("api/grades/" + gradeId, payload);
 };
