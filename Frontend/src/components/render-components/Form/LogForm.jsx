@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { login } from "../../../services/api/log";
-import axios from "axios";
-import UserInfo from "./Info";
-const LoginForm = () => {
+import { useNavigate } from "react-router-dom";
+const LoginForm = (setIsLoggedIn) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
+    const navigate = useNavigate();
     const handleLogin = () => {
         login(username, password)
             .then(() => {
-                <UserInfo />;
+                navigate("/");
+                setIsLoggedIn(true);
             })
             .catch((error) => {
                 // Handle login error

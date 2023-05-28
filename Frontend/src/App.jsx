@@ -16,21 +16,22 @@ import Grades from "./components/pages/GradesRoot";
 import UsersRoot from "./components/pages/UsersRoot";
 import Modules from "./components/pages/ModulesRoot";
 import Courses from "./components/pages/CoursesRoot";
+import LoginForm from "./components/render-components/Form/LogForm";
+import UserInfo from "./components/render-components/Form/Info";
 
 function App() {
-    const navigate = useNavigate();
     const appRef = useRef();
     //Verify if the user is log or not
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [darkmode, setDarkmode] = useState(false);
     // Retrieve the role of the user
-    let userRole = "Teacher";
-    let userId = 3;
-    const logIn = () => {
-        if (isLoggedIn) navigate("/");
-        setIsLoggedIn(!isLoggedIn);
-    };
-
+    if (isLoggedIn == true) {
+        const userinfo = <UserInfo />;
+        console.log(userinfo);
+    }
+    const userRole = "";
+    const userId = "";
+    console.log(isLoggedIn);
     const onSetDarkMode = () => {
         appRef.current.classList.toggle("dark");
         setDarkmode(!darkmode);
@@ -45,7 +46,6 @@ function App() {
                         darkmode={darkmode}
                         setDarkmode={onSetDarkMode}
                         isLoggedIn={isLoggedIn}
-                        logIn={logIn}
                         userRole={userRole}
                     />
                 </header>
@@ -53,6 +53,15 @@ function App() {
                 <main>
                     <Container className="h-100">
                         <Routes>
+                            <Route
+                                path="/login"
+                                element={
+                                    <LoginForm
+                                        isLoggedIn={isLoggedIn}
+                                        setIsLoggedIn={setIsLoggedIn}
+                                    />
+                                }
+                            />
                             <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
                             <Route
                                 path="classes/*"

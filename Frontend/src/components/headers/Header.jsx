@@ -5,10 +5,10 @@ import dark from "/airnote_dark.png";
 
 import Menu from "./Menu";
 import { Button } from "react-bootstrap";
+import UserInfo from "../render-components/Form/Info";
 
-function Header({ setDarkmode, darkmode, isLoggedIn, logIn, userRole }) {
+function Header({ setDarkmode, darkmode, isLoggedIn, userRole }) {
     const [showMenu, setShowMenu] = useState(false);
-
     return (
         <Fragment>
             <div className="d-flex justify-content-between header">
@@ -38,10 +38,15 @@ function Header({ setDarkmode, darkmode, isLoggedIn, logIn, userRole }) {
 
                 <div>
                     {/* Show the button of login/logout depending on the user status */}
-
-                    <Button variant="dark" onClick={logIn}>
-                        {isLoggedIn ? "Logout" : "Login"}
-                    </Button>
+                    {isLoggedIn ? (
+                        <Button variant="dark" onClick={<UserInfo logout={true} />}>
+                            Logout
+                        </Button>
+                    ) : (
+                        <Button variant="dark" onClick={(window.location.href = "/login")}>
+                            Login
+                        </Button>
+                    )}
                 </div>
             </div>
         </Fragment>

@@ -27,7 +27,6 @@ function Home({ isLoggedIn }) {
                 </Fragment>
             ) : (
                 <Fragment>
-                    <LoginForm></LoginForm>
                     <h1>Goal of the App</h1>
                     <p></p>
                 </Fragment>

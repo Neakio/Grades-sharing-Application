@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const UserInfo = () => {
+const UserInfo = (logout) => {
     const [userInfo, setUserInfo] = useState(null);
 
     useEffect(() => {
@@ -13,7 +13,6 @@ const UserInfo = () => {
                     },
                 });
                 setUserInfo(response.data);
-                console.log(response.data);
             } catch (error) {
                 // Handle error
             }
@@ -21,6 +20,11 @@ const UserInfo = () => {
 
         fetchUserInfo();
     }, []);
+
+    if (logout == true) {
+        localStorage.removeItem("token"); // Remove token from local storage or appropriate storage mechanism
+        setUserInfo(null); // Clear user information in the component state
+    }
 
     if (!userInfo) {
         return <div>Loading user information...</div>;
