@@ -23,7 +23,6 @@ function StudentView() {
         let modules = await getModules(null, groupId);
         setCourses(modules);
     };
-    console.log(modules);
     const fetchGrades = async () => {
         let grades = await getGrades(studentId);
         setGrades(grades);
@@ -60,7 +59,6 @@ function StudentView() {
         grades: moduleData[moduleId],
     }));
     data.map;
-    console.log(data);
 
 return <StudentTable data={data} courses={courses} />;
 }

@@ -54,7 +54,6 @@ function ClassUserForm({ title, handleSubmitClass }) {
         let modules = await getModules();
         setModulesOptions(modules.map((module) => makeModuleOption(module)));
     };
-    console.log(modulesOptions);
 
     const makeUserOption = (user) => {
         return {

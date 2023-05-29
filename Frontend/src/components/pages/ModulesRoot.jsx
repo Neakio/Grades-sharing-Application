@@ -69,7 +69,6 @@ function Modules() {
         fetchModules();
         navigate("/modules");
     };
-    console.log(data)
 
     return (
         <Fragment>

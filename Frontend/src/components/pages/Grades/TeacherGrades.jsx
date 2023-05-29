@@ -21,10 +21,6 @@ function TeacherGrades({ userRole, userId }) {
             fetchGroups();
         }
     }, [selectedCourse]);
-    useEffect(() => {
-        console.log(selectedCourse);
-        console.log(selectedGroup);
-    });
 
     const fetchCourses = async () => {
         let courses = await getCoursesByTeacher(userId);
