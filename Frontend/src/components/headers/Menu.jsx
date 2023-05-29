@@ -34,7 +34,6 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
                     </div>
                     <div
                         id="flyoutMenu"
-                        onMouseLeave={handleMouseDown}
                         className={`${visible ? "show" : "hide"} ${darkmode ? "d" : "light"}`}
                     >
                         <h2>
