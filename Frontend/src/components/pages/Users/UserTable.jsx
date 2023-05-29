@@ -57,29 +57,32 @@ function UserTable({ data, removeUser }) {
     );
     const columns = active
         ? [
-            ...defaultColumns.slice(0, 3),
-            {
-                Header: "Class",
-                accessor: "groups",
-                Cell: ({ value }) => (
-                    <div>
-                        {value?.map((group, i) => (
-                            <tr key={"row" + i}>
-                                <td
-                                    key={"td" + i}
-                                    className={`badge rounded-pill ${
-                                        group.state ? "text-bg-success" : "text-bg-danger"
-                                    }`}
-                                >
-                                    {group.title}
-                                </td>
-                            </tr>
-                        ))}
-                    </div>
-                ),
-            },
-            ...defaultColumns.slice(3),
-        ]
+              ...defaultColumns.slice(0, 3),
+              {
+                  Header: "Class",
+                  accessor: "groups",
+                  Cell: ({ value }) => (
+                      <div>
+                          {value
+                              ?.slice()
+                              .sort((a, b) => b.title.localeCompare(a.title))
+                              .map((group, i) => (
+                                  <tr key={"row" + i}>
+                                      <td
+                                          key={"td" + i}
+                                          className={`badge rounded-pill ${
+                                              group.state ? "text-bg-success" : "text-bg-danger"
+                                          }`}
+                                      >
+                                          {group.title}
+                                      </td>
+                                  </tr>
+                              ))}
+                      </div>
+                  ),
+              },
+              ...defaultColumns.slice(3),
+          ]
         : defaultColumns;
     return (
         <>

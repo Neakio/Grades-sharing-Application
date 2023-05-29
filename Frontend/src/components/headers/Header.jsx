@@ -10,8 +10,8 @@ function Header({ setDarkmode, darkmode, isLoggedIn, logIn, userRole }) {
     const [showMenu, setShowMenu] = useState(false);
 
     return (
-        <Fragment>
-            <div className="d-flex justify-content-between header">
+        <Fragment >
+            <div className={`d-flex justify-content-between header ${darkmode ? "dark" : "light"}`}>
                 <div className="menu">
                     <div
                         className="logo"

@@ -33,7 +33,7 @@ function ClassesTable({ groups, removeClass, userId }) {
                 accessor: "name",
                 Cell: ({ row, value }) => (
                     <Link to={"/classes/" + row.original.id}>
-                        <Button variant="info">{value}</Button>
+                        <button className={`btn btn-outline-${darkmode ? "dark" : "light"}`}>{value}</button>
                     </Link>
                 ),
             },

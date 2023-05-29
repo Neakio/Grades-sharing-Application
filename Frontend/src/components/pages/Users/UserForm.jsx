@@ -69,9 +69,11 @@ function UserForm({ title, handleSubmitUser }) {
                     onChange={(value) => setUserData({ ...userData, role: value })}
                     required
                 />
-                <Button variant="primary" type="submit">
+                <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                <Button variant="btn btn-outline-success me-md-2" type="submit">
                     Submit
                 </Button>
+                </div>
             </Form>
             <pre>{JSON.stringify(userData, null, 2)}</pre>
         </Fragment>
