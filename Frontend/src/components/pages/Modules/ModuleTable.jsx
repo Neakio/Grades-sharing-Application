@@ -7,7 +7,6 @@ import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Util } from "../../../services/Util";
-import { SelectColumnFilter } from "../../render-components/TableFilters";
 
 function ModuleTable({ modules, removeModule }) {
     const columns = React.useMemo(

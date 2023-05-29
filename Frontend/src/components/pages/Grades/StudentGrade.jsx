@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 import StudentTable from "./StudentTable";
-import { getCourses, getGrades, getModules, getUserfromClass } from "../../../services/api";
-import { Util } from "../../../services/Util";
+import { getGrades, getModules, getUserfromClass } from "../../../services/api";
 
 function StudentView() {
-{/*}    const [grades, setGrades] = useState([]);
+    const [grades, setGrades] = useState([]);
     const [modules, setCourses] = useState([]);
     const [groupId, setGroupId] = useState([]);
     let studentId = 2;
@@ -63,8 +62,7 @@ function StudentView() {
     data.map;
     console.log(data);
 
-return <StudentTable data={data} courses={courses} />;*/}
-return null;
+return <StudentTable data={data} courses={courses} />;
 }
 
 export default StudentView;
