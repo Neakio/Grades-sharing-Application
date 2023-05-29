@@ -24,8 +24,8 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [darkmode, setDarkmode] = useState(false);
     // Retrieve the role of the user
-    let userRole = "Administrator Referent";
-
+    let userRole = "Teacher";
+    let userId = 3;
     const logIn = () => {
         if (isLoggedIn) navigate("/");
         setIsLoggedIn(!isLoggedIn);
@@ -51,14 +51,29 @@ function App() {
                 </header>
 
                 <main>
-                    <Container>
+                    <Container className="h-100">
                         <Routes>
                             <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
-                            <Route path="classes/*" element={<Classes userRole={userRole} />} />
-                            <Route path="users/*" element={<UsersRoot />} />
-                            <Route path="modules/*" element={<Modules />} />
-                            <Route path="courses/*" element={<Courses />} />
-                            <Route path="grades/*" element={<Grades userRole={userRole} />} />
+                            <Route
+                                path="classes/*"
+                                element={<Classes userRole={userRole} userId={userId} />}
+                            />
+                            <Route
+                                path="users/*"
+                                element={<UsersRoot userRole={userRole} userId={userId} />}
+                            />
+                            <Route
+                                path="modules/*"
+                                element={<Modules userRole={userRole} userId={userId} />}
+                            />
+                            <Route
+                                path="courses/*"
+                                element={<Courses userRole={userRole} userId={userId} />}
+                            />
+                            <Route
+                                path="grades/*"
+                                element={<Grades userId={userId} userRole={userRole} />}
+                            />
                         </Routes>
                     </Container>
                 </main>

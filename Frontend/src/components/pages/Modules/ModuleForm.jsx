@@ -109,7 +109,6 @@ function ModuleForm({ title, handleSubmitModule }) {
                 </Button>
                 </div>
             </Form>
-            <pre>{JSON.stringify(moduleData, null, 2)}</pre>
         </Fragment>
     );
 }

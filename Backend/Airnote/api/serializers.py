@@ -45,6 +45,24 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
+class CourseSerializer(serializers.ModelSerializer):
+    lead_teacher = RefField(model=User, serializer=UserSerializer,
+                            required=False, allow_null=True)
+    other_teachers = RefField(model=User, serializer=UserSerializer, many=True)
+
+    class Meta:
+        model = Course
+        fields = '__all__'
+
+
+class ModuleSerializer(serializers.ModelSerializer):
+    courses = RefField(model=Course, serializer=CourseSerializer, many=True)
+
+    class Meta:
+        model = Module
+        fields = '__all__'
+        
 class GroupSerializer(serializers.ModelSerializer):
     referent = RefField(model=User, serializer=UserSerializer,
                         required=False, allow_null=True)
@@ -52,6 +70,7 @@ class GroupSerializer(serializers.ModelSerializer):
                          required=False, many=True)
     students = RefField(model=User, serializer=UserSerializer,
                         required=False, many=True)
+    modules = RefField(model=Module, serializer=ModuleSerializer, required=False, many=True)
 
     class Meta:
         model = Group
@@ -67,29 +86,13 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
 
-class CourseSerializer(serializers.ModelSerializer):
-    lead_teacher = RefField(model=User, serializer=UserSerializer,
-                            required=False, allow_null=True)
-    other_teachers = RefField(model=User, serializer=UserSerializer, many=True)
-
-    class Meta:
-        model = Course
-        fields = '__all__'
-
-
-class ModuleSerializer(serializers.ModelSerializer):
-    groups = RefField(model=Group, serializer=GroupSerializer, many=True)
-    courses = RefField(model=Course, serializer=CourseSerializer, many=True)
-
-    class Meta:
-        model = Module
-        fields = '__all__'
-
 
 class GradeSerializer(serializers.ModelSerializer):
     student = RefField(model=User, serializer=UserSerializer,
                        required=True, allow_null=False)
     course = RefField(model=Course, serializer=CourseSerializer,
+                       required=True, allow_null=False)
+    group = RefField(model=Group, serializer=GroupSerializer,
                        required=True, allow_null=False)
 
     class Meta:

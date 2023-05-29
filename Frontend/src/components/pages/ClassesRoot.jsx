@@ -5,7 +5,7 @@ import { getClasses } from "../../services/api";
 import Administration from "./Classes/ClassAdmin";
 import Teacher from "./Classes/ClassTeacher";
 
-function Classes({ userRole }, darkmode) {
+function Classes({ userRole, userId, darkmode }) {
     const [groups, setGroups] = useState([]);
     const isAdmin = userRole.startsWith("Admin");
 
@@ -20,9 +20,15 @@ function Classes({ userRole }, darkmode) {
     return (
         <Fragment>
             {isAdmin ? (
-                <Administration groups={groups} fetchGroups={fetchGroups} isAdmin={isAdmin} darkmode={darkmode}/>
+                <Administration
+                    groups={groups}
+                    fetchGroups={fetchGroups}
+                    isAdmin={isAdmin}
+                    userId={userId}
+                    darkmode={darkmode}
+                />
             ) : (
-                <Teacher groups={groups} darkmode={darkmode}/>
+                <Teacher groups={groups} userId={userId} darkmode={darkmode} />
             )}
         </Fragment>
     );

@@ -28,7 +28,6 @@ function Users() {
         let groups = await getClasses();
         setGroups(groups);
     };
-    console.log("Groups : ", groups);
 
     // Perform join operation to match user's ID with group information (Name and state)
     const data = users.map((user) => {

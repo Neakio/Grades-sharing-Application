@@ -8,7 +8,7 @@ import { createCourse, getCourses, deleteCourse, editCourse, getModules } from "
 import CourseForm from "./Courses/CourseForm";
 import CourseTable from "./Courses/CourseTable";
 
-function Courses() {
+function Courses(userRole, userId) {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [modules, setModules] = useState([]);
@@ -36,7 +36,6 @@ function Courses() {
         const modulesNames = courseModules.map((module) => module.title);
         return { ...course, modules: modulesNames };
     });
-
     const addCourses = async (course) => {
         createCourse(course.title, course.leadTeacher, course.otherTeachers).then(() => {
             toastSuccess("Course successfully created");

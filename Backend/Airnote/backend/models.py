@@ -3,7 +3,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
-
 class User(models.Model):
     ROLES = [('AD', 'Administrator'), ('AR', 'Administrator Referent'),
              ('TE', 'Teacher'), ('ST', 'Student')]
@@ -18,6 +17,23 @@ class User(models.Model):
 
     class Meta:
         unique_together = ('firstname', 'lastname', )
+
+      
+class Course(models.Model):
+    title = models.CharField(max_length=100,
+                             blank=False, null=False)
+    lead_teacher = models.ForeignKey('User', limit_choices_to={
+                                     'role': 'TE'}, on_delete=models.PROTECT, related_name='lead_teacher',
+                                     blank=False, null=False)
+    other_teachers = models.ManyToManyField(User, limit_choices_to={
+        'role': 'TE'}, related_name='teachers', default=[], blank=True)
+
+
+class Module(models.Model):
+    title = models.CharField(max_length=100,
+                             blank=False, null=False)
+    courses = models.ManyToManyField(
+        Course, related_name='courses', default=[], blank=True)
 
 
 class Group(models.Model):
@@ -35,6 +51,7 @@ class Group(models.Model):
         'role': 'ST'}, related_name='delegates', default=[], blank=True)
     students = models.ManyToManyField('User', limit_choices_to={
         'role': 'ST'}, related_name='students', default=[], blank=True)
+    modules = models.ManyToManyField('Module', related_name='modules', default=[], blank=True)
 
     class Meta:
         unique_together = ('level', 'name', 'year')
@@ -43,32 +60,14 @@ class Group(models.Model):
 class Comment(models.Model):
     comment = models.CharField(max_length=200,
                                blank=True, null=True)
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    student = models.ForeignKey('User', on_delete=models.CASCADE)
     group = models.ForeignKey('Group', on_delete=models.CASCADE,
                               blank=False, null=False)
 
     class Meta:
-        unique_together = ('user', 'group', )
+        unique_together = ('student', 'group', )
 
-        
-class Course(models.Model):
-    title = models.CharField(max_length=100,
-                             blank=False, null=False)
-    lead_teacher = models.ForeignKey('User', limit_choices_to={
-                                     'role': 'TE'}, on_delete=models.PROTECT, related_name='lead_teacher',
-                                     blank=False, null=False)
-    other_teachers = models.ManyToManyField(User, limit_choices_to={
-        'role': 'TE'}, related_name='teachers', default=[], blank=True)
-
-
-class Module(models.Model):
-    title = models.CharField(max_length=100,
-                             blank=False, null=False)
-    groups = models.ManyToManyField(
-        Group, related_name='groups', default=[], blank=True)
-    courses = models.ManyToManyField(
-        Course, related_name='courses', default=[], blank=True)
-
+  
 
 class Grade(models.Model):
     number = models.DecimalField(max_digits=4, decimal_places=2, validators=[
@@ -79,3 +78,8 @@ class Grade(models.Model):
     student = models.ForeignKey('User', limit_choices_to={
                                 'role': 'ST'}, on_delete=models.CASCADE,
                                 blank=False, null=False)
+    group = models.ForeignKey('Group', on_delete=models.PROTECT,
+                                blank=False, null=False)
+
+    class Meta:
+        unique_together = ('student', 'group', 'course', )

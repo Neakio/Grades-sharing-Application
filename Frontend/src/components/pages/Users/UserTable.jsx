@@ -5,10 +5,9 @@ import { SelectColumnFilter } from "../../render-components/TableFilters";
 import { ReactComponent as Edit } from "../../../assets/images/edit.svg";
 import { ReactComponent as Trash } from "../../../assets/images/trash.svg";
 
-import { Badge, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import GLOBALS from "../../../Globals";
-import { Util } from "../../../services/Util";
 
 function UserTable({ data, removeUser }) {
     const [active, setActive] = useState(false);
