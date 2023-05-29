@@ -101,101 +101,12 @@ class GradeViewSet(viewsets.ModelViewSet):
     serializer_class = GradeSerializer
     
     def get_queryset(self):
-        student_id = self.request.query_params.get('student')
-        group_id = self.request.query_params.get('group')
-        course_id = self.request.query_params.get('course')
-        if course_id is not None and group_id is not None:
-            queryset = Grade.objects.filter(group_id=group_id, course_id=course_id)
-        if student_id is not None:
-            queryset = Grade.objects.filter(student=student_id)
+        queryset = Grade.objects.all()
+        student = self.request.query_params.get('student')
+        group = self.request.query_params.get('group')
+        course = self.request.query_params.get('course')
+        if course is not None and group is not None:
+            queryset = Grade.objects.filter(group=group, course=course)
+        if student is not None:
+            queryset = Grade.objects.filter(student=student)
         return queryset
-
-        #Return filtered grades according to the role
-"""        match role :
-                case "AR" :
-                    groups = Group.objects.filter(referent_id=id)
-
-                    
-
-
-                case "TE" :
-                    courses = Course.objects.filter(Q(other_teachers__in=[id]) | Q(lead_teacher=id))
-                    course_serializer = CourseSerializer(courses, many=True)
-                    formatted_data = []
-                    for course in courses.values():
-                        formatted_course = course
-                        print(course, "\n")
-                        modules = Module.objects.filter(courses__in=courses)
-                        module_serializer = ModuleSerializer(modules, many=True)
-                        groups = Group.objects.filter(modules__in=modules)
-                        group_serializer = GroupSerializer(groups, many=True)
-                        groups_data = json.dumps(group_serializer.data)
-                        for group in group_serializer.data:
-                            group.pop('modules')
-                            print(group)
-                        formatted_course['groups'] = json.dumps(groups_data)
-                        courses_json = json.dumps(course_serializer.data)
-                        modules_json = json.dumps(module_serializer.data)
-                        groups_json = json.dumps(group_serializer.data)
-                        print("\n", formatted_course)
-                        #print("courses", courses_json)
-                        #print("modules", modules_json)
-                        #print("groups", groups_json)
-                        #formatted_data.append()
-                        return JsonResponse(formatted_course)
-
-
-
-                case "ST" : 
-                    group_data = []
-                    for group in user.groups.all():
-                        group_courses = []
-                        for course in group.courses.all():
-                            grade = Grade.objects.filter(course=course, student=user, group=group).first()
-                            course_data = {
-                                'title': course.title,
-                                'grade': grade.number if grade else None,
-                                'comment': grade.comment if grade else None,
-                            }
-                            group_courses.append(course_data)
-
-                        group_data.append({
-                            'group_name': group.name,
-                            'courses': group_courses,
-                        })
-
-                    return JsonResponse({'student': user.name, 'groups': group_data})
-                case _ :
-                    queryset = ""
-match role :
-            case "AR" :
-                groups = Group.objects.filter(referent_id=id)
-                queryset = Grade.objects.filter(group__in=[groups])
-
-            case "TE" :
-                courses = Course.objects.filter(Q(other_teachers__in=[id]) | Q(lead_teacher=id)).values()
-                courses_ids = []
-                for i in range(len(courses)):
-                    courses_ids.append(courses[i]['id'])
-                queryset = Grade.objects.filter(course__in=courses_ids)
-
-            case _ : 
-                queryset = Grade.objects.filter(student_id=id)
-        return queryset
-
-        #Filter by Group
-group_by = self.request.query_params.get('group_by')
-        if group_by is not None and group_by=="module" : 
-            courses=[]
-            for grade in queryset.values() :
-                print("Grades : ", grade) 
-                if grade["course_id"] not in courses:
-                    courses.append(grade["course_id"])
-                    print("courses : ", courses) 
-            modules = Module.objects.filter(courses__in=courses)
-            print("modules : ", modules.values()) 
-            for module in modules.values():
-                print("module : ", module) 
-                module["grades"] = Grade.objects.filter(course__in=module["courses"])
-            print(modules.values())
-            return modules"""

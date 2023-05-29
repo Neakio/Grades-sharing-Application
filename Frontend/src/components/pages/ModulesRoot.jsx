@@ -3,26 +3,31 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { toastError, toastSuccess } from "../../services/toasts";
 
-import { createModule, deleteModule, editModule, getModules } from "../../services/api";
+import { createModule, deleteModule, editModule, getClass, getClasses, getModules } from "../../services/api";
 
 import ModuleTable from "./Modules/ModuleTable";
 import ModuleForm from "./Modules/ModuleForm";
+import { Util } from "../../services/Util";
 
 function Modules() {
     const navigate = useNavigate();
     const [modules, setModules] = useState([]);
-
+    const [groups, setGroups] = useState([]);
     useEffect(() => {
         fetchModules();
+        fetchGroups();
     }, []);
 
     const fetchModules = async () => {
         let modules = await getModules();
         setModules(modules);
     };
-
+    const fetchGroups = async () => {
+        let groups = await getClasses();
+        setGroups(groups);
+    }
     const addModules = async (module) => {
-        createModule(module.title, module.groups, module.courses)
+        createModule(module.title, module.courses)
             .then(() => {
                 toastSuccess("Module successfully created");
                 redirectToTable();
@@ -32,6 +37,20 @@ function Modules() {
             });
     };
 
+    // Perform join operation to match module's ID with group information (Name and state)
+    const data = modules.map((module) => {
+        const moduleGroups = groups.filter((group) => {
+            const groupModuleIds = group.modules.map((module) => module.id);
+            return groupModuleIds.includes(module.id);
+        });
+        const groupsinfo = moduleGroups.map((group) => {
+            const groupState = group.isActive;
+            const groupString = Util.groupToStr(group);
+            return { state: groupState, title: groupString };
+        });
+        return { ...module, groups: groupsinfo };
+    });
+
     const removeModule = async (courseId) => {
         deleteModule(courseId).then(() => {
             toastSuccess("Module successfully deleted");
@@ -40,7 +59,7 @@ function Modules() {
     };
 
     const modifyModules = async (module, moduleId) => {
-        editModule(moduleId, module.title, module.groups, module.courses).then(() => {
+        editModule(moduleId, module.title, module.courses).then(() => {
             toastSuccess("Successfully edited");
             redirectToTable();
         });
@@ -50,6 +69,7 @@ function Modules() {
         fetchModules();
         navigate("/modules");
     };
+    console.log(data)
 
     return (
         <Fragment>
@@ -64,7 +84,7 @@ function Modules() {
                                     <Button variant="success">Create module</Button>
                                 </Link>
                             </div>
-                            <ModuleTable modules={modules} removeModule={removeModule} />
+                            <ModuleTable modules={data} removeModule={removeModule} />
                         </Fragment>
                     }
                 />

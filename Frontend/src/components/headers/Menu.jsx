@@ -19,7 +19,7 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
     const isReferent = userRole === "Administrator Referent";
 
     return (
-        <Fragment >
+        <Fragment>
             {isLoggedIn ? (
                 <Fragment>
                     <div
@@ -46,9 +46,10 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
                                 <a href="/users">Users</a>
                             </h2>
                         )}
-                        {(isAdmin || isTeacher) && (
+
+                        {isAdmin && (
                             <h2>
-                                <a href="/classes">Classes</a>
+                                <a href="/courses">Courses</a>
                             </h2>
                         )}
                         {isAdmin && (
@@ -56,12 +57,12 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
                                 <a href="/modules">Modules</a>
                             </h2>
                         )}
-                        {isAdmin && (
+                        {(isAdmin || isTeacher) && (
                             <h2>
-                                <a href="/courses">Courses</a>
+                                <a href="/classes">Classes</a>
                             </h2>
                         )}
-                        {(!isAdmin || isReferent) && (
+                        {(isReferent || !isAdmin) && (
                             <h2>
                                 <a href="/grades">Grades</a>
                             </h2>

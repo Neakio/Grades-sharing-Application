@@ -4,10 +4,12 @@ import ReactTable from "../../render-components/ReactTable";
 import { Util } from "../../../services/Util";
 import { NumberRangeColumnFilter } from "../../render-components/TableFilters";
 import { addGrade, editGrade, getClass, getTeacherGrades } from "../../../services/api";
+import { Form } from "react-bootstrap";
 
 function TeacherTable({ course, group }) {
     const [students, setStudents] = useState([]);
     const [tableData, setTableData] = useState([]);
+    const [grades, setGrades] = useState([]);
 
     useEffect(() => {
         if (group) {
@@ -17,62 +19,42 @@ function TeacherTable({ course, group }) {
     }, [group]);
     useEffect(() => {
         initializeTableData();
-    }, [students]);
+    }, [students, grades]);
 
     const fetchStudents = async () => {
         let studentgroup = await getClass(group);
         setStudents(studentgroup["students"]);
-        console.log(students);
-        console.log(studentgroup);
-    };
-    const initializeTableData = () => {
-        const initialData = students.map((student) => ({
-            studentId: student.id,
-            name: Util.formatUserName(student),
-            grade: null, // Set initial grade as null
-            comment: "", // Set initial comment as empty string
-        }));
-        setTableData(initialData);
     };
     const fetchGrades = async () => {
         let grades = await getTeacherGrades(group, course);
-        const tableData = grades.data;
-
-        // Update the tableData state with the retrieved grades/comments
-        const updatedData = tableData.map((student) => {
-            const grade = tableData.find((grade) => grade.student === student.studentId);
-            if (grade) {
-                student.grade = grade.number;
-                student.comment = grade.comment;
-            }
-            return student;
+        setGrades(grades);
+    };
+    const initializeTableData = () => {
+        let data = students.map((student) => {
+            let studentGrade = grades.find((grade) => student.id === grade.student.id);
+            if (studentGrade) student.grade = studentGrade;
+            else student.grade = { number: null, comment: "" };
+            return student; // Added return statement
         });
-
-        setTableData(updatedData);
+        setTableData(data);
     };
 
     const handleGradeChange = async (e, row) => {
         const newGrade = parseFloat(e.target.value);
-        const studentId = tableData[row.index].studentId;
+        const studentId = tableData[row.index].id;
 
-        // Check if the student already has a grade or not
-        const existingGrade = tableData[row.index].grade;
-
-        // If there is an existing grade, update it with PUT request
-        if (existingGrade) {
-            try {
-                await editGrade(existingGrade.id, { number: newGrade });
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        // If there is no existing grade, create a new grade with POST request
-        else {
-            const response = await addGrade({
-                number: newGrade,
-                student: studentId,
+        // Check if the student already has an entry or not
+        const exist = tableData[row.index].grade.id;
+        // If there is an existing entry, update it with PUT request
+        if (exist) {
+            await editGrade(exist, {
+                comment: newGrade,
             });
-            const createdGrade = response.data;
+        }
+        // If there is no existing entry, create a new grade with POST request
+        else {
+            const response = await addGrade(newGrade, undefined, course, studentId, group);
+            const createdGrade = response;
             const updatedData = [...tableData];
             updatedData[row.index].grade = createdGrade.number;
             setTableData(updatedData);
@@ -81,60 +63,70 @@ function TeacherTable({ course, group }) {
 
     const handleCommentChange = async (e, row) => {
         const newComment = e.target.value;
-        const studentId = tableData[row.index].studentId;
+        const studentId = tableData[row.index].id;
 
-        // Check if the student already has a comment or not
-        const existingComment = tableData[row.index].comment;
-
-        // If there is an existing comment, update it with PUT request
-        if (existingComment) {
-            await editGrade(existingComment.id, {
-                comment: newComment,
-            });
+        // Check if the student already has an entry or not
+        const exist = tableData[row.index].grade.id;
+        // If there is an existing entry, update it with PUT request
+        if (exist) {
+            await editGrade(
+                exist,
+                undefined,
+                newComment,
+                course,
+                studentId,
+                group,
+            );
         }
-        // If there is no existing comment, create a new comment with POST request
+        // If there is no existing entru, create a new comment with POST request
         else {
-            const response = await addGrade({
-                comment: newComment,
-                student: studentId,
-            });
-            const createdComment = response.data;
+            const response = await addGrade(undefined, newComment, course, studentId, group);
+            const createdComment = response;
             const updatedData = [...tableData];
             updatedData[row.index].comment = createdComment.comment;
             setTableData(updatedData);
         }
     };
-    console.log(tableData);
     const columns = React.useMemo(
         () => [
             {
+                Header: "ID",
+                accessor: "id",
+                isVisible: false,
+            },
+            {
+                Header: "Grade ID",
+                accessor: "grade.id",
+                isVisible: false,
+            },
+            {
                 Header: "Student",
-                accessor: "name",
+                accessor: ({ firstname, lastname }) => Util.formatUserName({ firstname, lastname }),
                 filter: "includes",
             },
             {
                 Header: "Grade",
-                accessor: "grade",
+                accessor: "grade.number",
                 Filter: NumberRangeColumnFilter,
-
                 filter: "between",
-                Cell: ({ row }) => (
-                    <input
+                Cell: ({ row, value }) => (
+                    <Form.Control
                         type="number"
-                        value={row.original.grade || ""}
-                        onChange={(e) => handleGradeChange(e, row)}
+                        as="textarea"
+                        defaultValue={value || ""}
+                        onBlur={(e) => handleGradeChange(e, row)}
                     />
                 ),
             },
             {
                 Header: "Comment",
-                accessor: "comment",
+                accessor: "grade.comment",
                 disableFilters: true,
-
-                Cell: ({ row }) => (
-                    <textarea
-                        value={row.original.comment || ""}
-                        onChange={(e) => handleCommentChange(e, row)}
+                Cell: ({ row, value }) => (
+                    <Form.Control
+                        as="textarea"
+                        defaultValue={value || ""}
+                        onBlur={(e) => handleCommentChange(e, row)}
                     />
                 ),
             },

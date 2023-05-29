@@ -37,6 +37,7 @@ function Administration({ groups, fetchGroups, isAdmin, userId, darkmode }) {
             group.referent,
             group.delegates,
             group.students,
+            group.modules,
         )
             .then(() => {
                 toastSuccess("Class successfully created");
@@ -48,7 +49,7 @@ function Administration({ groups, fetchGroups, isAdmin, userId, darkmode }) {
     };
 
     const modifyGroups = (group, groupId) => {
-        editClass(groupId, group.level, group.name, group.year, group.isActive).then(() => {
+        editClass(groupId, group.level, group.name, group.year, group.isActive,).then(() => {
             toastSuccess("Successfully edited");
             redirectToTable();
         });
@@ -65,8 +66,9 @@ function Administration({ groups, fetchGroups, isAdmin, userId, darkmode }) {
             group.referent,
             group.delegates,
             group.students,
+            group.modules,
         ).then(() => {
-            toastSuccess("Successfully added");
+            toastSuccess("Successfully modified");
             redirectToGroup(groupId);
         });
     };

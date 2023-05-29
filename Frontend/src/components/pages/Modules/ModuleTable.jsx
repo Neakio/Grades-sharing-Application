@@ -16,15 +16,25 @@ function ModuleTable({ modules, removeModule }) {
                 accessor: "title",
             },
             {
-                Header: "Classes linked",
-                accessor: ({ groups }) => groups.map((group) => Util.groupToStr(group)),
+                Header: "Class",
+                accessor: "groups",
                 Cell: ({ value }) => (
                     <div>
-                        {value.map((group, i) => (
-                            <tr key={"row" + i}>
-                                <td key={"td" + i}>{group}</td>
-                            </tr>
-                        ))}
+                        {value
+                            ?.slice()
+                            .sort((a, b) => b.title.localeCompare(a.title))
+                            .map((group, i) => (
+                                <tr key={"row" + i}>
+                                    <td
+                                        key={"td" + i}
+                                        className={`badge rounded-pill ${
+                                            group.state ? "text-bg-success" : "text-bg-danger"
+                                        }`}
+                                    >
+                                        {group.title}
+                                    </td>
+                                </tr>
+                            ))}
                     </div>
                 ),
             },
