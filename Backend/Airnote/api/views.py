@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from django.db.models import Q
 
 from backend.models import User, Comment, Group, Module, Course, Grade
-from .serializers import UserSerializer, CommentSerializer, GroupSerializer, ModuleSerializer, CourseSerializer, GradeSerializer
+from .serializers import UserSerializer, CommentSerializer, GroupSerializer, ModuleSerializer, CourseSerializer, GradeSerializer, AuthSerializer
 from rest_framework import generics
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import UserSerializer
@@ -15,10 +15,13 @@ from rest_framework.response import Response
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate, login, logout
-from .serializers import UserSerializer
 
+
+class AuthViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing user instances.
+    """
+    serializer_class = AuthSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):

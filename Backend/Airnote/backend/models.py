@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
-class CustomUser(AbstractUser):
+class Auth(AbstractUser):
     # Add your additional fields here if needed
     pass
 
@@ -12,20 +12,16 @@ class CustomUser(AbstractUser):
 class User(models.Model):
     ROLES = [('AD', 'Administrator'), ('AR', 'Administrator Referent'),
              ('TE', 'Teacher'), ('ST', 'Student')]
-
     firstname = models.CharField(max_length=50,
                                  blank=False, null=False)
     lastname = models.CharField(max_length=50,
                                 blank=False, null=False)
     role = models.CharField(max_length=2, choices=ROLES,
                             blank=False, null=False)
-    username = models.CharField(max_length=50,
-                                 blank=False, null=False)
-    password = models.CharField(max_length=50,
-                                 blank=False, null=False)
+    auth = models.OneToOneField(Auth, on_delete=models.CASCADE)
     
     class Meta:
-        unique_together = ('firstname', 'lastname', )
+        unique_together = ('firstname', 'lastname',)
 
       
 class Course(models.Model):
