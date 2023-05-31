@@ -44,7 +44,7 @@ function Users() {
     });
 
     const addUser = async (user) => {
-        createUser(user.firstname, user.lastname, user.role)
+        createUser(user.firstname, user.lastname, user.role, user.password)
             .then(() => {
                 toastSuccess("User successfully created");
                 redirectToTable();

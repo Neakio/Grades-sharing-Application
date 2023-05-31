@@ -8,16 +8,17 @@ export const getUsersByRole = (role) => {
     return axios.get("/api/users?role=" + role);
 };
 
-
 export const getUser = (userId) => {
     return axios.get("api/users/" + userId);
 };
 
-export const createUser = (firstname, lastname, role) => {
+export const createUser = (firstname, lastname, role, password) => {
     let payload = {
         firstname,
         lastname,
         role,
+        password,
+        email: `${firstname}.${lastname}`,
     };
     return axios.post("api/users", payload);
 };

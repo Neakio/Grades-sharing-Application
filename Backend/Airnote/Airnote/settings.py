@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'Airnote.wsgi.application'
 
 
 #Auth
-AUTH_USER_MODEL = 'backend.CustomUser'
+AUTH_USER_MODEL = 'backend.User'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]

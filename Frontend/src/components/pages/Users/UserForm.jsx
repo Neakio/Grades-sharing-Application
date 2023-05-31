@@ -15,6 +15,7 @@ function UserForm({ title, handleSubmitUser }) {
         firstname: null,
         lastname: null,
         role: null,
+        password: null,
     });
 
     useEffect(() => {
@@ -69,11 +70,18 @@ function UserForm({ title, handleSubmitUser }) {
                     onChange={(value) => setUserData({ ...userData, role: value })}
                     required
                 />
+                <FormControl
+                    label="Password"
+                    name="password"
+                    placeholder="Create a password"
+                    value={userData.password}
+                    onChange={handleChange}
+                    required
+                />
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
             </Form>
-            <pre>{JSON.stringify(userData, null, 2)}</pre>
         </Fragment>
     );
 }

@@ -1,4 +1,4 @@
-from backend.models import User, Comment, Group, Module, Grade, Course, CustomUser
+from backend.models import User, Comment, Group, Module, Grade, Course
 from rest_framework import serializers
 from collections import OrderedDict
 # Create your models here.
@@ -38,17 +38,19 @@ class RefField(serializers.PrimaryKeyRelatedField):
 
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser  # Use your custom user model if applicable
-        fields = '__all__'
 
-class UsersSerializer(serializers.ModelSerializer):
+
+class UserSerializer(serializers.ModelSerializer):
     # TODO Validation doit échouer si role pas dans les choices
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['firstname', 'lastname', 'email', 'role', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user
 
 
 
