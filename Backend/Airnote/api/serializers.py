@@ -45,11 +45,22 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['id', 'firstname', 'lastname', 'username', 'password', 'role']
+        extra_kwargs = {'password': {'write_only': True}}
+
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+
+
+class PasswordResetSerializer(serializers.Serializer):
+    username = serializers.CharField()
+
+    def validate_username(self, value):
+        if not User.objects.filter(username=value).exists():
+            raise serializers.ValidationError('User does not exist.')
+        return value
 
 
 

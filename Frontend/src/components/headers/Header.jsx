@@ -7,18 +7,32 @@ import Menu from "./Menu";
 import { Button } from "react-bootstrap";
 import UserInfo from "../render-components/Form/Info";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { makeRequest } from "../../services/api/csrftoken";
 
-function Header({ setDarkmode, darkmode, isLoggedIn, userRole }) {
+function Header({ setDarkmode, setIsLoggedIn, darkmode, isLoggedIn, userRole }) {
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
 
     const logOut = () => {
+        axios
+            .post("/api/logout/")
+            .then((response) => {
+                // Handle successful logout
+                console.log(response.data);
+            })
+            .catch((error) => {
+                // Handle logout error
+                console.error(error);
+            });
         localStorage.removeItem("token");
+        setIsLoggedIn(false);
         navigate("/");
     };
 
     const logIn = () => {
         navigate("/login");
+        makeRequest();
     };
 
     return (

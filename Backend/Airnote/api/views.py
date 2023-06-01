@@ -3,23 +3,93 @@ from django.db.models import Q
 
 from backend.models import User, Comment, Group, Module, Course, Grade
 from .serializers import UserSerializer, CommentSerializer, GroupSerializer, ModuleSerializer, CourseSerializer, GradeSerializer
-from rest_framework import generics
-from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import UserSerializer
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import get_user_model
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
+from rest_framework import generics, status, permissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth import authenticate, login
+from rest_framework.views import APIView
+from .serializers import UserSerializer, PasswordResetSerializer
+from django.contrib.auth import authenticate, login, logout
+from django.views import View
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
+
+class UserCreateAPIView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+class PasswordResetAPIView(APIView):
+    def post(self, request):
+        serializer = PasswordResetSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = User.objects.get(username=serializer.validated_data['username'])
+
+        # Generate token and create reset URL
+        token_generator = default_token_generator
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = token_generator.make_token(user)
+        current_site = get_current_site(request)
+        reset_url = f"{current_site}/password-reset/{uid}/{token}"
+        return reset_url
+
+class PasswordResetConfirmAPIView(APIView):
+    def post(self, request, uid, token):
+        try:
+            uid = force_text(urlsafe_base64_decode(uid))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        token_generator = default_token_generator
+        if user is not None and token_generator.check_token(user, token):
+            # Set new password
+            user.set_password(request.data.get('new_password'))
+            user.save()
+            return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
+
+        return Response({'error': 'Invalid reset link.'}, status=status.HTTP_400_BAD_REQUEST)
+
+@method_decorator(csrf_protect, name="dispatch")
+class LoginView(View):
+    @method_decorator(csrf_protect)
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'message': 'Login successful'})
+        else:
+            return JsonResponse({'message': 'Invalid credentials'}, status=401)
+
+class LogoutView(View):
+    def post(self, request):
+        logout(request)
+        return JsonResponse({'message': 'Logout successful'})
 
 
-
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-
+"""Send to the login interface the token CSRF as a cookie."""
+@method_decorator(ensure_csrf_cookie, name="dispatch")
+class GetCSRFToken(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def get(self, request, format=None):
+        return Response({'success':'CSRF cookie sets'})
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -122,27 +192,3 @@ class GradeViewSet(viewsets.ModelViewSet):
             queryset = Grade.objects.filter(student=student_id)
         return queryset
     
-
-
-
-
-
-class UserRegistrationView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-class UserLoginView(TokenObtainPairView):
-    pass
-
-User = get_user_model()
-
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_user_info(request):
-    authentication_classes = [JWTAuthentication]
-    user = request.user
-    serialized_user = UserSerializer(user)  # Assuming you have a UserSerializer defined
-    return Response(serialized_user.data)
-
-

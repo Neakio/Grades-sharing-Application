@@ -16,8 +16,8 @@ import Grades from "./components/pages/GradesRoot";
 import UsersRoot from "./components/pages/UsersRoot";
 import Modules from "./components/pages/ModulesRoot";
 import Courses from "./components/pages/CoursesRoot";
-import LoginForm from "./components/render-components/Form/LogForm";
 import UserInfo from "./components/render-components/Form/Info";
+import Login from "./components/pages/Log/login";
 
 function App() {
     const appRef = useRef();
@@ -47,6 +47,7 @@ function App() {
                         setDarkmode={onSetDarkMode}
                         isLoggedIn={isLoggedIn}
                         userRole={userRole}
+                        setIsLoggedIn={setIsLoggedIn}
                     />
                 </header>
 
@@ -54,15 +55,7 @@ function App() {
                     <Container className="h-100">
                         <Routes>
                             <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
-                            <Route
-                                path="/login"
-                                element={
-                                    <LoginForm
-                                        isLoggedIn={isLoggedIn}
-                                        setIsLoggedIn={setIsLoggedIn}
-                                    />
-                                }
-                            />
+                            <Route path="/login" element={<Login />} />
                             <Route
                                 path="classes/*"
                                 element={<Classes userRole={userRole} userId={userId} />}

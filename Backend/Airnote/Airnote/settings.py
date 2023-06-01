@@ -55,7 +55,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
-    'django-keycloak-auth.middleware.KeycloakMiddleware'
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
 ]
 
 ROOT_URLCONF = 'Airnote.urls'
@@ -139,6 +140,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_HEADER_NAME = 'X-CSRFToken'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -186,6 +190,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:5173',
 )
+CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
+CORS_EXPOSE_HEADERS = ['X-CSRFToken', 'Content-Type']
 
 
 # Keycloak settings
