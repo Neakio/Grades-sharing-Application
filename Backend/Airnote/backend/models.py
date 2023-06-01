@@ -7,26 +7,35 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        if not email:
-            raise ValueError('The Email field must be set')
-        
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+    def create_user(self, username, firstname, lastname, password):
+        if not firstname:
+            raise ValueError("The First Name field must be set.")
+        if not lastname:
+            raise ValueError("The Last Name field must be set.")
+        user = self.model(username, firstname=firstname, lastname=lastname)
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
+        return user
+    def create_superuser(self, username, firstname, lastname, password):
+        """
+        Creates and saves a superuser with the given email, date of
+        birth and password.
+        """
+        user = self.create_user(
+            username,
+            firstname,
+            lastname,
+            password,
+        )
+        user.is_admin = True
+        user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        
-        return self.create_user(email, password, **extra_fields)
 
 
 # Add the manager to the User model
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser):
   # Existing fields
     ROLES = [
         ('AD', 'Administrator'),
@@ -34,22 +43,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('TE', 'Teacher'),
         ('ST', 'Student')
     ]
-    
+    id = models.AutoField(primary_key=True)
     firstname = models.CharField(max_length=50, blank=False, null=False)
     lastname = models.CharField(max_length=50, blank=False, null=False)
+    username = models.CharField(max_length=50, unique=True, blank=False, null=False)
+    password = models.CharField(max_length=50, blank=False, null=False)
     role = models.CharField(max_length=2, choices=ROLES, blank=False, null=False)
-
-    # New fields for authentication
-    email = models.EmailField(max_length=254, unique=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-
-    # Set the username field to be 'email'
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['firstname', 'lastname', 'role']
-
     objects = UserManager()
-      
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['firstname', 'lastname']
+
+    
+
+
+
 class Course(models.Model):
     title = models.CharField(max_length=100,
                              blank=False, null=False)
