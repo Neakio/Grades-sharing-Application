@@ -7,8 +7,10 @@ import { createCourse, getCourses, deleteCourse, editCourse, getModules } from "
 
 import CourseForm from "./Courses/CourseForm";
 import CourseTable from "./Courses/CourseTable";
+import GLOBALS from "../../Globals";
+import Error from "../render-components/Error";
 
-function Courses(userRole, userId) {
+function Courses({ userRole, userId }) {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [modules, setModules] = useState([]);
@@ -62,6 +64,8 @@ function Courses(userRole, userId) {
         navigate("/courses");
     };
 
+    if (![GLOBALS.USER_ROLES.AD, GLOBALS.USER_ROLES.AR, GLOBALS.USER_ROLES.TE].includes(userRole))
+        return <Error />;
     return (
         <Fragment>
             <Routes>

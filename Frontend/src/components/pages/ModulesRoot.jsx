@@ -7,8 +7,10 @@ import { createModule, deleteModule, editModule, getModules } from "../../servic
 
 import ModuleTable from "./Modules/ModuleTable";
 import ModuleForm from "./Modules/ModuleForm";
+import GLOBALS from "../../Globals";
+import Error from "../render-components/Error";
 
-function Modules() {
+function Modules({ userRole }) {
     const navigate = useNavigate();
     const [modules, setModules] = useState([]);
 
@@ -51,6 +53,8 @@ function Modules() {
         navigate("/modules");
     };
 
+    if (![GLOBALS.USER_ROLES.AD, GLOBALS.USER_ROLES.AR, GLOBALS.USER_ROLES.TE].includes(userRole))
+        return <Error />;
     return (
         <Fragment>
             <Routes>

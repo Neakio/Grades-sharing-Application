@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_simplejwt',
+    'rest_framework.authtoken',
+    'djoser',
     'backend.apps.BackendConfig',
     'corsheaders'
 ]
@@ -140,7 +141,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+FRONT_URL = 'http://localhost:5173'
+CSRF_TRUSTED_ORIGINS = [FRONT_URL]
 CSRF_COOKIE_NAME = 'csrftoken'
 CSRF_HEADER_NAME = 'X-CSRFToken'
 
@@ -182,13 +184,19 @@ REST_FRAMEWORK = {
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
         # Any other parsers
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 
 # CORS settings
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:5173',
+    FRONT_URL,
 )
 CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
 CORS_EXPOSE_HEADERS = ['X-CSRFToken', 'Content-Type']

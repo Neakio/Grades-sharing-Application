@@ -37,15 +37,12 @@ class RefField(serializers.PrimaryKeyRelatedField):
         pass
 
 
-
-
-
 class UserSerializer(serializers.ModelSerializer):
     # TODO Validation doit échouer si role pas dans les choices
 
     class Meta:
         model = User
-        fields = ['id', 'firstname', 'lastname', 'username', 'password', 'role']
+        fields = ['id', 'firstname', 'lastname', 'email', 'password', 'role']
         extra_kwargs = {'password': {'write_only': True}}
 
 

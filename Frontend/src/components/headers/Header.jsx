@@ -1,40 +1,27 @@
 import React, { Fragment, useState } from "react";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 import light from "/airnote_light.png";
 import dark from "/airnote_dark.png";
 
 import Menu from "./Menu";
-import { Button } from "react-bootstrap";
-import UserInfo from "../render-components/Form/Info";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { makeRequest } from "../../services/api/csrftoken";
+import { logout } from "../../services/api/log";
 
 function Header({ setDarkmode, setIsLoggedIn, darkmode, isLoggedIn, userRole }) {
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
 
     const logOut = () => {
-        axios
-            .post("/api/logout/")
-            .then((response) => {
-                // Handle successful logout
-                console.log(response.data);
-            })
-            .catch((error) => {
-                // Handle logout error
-                console.error(error);
-            });
-        localStorage.removeItem("token");
+        logout();
         setIsLoggedIn(false);
         navigate("/");
     };
 
     const logIn = () => {
         navigate("/login");
-        makeRequest();
     };
-
+    console.log(userRole);
     return (
         <Fragment>
             <div className="d-flex justify-content-between header">

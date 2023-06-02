@@ -4,25 +4,23 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 # Create your models here.
 
-
-
 class UserManager(BaseUserManager):
-    def _create_user(self, username, password=None, **extra_fields):
-        if not username:
-            raise ValueError("The username must be set")
-        username = self.normalize_email(username)
-        user = self.model(username=username, **extra_fields)
+    def _create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("The email must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, username, password=None, **extra_fields):
-        return self._create_user(username, password, **extra_fields)
+    def create_user(self, email, password=None, **extra_fields):
+        return self._create_user(email, password, **extra_fields)
 
-    def create_superuser(self, username, password=None, **extra_fields):
+    def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        return self._create_user(username, password, **extra_fields)
+        return self._create_user(email, password, **extra_fields)
 
 # Add the manager to the User model
 
@@ -37,16 +35,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
     firstname = models.CharField(max_length=50, blank=False, null=False)
     lastname = models.CharField(max_length=50, blank=False, null=False)
-    username = models.CharField(max_length=128,unique=True,)
+    email = models.EmailField(max_length=128,unique=True, blank=False, null=False)
     password = models.CharField(max_length=128, blank=False, null=False)
     role = models.CharField(max_length=2, choices=ROLES, blank=False, null=False)
     is_staff = models.BooleanField(default=False)
     objects = UserManager()
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['firstname', 'lastname',]
-
-    
-
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['firstname', 'lastname', 'role']
 
 
 class Course(models.Model):
@@ -97,7 +92,6 @@ class Comment(models.Model):
     class Meta:
         unique_together = ('student', 'group', )
 
-  
 
 class Grade(models.Model):
     number = models.DecimalField(max_digits=4, decimal_places=2, validators=[

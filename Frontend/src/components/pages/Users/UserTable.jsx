@@ -29,6 +29,10 @@ function UserTable({ data, removeUser }) {
                 accessor: "lastname",
             },
             {
+                Header: "Email",
+                accessor: "email",
+            },
+            {
                 Header: "Role",
                 id: "role",
                 accessor: ({ role }) => GLOBALS.USER_ROLES[role],
@@ -57,29 +61,29 @@ function UserTable({ data, removeUser }) {
     );
     const columns = active
         ? [
-            ...defaultColumns.slice(0, 3),
-            {
-                Header: "Class",
-                accessor: "groups",
-                Cell: ({ value }) => (
-                    <div>
-                        {value?.map((group, i) => (
-                            <tr key={"row" + i}>
-                                <td
-                                    key={"td" + i}
-                                    className={`badge rounded-pill ${
-                                        group.state ? "text-bg-success" : "text-bg-danger"
-                                    }`}
-                                >
-                                    {group.title}
-                                </td>
-                            </tr>
-                        ))}
-                    </div>
-                ),
-            },
-            ...defaultColumns.slice(3),
-        ]
+              ...defaultColumns.slice(0, 3),
+              {
+                  Header: "Class",
+                  accessor: "groups",
+                  Cell: ({ value }) => (
+                      <div>
+                          {value?.map((group, i) => (
+                              <tr key={"row" + i}>
+                                  <td
+                                      key={"td" + i}
+                                      className={`badge rounded-pill ${
+                                          group.state ? "text-bg-success" : "text-bg-danger"
+                                      }`}
+                                  >
+                                      {group.title}
+                                  </td>
+                              </tr>
+                          ))}
+                      </div>
+                  ),
+              },
+              ...defaultColumns.slice(3),
+          ]
         : defaultColumns;
     return (
         <>

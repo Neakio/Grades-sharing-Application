@@ -9,14 +9,16 @@ axios.defaults.baseURL = "http://127.0.0.1:8000/";
             return response.data;
         },
         (error) => {
-            toastError(error.message);
+            if (error.response.status === 403)
+                toastError("You do not have permission to access this resource");
+            else toastError(error.message);
             throw error;
         },
     );
 
 axios.interceptors.request.use((request) => {
     const token = localStorage.getItem("token");
-    if (token) request.headers.authorization = "Bearer " + token;
+    if (token) request.headers.authorization = "Token " + token;
     return request;
 });
 export default axios;

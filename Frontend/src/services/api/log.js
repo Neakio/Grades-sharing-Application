@@ -1,12 +1,16 @@
-import axios from "axios";
+import { toastSuccess } from "../toasts";
+import axios from "./axios";
 
-const BASE_URL = "http://127.0.0.1:8000/api/";
+export const login = (email, password) => {
+    return axios.post("auth/token/login/", { email, password }).then((response) => {
+        localStorage.setItem("token", response.authToken);
+        toastSuccess("Successfully logged in");
+    });
+};
 
-export const login = (username, password) => {
-    return axios
-        .post(`${BASE_URL}token/`, { username, password })
-        .then((response) => response.data)
-        .catch((error) => {
-            throw error.response.data;
-        });
+export const logout = () => {
+    return axios.post("auth/token/logout/").then(() => {
+        localStorage.removeItem("token");
+        toastSuccess("Successfully logged out");
+    });
 };

@@ -9,8 +9,10 @@ import UserTable from "./Users/UserTable";
 import UserForm from "./Users/UserForm";
 import { getClasses } from "../../services/api";
 import { Util } from "../../services/Util";
+import GLOBALS from "../../Globals";
+import Error from "../render-components/Error";
 
-function Users() {
+function Users({ userRole }) {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [groups, setGroups] = useState([]);
@@ -44,7 +46,7 @@ function Users() {
     });
 
     const addUser = async (user) => {
-        createUser(user.firstname, user.lastname, user.role, user.password)
+        createUser(user.firstname, user.lastname, user.email, user.role, user.password)
             .then(() => {
                 toastSuccess("User successfully created");
                 redirectToTable();
@@ -61,7 +63,7 @@ function Users() {
     };
 
     const modifyUser = async (user, userId) => {
-        editUser(userId, user.firstname, user.lastname, user.role).then(() => {
+        editUser(userId, user.firstname, user.lastname, user.email, user.role).then(() => {
             toastSuccess("Successfully edited");
             redirectToTable();
         });
@@ -72,6 +74,7 @@ function Users() {
         navigate("/users");
     };
 
+    if (![GLOBALS.USER_ROLES.AD, GLOBALS.USER_ROLES.AR].includes(userRole)) return <Error />;
     return (
         <Fragment>
             <Routes>
@@ -91,7 +94,13 @@ function Users() {
                 />
                 <Route
                     path="/:id"
-                    element={<UserForm title="Edit user" handleSubmitUser={modifyUser} />}
+                    element={
+                        <UserForm
+                            title="Edit user"
+                            isEditing={true}
+                            handleSubmitUser={modifyUser}
+                        />
+                    }
                 />
                 <Route
                     path="/create"
