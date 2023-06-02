@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import CSRFTOKEN from "../../../services/api/csrftoken";
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ const Login = () => {
         };
 
         axios
-            .post("/api/login/", loginData)
+            .post("/api/login", loginData)
             .then((response) => {
                 // Handle successful login
                 console.log(response.data);
@@ -29,6 +30,7 @@ const Login = () => {
         <div>
             <h1>Login</h1>
             <form onSubmit={handleLogin}>
+            <CSRFTOKEN />
                 <input
                     type="text"
                     placeholder="Username"

@@ -15,19 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from api.views import UserCreateAPIView, UserRetrieveUpdateDestroyAPIView, PasswordResetAPIView, PasswordResetConfirmAPIView, LoginView, LogoutView, GetCSRFToken
-
+from api.urls import UserLogoutViewSet, UserLoginViewSet
 
 
 urlpatterns = [
     path('admin/doc', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('users/', UserCreateAPIView.as_view(), name='user-create'),
-    path('api/csrf-token/', GetCSRFToken.as_view(), name='csrf-token'),
-    path('api/login/', LoginView.as_view(), name='login'),
-    path('api/logout/', LogoutView.as_view(), name='logout'),
-    path('api/users/<int:pk>/', UserRetrieveUpdateDestroyAPIView.as_view(), name='user-retrieve-update-destroy'),
-    path('api/password-reset/', PasswordResetAPIView.as_view(), name='password-reset'),
-    path('api/password-reset/<str:uid>/<str:token>/', PasswordResetConfirmAPIView.as_view(), name='password-reset-confirm'),
+    path('api/login', UserLoginViewSet.as_view({'post':'post'})),
+    path('api/logout', UserLogoutViewSet.as_view()),
 ]

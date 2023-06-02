@@ -20,17 +20,15 @@ function getCookie(name) {
     return cookieValue;
 }
 
-const csrftoken = getCookie("csrftoken");
+var csrftoken = getCookie('csrftoken');
 
-const CSRFTOKEN = () => {
+const CSRFToken = () => {
     return (
-        <>
-            <input name="csrfmiddlewaretoken" value={csrftoken} type="hidden" />;
-        </>
+        <input type="hidden" name="csrfmiddlewaretoken" value={csrftoken} />
     );
 };
+export default CSRFToken;
 
-export default CSRFTOKEN;
 
 async function getCSRFToken() {
     const response = await fetch("http://localhost:8000/api/csrf-token/", {

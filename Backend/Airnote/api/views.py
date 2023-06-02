@@ -1,96 +1,39 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics, status
 from django.db.models import Q
 
 from backend.models import User, Comment, Group, Module, Course, Grade
 from .serializers import UserSerializer, CommentSerializer, GroupSerializer, ModuleSerializer, CourseSerializer, GradeSerializer
 from .serializers import UserSerializer
-from django.contrib.auth import get_user_model
 
-from django.contrib.auth import get_user_model
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_text
-from rest_framework import generics, status, permissions
-from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from .serializers import UserSerializer, PasswordResetSerializer
+from .serializers import UserSerializer
 from django.contrib.auth import authenticate, login, logout
-from django.views import View
-from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
+from rest_framework.authtoken.models import Token
 
-class UserCreateAPIView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
 
-class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
-
-class PasswordResetAPIView(APIView):
+class UserLoginViewSet(generics.CreateAPIView):
     def post(self, request):
-        serializer = PasswordResetSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = User.objects.get(username=serializer.validated_data['username'])
+        username = request.data.get('username')
+        password = request.data.get('password')
 
-        # Generate token and create reset URL
-        token_generator = default_token_generator
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        token = token_generator.make_token(user)
-        current_site = get_current_site(request)
-        reset_url = f"{current_site}/password-reset/{uid}/{token}"
-        return reset_url
-
-class PasswordResetConfirmAPIView(APIView):
-    def post(self, request, uid, token):
-        try:
-            uid = force_text(urlsafe_base64_decode(uid))
-            user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
-
-        token_generator = default_token_generator
-        if user is not None and token_generator.check_token(user, token):
-            # Set new password
-            user.set_password(request.data.get('new_password'))
-            user.save()
-            return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
-
-        return Response({'error': 'Invalid reset link.'}, status=status.HTTP_400_BAD_REQUEST)
-
-@method_decorator(csrf_protect, name="dispatch")
-class LoginView(View):
-    @method_decorator(csrf_protect)
-    def post(self, request):
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(username=username, password=password)
         if user is not None:
-            login(request, user)
-            return JsonResponse({'message': 'Login successful'})
+            login(request,user)
+            token, _ =Token.objects.get_or_create(user=user)
+            return Response({'token':token.key}, status=status.HTTP_200_OK)
         else:
-            return JsonResponse({'message': 'Invalid credentials'}, status=401)
+            return Response({'error':'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        
 
-class LogoutView(View):
+class UserLogoutViewSet(generics.DestroyAPIView):
     def post(self, request):
         logout(request)
-        return JsonResponse({'message': 'Logout successful'})
+        return Response(status=status.HTTP_200_OK)
 
-
-"""Send to the login interface the token CSRF as a cookie."""
-@method_decorator(ensure_csrf_cookie, name="dispatch")
-class GetCSRFToken(APIView):
-    permission_classes = (permissions.AllowAny,)
-    def get(self, request, format=None):
-        return Response({'success':'CSRF cookie sets'})
-
+@method_decorator(csrf_exempt, name="dispatch")
 class UserViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
@@ -109,6 +52,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+@method_decorator(csrf_exempt, name="dispatch")
 class GroupViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing group instances.
@@ -133,6 +77,7 @@ class GroupViewSet(viewsets.ModelViewSet):
         return queryset
     
 
+@method_decorator(csrf_exempt, name="dispatch")
 class CommentViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing comment instances.
@@ -150,6 +95,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     
 
 
+@method_decorator(csrf_exempt, name="dispatch")
 class ModuleViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing modules instances.
@@ -163,6 +109,7 @@ class ModuleViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+@method_decorator(csrf_exempt, name="dispatch")
 class CourseViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing courses instances.
@@ -176,6 +123,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+@method_decorator(csrf_exempt, name="dispatch")
 class GradeViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing grades instances.
