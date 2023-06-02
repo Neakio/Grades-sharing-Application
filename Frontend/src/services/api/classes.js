@@ -25,11 +25,12 @@ export const getClassFromUser = (studentId, isActive = true) => {
     if (isActive !== null) suffix += "&isActive=" + isActive.toString();
     return axios.get("api/groups" + suffix);
 };
-export const createClass = (level, name, year, isActive) => {
+export const createClass = (level, name, year, modules, isActive) => {
     let payload = {
         level,
         name,
         year,
+        modules,
         isActive,
     };
     return axios.post("api/groups", payload);
@@ -39,11 +40,12 @@ export const deleteClass = (classId) => {
     return axios.delete("api/groups/" + classId);
 };
 
-export const editClass = (classId, level, name, year, isActive) => {
+export const editClass = (classId, level, name, year, modules, isActive) => {
     let payload = {
         level,
         name,
         year,
+        modules,
         isActive,
     };
     return axios.put("api/groups/" + classId, payload);

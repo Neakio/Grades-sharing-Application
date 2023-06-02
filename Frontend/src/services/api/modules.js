@@ -6,23 +6,17 @@ export const getModules = (moduleId) => {
     return axios.get("api/modules" + suffix);
 };
 
-export const getModulesByGroup = (groupId) => {
-    return axios.get("api/modules?groups" + groupId );
-};
-
-export const createModule = (title, groups, courses) => {
+export const createModule = (title, courses) => {
     let payload = {
         title,
-        groups,
         courses,
     };
     return axios.post("api/modules", payload);
 };
 
-export const editModule = (moduleId, title, groups, courses) => {
+export const editModule = (moduleId, title, courses) => {
     let payload = {
         title,
-        groups,
         courses,
     };
     return axios.put("api/modules/" + moduleId, payload);

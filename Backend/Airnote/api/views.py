@@ -99,7 +99,7 @@ class CourseViewSet(PermissionPolicyMixin, viewsets.ModelViewSet):
     """
     A viewset for viewing and editing courses instances.
     """
-    permission_classes = [IsAdministrator & IsAdminRef]
+    permission_classes = [IsAuthenticated & (IsAdministrator | IsAdminRef)]
     permission_classes_per_method = {
         "list": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher)],
         "retrieve": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher)]

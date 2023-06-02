@@ -6,37 +6,21 @@ import { useParams } from "react-router-dom";
 import Loader from "../../render-components/Loader";
 import { FormControl, FormSelect } from "../../render-components/Form";
 
-import { getClasses, getCourses, getModules } from "../../../services/api";
-import { Util } from "../../../services/Util";
+import { getCourses, getModules } from "../../../services/api";
 
 function ModuleForm({ title, handleSubmitModule }) {
     const { id } = useParams();
     const [formValidated, setFormValidated] = useState(false);
     const [moduleData, setModuleData] = useState({
         title: null,
-        groups: [],
         courses: [],
     });
     const [coursesOptions, setCoursesOptions] = useState(null);
-    const [classesOptions, setClassesOptions] = useState(null);
 
     useEffect(() => {
         if (id) fetchModule();
-        fetchClasses();
         fetchCourses();
     }, [id]);
-
-    const fetchClasses = async () => {
-        let groups = await getClasses();
-        setClassesOptions(groups.map((group) => makeClassOption(group)));
-    };
-
-    const makeClassOption = (group) => {
-        return {
-            label: Util.groupToStr(group),
-            value: group.id,
-        };
-    };
 
     const fetchCourses = async () => {
         let courses = await getCourses();
@@ -51,7 +35,6 @@ function ModuleForm({ title, handleSubmitModule }) {
     };
     const fetchModule = async () => {
         let module = await getModules(id);
-        module.groups = module.groups.map(({ id }) => id);
         module.courses = module.courses.map(({ id }) => id);
         setModuleData(module);
     };
@@ -70,7 +53,7 @@ function ModuleForm({ title, handleSubmitModule }) {
         setFormValidated(true);
     };
 
-    if (!coursesOptions || !classesOptions) return <Loader />;
+    if (!coursesOptions) return <Loader />;
     return (
         <Fragment>
             <h1 className="text-center">{title}</h1>
@@ -82,16 +65,6 @@ function ModuleForm({ title, handleSubmitModule }) {
                     value={moduleData.title}
                     onChange={handleChange}
                     required
-                />
-                <FormSelect
-                    label="Classes"
-                    name="groups"
-                    placeholder="Select classes..."
-                    options={classesOptions}
-                    value={moduleData.groups}
-                    onChange={(value) => setModuleData({ ...moduleData, groups: value })}
-                    isMulti
-                    isClearable
                 />
                 <FormSelect
                     label="Courses"

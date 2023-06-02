@@ -37,6 +37,7 @@ function Administration({ groups, fetchGroups, isAdmin, userId }) {
             group.referent,
             group.delegates,
             group.students,
+            group.modules,
         )
             .then(() => {
                 toastSuccess("Class successfully created");
@@ -48,10 +49,12 @@ function Administration({ groups, fetchGroups, isAdmin, userId }) {
     };
 
     const modifyGroups = (group, groupId) => {
-        editClass(groupId, group.level, group.name, group.year, group.isActive).then(() => {
-            toastSuccess("Successfully edited");
-            redirectToTable();
-        });
+        editClass(groupId, group.level, group.name, group.year, group.modules, group.isActive).then(
+            () => {
+                toastSuccess("Successfully edited");
+                redirectToTable();
+            },
+        );
     };
     const addUser = (group, groupId) => {
         //Check if the delegates are still in the group
