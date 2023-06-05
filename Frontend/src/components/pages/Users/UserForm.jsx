@@ -93,6 +93,7 @@ function UserForm({ title, handleSubmitUser, isEditing = false }) {
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
+                </div>
             </Form>
         </Fragment>
     );

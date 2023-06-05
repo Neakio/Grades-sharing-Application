@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',
-    'djoser',
     'backend.apps.BackendConfig',
     'corsheaders'
 ]
@@ -51,11 +49,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
+    'django-keycloak-auth.middleware.KeycloakMiddleware'
 ]
 
 ROOT_URLCONF = 'Airnote.urls'
@@ -77,13 +76,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Airnote.wsgi.application'
-
-
-#Auth
-AUTH_USER_MODEL = 'backend.User'
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
 
 
 # Database
@@ -139,7 +131,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-FRONT_URL = 'http://localhost:5173'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -169,8 +160,6 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
         'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
         # Any other renders
     ),
 
@@ -181,24 +170,24 @@ REST_FRAMEWORK = {
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
         # Any other parsers
     ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    )
 }
 
 
 # CORS settings
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
-    FRONT_URL,
+    'http://localhost:5173',
 )
 
 
-
 # Keycloak settings
+# KEYCLOAK_SERVER_URL = 'https://'
+# KEYCLOAK_REALM = ''
+# AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'keycloak_auth.backend.KeycloakAuthenticationBackend',]
+
+# KEYCLOAK_AUTH_USER_MODEL = 'User'
+# KEYCLOAK_AUTH_USER_MODEL_FIRST_NAME_FIELD = 'firstname'
+# KEYCLOAK_AUTH_USER_MODEL_LAST_NAME_FIELD = 'lastname'
 KEYCLOAK_CONFIG = {
     'KEYCLOAK_SERVER_URL': 'http://localhost:8080/auth',
     'KEYCLOAK_REALM': 'TESTE',
