@@ -19,7 +19,7 @@
 .bar3 {
     width: 35px;
     height: 5px;
-    background-color: #000000;
+    background-color: #333;
     margin: 6px 0;
     transition: 0.4s;
 }
@@ -47,21 +47,15 @@
 }
 
 #flyoutMenu {
-    top: 65px;
-    bottom: 0;
     width: 15vw;
-    background-image: linear-gradient(135deg, #43cbff 30%, #9708cc 100%);
+    height: 100vh;
+    background-image: linear-gradient( 135deg, #43CBFF 10%, #9708CC 100%);
     position: fixed;
+    top: 0;
     left: 0;
-    transition: transform 0.3s cubic-bezier(0, 0.52, 0, 1);
+    transition: transform .3s cubic-bezier(0, .52, 0, 1);
     overflow: scroll;
     z-index: 1000;
-}
-
-#flyoutMenu.d {
-    color: #eee;
-    background-color: #eee;
-    background-image: linear-gradient(135deg, #039bc9 30%, #b715af 100%);
 }
 
 #flyoutMenu.hide {
