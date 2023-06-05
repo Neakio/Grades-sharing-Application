@@ -33,7 +33,7 @@ function ClassesTable({ groups, removeClass, userId, darkmode }) {
                 accessor: "name",
                 Cell: ({ row, value }) => (
                     <Link to={"/classes/" + row.original.id}>
-                        <button className={`btn btn-outline-${darkmode ? "dark" : "light"}`}>{value}</button>
+                        <button className={"btn btn-outline-secondary"}>{value}</button>
                     </Link>
                 ),
             },
@@ -93,7 +93,7 @@ function ClassesTable({ groups, removeClass, userId, darkmode }) {
     return (
         <>
             <button onClick={handleClick}>{active ? "Hide modules" : "Show modules"}</button>
-            <ReactTable data={groups} columns={columns} />;
+            <ReactTable data={groups} columns={columns} />
         </>
     );
 }

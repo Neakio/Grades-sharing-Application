@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { getModules } from "../../../services/api";
 
 import { getClass } from "../../../services/api/classes";
 import { getUsersByRole } from "../../../services/api/users";
@@ -17,22 +16,18 @@ function ClassUserForm({ title, handleSubmitClass }) {
         level: null,
         name: null,
         year: null,
-        modules: [],
         referent: null,
         delegates: [],
         students: [],
-        
     });
 
     const [referentsOptions, setReferentsOptions] = useState(null);
     const [studentsOptions, setStudentsOptions] = useState(null);
-    const [modulesOptions, setModulesOptions] = useState(null);
 
     useEffect(() => {
         if (id) fetchClass();
         fetchReferents();
         fetchStudents();
-        fetchModules();
     }, [id]);
     const fetchClass = async () => {
         let group = await getClass(id);
@@ -50,21 +45,11 @@ function ClassUserForm({ title, handleSubmitClass }) {
         let users = await getUsersByRole("ST");
         setStudentsOptions(users.map((user) => makeUserOption(user)));
     };
-    const fetchModules = async () => {
-        let modules = await getModules();
-        setModulesOptions(modules.map((module) => makeModuleOption(module)));
-    };
 
     const makeUserOption = (user) => {
         return {
             label: Util.formatUserName(user),
             value: user.id,
-        };
-    };
-    const makeModuleOption = (mod) => {
-        return {
-            label: mod.title,
-            value: mod.id,
         };
     };
     const onSubmit = (event) => {
@@ -75,7 +60,7 @@ function ClassUserForm({ title, handleSubmitClass }) {
         setFormValidated(true);
     };
 
-    if (!referentsOptions || !studentsOptions || !modulesOptions) return <Loader />;
+    if (!referentsOptions || !studentsOptions) return <Loader />;
     return (
         <Fragment>
             <h1 className="text-center">{title}</h1>
@@ -111,24 +96,12 @@ function ClassUserForm({ title, handleSubmitClass }) {
                     isClearable
                     isMulti
                 />
-                <FormSelect
-                    label="Modules"
-                    name="modules"
-                    placeholder="Select modules..."
-                    options={modulesOptions}
-                    value={groupData.modules}
-                    onChange={(value) => setGroupData({ ...groupData, modules: value })}
-                    isClearable
-                    isMulti
-                />
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end">
                     <Button variant="btn btn-outline-success me-md-2" type="submit">
                         Submit
                     </Button>
                 </div>
             </Form>
-            <pre>{JSON.stringify(groupData, null, 2)}</pre>
-
         </Fragment>
     );
 }

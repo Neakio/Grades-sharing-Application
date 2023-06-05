@@ -35,12 +35,10 @@ function Home({ isLoggedIn }) {
             ) : (
                 <Fragment>
                     <h1>Goal of the App</h1>
-                    <center>
-                        <p>
-                            This app has been designed in order to help the administration of a
-                            school to share grades with students and teacher.
-                        </p>
-                    </center>
+                    <p>
+                        This app has been designed in order to help the administration of a school
+                        to share grades with students and teacher.
+                    </p>
                 </Fragment>
             )}
         </Fragment>

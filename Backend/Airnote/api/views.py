@@ -11,7 +11,11 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
     """
-    permission_classes = [IsAuthenticated & (IsAdministrator | IsAdminRef)]
+    permission_classes = [IsAuthenticated & (IsAdministrator | IsAdminRef | IsStudent)]
+    permission_classes_per_method = {
+        "list": [IsAuthenticated & (IsAdministrator | IsAdminRef)],
+        "retrieve": [IsAuthenticated & (IsAdministrator | IsAdminRef)]
+    }
     serializer_class = UserSerializer
 
     def get_queryset(self):
@@ -32,7 +36,7 @@ class GroupViewSet(PermissionPolicyMixin, viewsets.ModelViewSet):
     """
     permission_classes = [IsAuthenticated & (IsAdministrator | IsAdminRef)]
     permission_classes_per_method = {
-        "list": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher)],
+        "list": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher | IsStudent)],
         "retrieve": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher)]
     }
 

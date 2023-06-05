@@ -27,6 +27,7 @@ function ClassForm({ title, handleSubmitClass }) {
     const fetchClass = async () => {
         let group = await getClass(id);
         group.referent = group.referent?.id;
+        group.modules = group.modules.map(({ id }) => id);
         setGroupData(group);
     };
     const fetchModules = async () => {
@@ -109,7 +110,6 @@ function ClassForm({ title, handleSubmitClass }) {
                     </Button>
                 </div>
             </Form>
-            {JSON.stringify(groupData)}
         </Fragment>
     );
 }

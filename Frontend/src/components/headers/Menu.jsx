@@ -45,7 +45,7 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
                                 <a href="/users">Users</a>
                             </h2>
                         ) : null}
-                        {isAdmin || isTeacher ? (
+                        {isAdmin ? (
                             <h2>
                                 <a href="/courses">Courses</a>
                             </h2>
@@ -55,7 +55,7 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
                                 <a href="/modules">Modules</a>
                             </h2>
                         ) : null}
-                        {isAdmin ? (
+                        {isAdmin || isTeacher ? (
                             <h2>
                                 <a href="/classes">Classes</a>
                             </h2>

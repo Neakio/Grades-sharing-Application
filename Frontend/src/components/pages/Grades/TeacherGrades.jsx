@@ -6,6 +6,7 @@ import { Util } from "../../../services/Util";
 import { FormSelect } from "../../render-components/Form";
 
 function TeacherGrades({ userId }) {
+    const [tableKey, setTableKey] = useState(0);
     const [courses, setCourses] = useState(null);
     const [groups, setGroups] = useState(null);
     const [coursesOptions, setCoursesOptions] = useState([]);
@@ -53,7 +54,10 @@ function TeacherGrades({ userId }) {
                 name="courses"
                 placeholder="Select a course..."
                 options={coursesOptions}
-                onChange={(value) => setSelectedCourse(value)}
+                onChange={(value) => {
+                    setSelectedCourse(value);
+                    setTableKey((prevKey) => prevKey + 1);
+                }}
                 value={selectedCourse}
                 isClearable
             />
@@ -63,13 +67,16 @@ function TeacherGrades({ userId }) {
                     name="groups"
                     placeholder="Select a class..."
                     options={classesOptions}
-                    onChange={(value) => setSelectedGroup(value)}
+                    onChange={(value) => {
+                        setSelectedGroup(value);
+                        setTableKey((prevKey) => prevKey + 1); // Increment the key to trigger a re-render of the table
+                    }}
                     value={selectedGroup}
                     isClearable
                 />
             )}
             {selectedCourse && selectedGroup ? (
-                <TeacherTable course={selectedCourse} group={selectedGroup} />
+                <TeacherTable key={tableKey} course={selectedCourse} group={selectedGroup} />
             ) : null}
         </>
     );
