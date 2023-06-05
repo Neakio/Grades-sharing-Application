@@ -9,6 +9,7 @@ import { getUsersByRole } from "../../../services/api/users";
 import { Util } from "../../../services/Util";
 import { FormSelect } from "../../render-components/Form";
 import Loader from "../../render-components/Loader";
+import { getModules } from "../../../services/api";
 
 function ClassUserForm({ title, handleSubmitClass }) {
     const { id } = useParams();
@@ -127,7 +128,6 @@ function ClassUserForm({ title, handleSubmitClass }) {
                     </Button>
                 </div>
             </Form>
-            <pre>{JSON.stringify(groupData, null, 2)}</pre>
         </Fragment>
     );
 }

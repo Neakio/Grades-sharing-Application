@@ -1,24 +1,49 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 # Create your models here.
 
-class User(models.Model):
-    ROLES = [('AD', 'Administrator'), ('AR', 'Administrator Referent'),
-             ('TE', 'Teacher'), ('ST', 'Student')]
+class UserManager(BaseUserManager):
+    def _create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("The email must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
-    firstname = models.CharField(max_length=50,
-                                 blank=False, null=False)
-    lastname = models.CharField(max_length=50,
-                                blank=False, null=False)
-    role = models.CharField(max_length=2, choices=ROLES,
-                            blank=False, null=False)
-    # TODO Ligne SSO
+    def create_user(self, email, password=None, **extra_fields):
+        return self._create_user(email, password, **extra_fields)
 
-    class Meta:
-        unique_together = ('firstname', 'lastname', )
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self._create_user(email, password, **extra_fields)
 
-      
+# Add the manager to the User model
+
+class User(AbstractBaseUser, PermissionsMixin):
+  # Existing fields
+    ROLES = [
+        ('AD', 'Administrator'),
+        ('AR', 'Administrator Referent'),
+        ('TE', 'Teacher'),
+        ('ST', 'Student')
+    ]
+    id = models.AutoField(primary_key=True)
+    firstname = models.CharField(max_length=50, blank=False, null=False)
+    lastname = models.CharField(max_length=50, blank=False, null=False)
+    email = models.EmailField(max_length=128,unique=True, blank=False, null=False)
+    password = models.CharField(max_length=128, blank=False, null=False)
+    role = models.CharField(max_length=2, choices=ROLES, blank=False, null=False)
+    is_staff = models.BooleanField(default=False)
+    objects = UserManager()
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['firstname', 'lastname', 'role']
+
+
 class Course(models.Model):
     title = models.CharField(max_length=100,
                              blank=False, null=False)
@@ -67,7 +92,6 @@ class Comment(models.Model):
     class Meta:
         unique_together = ('student', 'group', )
 
-  
 
 class Grade(models.Model):
     number = models.DecimalField(max_digits=4, decimal_places=2, validators=[

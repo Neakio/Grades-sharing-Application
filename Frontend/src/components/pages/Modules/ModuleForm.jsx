@@ -6,8 +6,7 @@ import { useParams } from "react-router-dom";
 import Loader from "../../render-components/Loader";
 import { FormControl, FormSelect } from "../../render-components/Form";
 
-import { getClasses, getCourses, getModules } from "../../../services/api";
-import { Util } from "../../../services/Util";
+import { getCourses, getModules } from "../../../services/api";
 
 function ModuleForm({ title, handleSubmitModule }) {
     const { id } = useParams();
@@ -17,13 +16,11 @@ function ModuleForm({ title, handleSubmitModule }) {
         courses: [],
     });
     const [coursesOptions, setCoursesOptions] = useState(null);
-    const [classesOptions, setClassesOptions] = useState(null);
 
     useEffect(() => {
         if (id) fetchModule();
         fetchCourses();
     }, [id]);
-
 
     const fetchCourses = async () => {
         let courses = await getCourses();

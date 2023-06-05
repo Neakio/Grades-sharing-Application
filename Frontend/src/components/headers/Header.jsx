@@ -1,14 +1,27 @@
 import React, { Fragment, useState } from "react";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 import light from "/airnote_light.png";
 import dark from "/airnote_dark.png";
 
 import Menu from "./Menu";
-import { Button } from "react-bootstrap";
+import { logout } from "../../services/api/log";
 
-function Header({ setDarkmode, darkmode, isLoggedIn, logIn, userRole }) {
+function Header({ setDarkmode, setIsLoggedIn, darkmode, isLoggedIn, userRole }) {
+    const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
 
+    const logOut = () => {
+        logout();
+        setIsLoggedIn(false);
+        navigate("/");
+    };
+
+    const logIn = () => {
+        navigate("/login");
+    };
+    console.log(userRole);
     return (
         <Fragment >
             <div className={`d-flex justify-content-between header ${darkmode ? "dark" : "light"}`}>
@@ -38,10 +51,15 @@ function Header({ setDarkmode, darkmode, isLoggedIn, logIn, userRole }) {
 
                 <div>
                     {/* Show the button of login/logout depending on the user status */}
-
-                    <Button variant="dark" onClick={logIn}>
-                        {isLoggedIn ? "Logout" : "Login"}
-                    </Button>
+                    {isLoggedIn ? (
+                        <Button variant="dark" onClick={logOut}>
+                            Logout
+                        </Button>
+                    ) : (
+                        <Button variant="dark" onClick={logIn}>
+                            Login
+                        </Button>
+                    )}
                 </div>
             </div>
         </Fragment>

@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 
 import { Container } from "react-bootstrap";
 import { Route, Routes, useNavigate } from "react-router-dom";
@@ -16,24 +16,35 @@ import Grades from "./components/pages/GradesRoot";
 import UsersRoot from "./components/pages/UsersRoot";
 import Modules from "./components/pages/ModulesRoot";
 import Courses from "./components/pages/CoursesRoot";
+import LoginForm from "./components/pages/Authentication/LoginForm";
+import { getConnectedUser, getUser } from "./services/api";
+import GLOBALS from "./Globals";
 
 function App() {
-    const navigate = useNavigate();
     const appRef = useRef();
     //Verify if the user is log or not
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userRole, setUserRole] = useState("");
+    const [userId, setUserId] = useState(null);
     const [darkmode, setDarkmode] = useState(false);
-    // Retrieve the role of the user
-    let userRole = "Teacher";
-    let userId = 3;
-    const logIn = () => {
-        if (isLoggedIn) navigate("/");
-        setIsLoggedIn(!isLoggedIn);
-    };
 
     const onSetDarkMode = () => {
         appRef.current.classList.toggle("dark");
         setDarkmode(!darkmode);
+    };
+
+    useEffect(() => {
+        if (localStorage.getItem("token")) setIsLoggedIn(true);
+    }, []);
+
+    useEffect(() => {
+        if (isLoggedIn) getSelf();
+    }, [isLoggedIn]);
+
+    const getSelf = async () => {
+        let user = await getConnectedUser();
+        setUserRole(GLOBALS.USER_ROLES[user.role]);
+        setUserId(user.id);
     };
 
     return (
@@ -45,8 +56,8 @@ function App() {
                         darkmode={darkmode}
                         setDarkmode={onSetDarkMode}
                         isLoggedIn={isLoggedIn}
-                        logIn={logIn}
                         userRole={userRole}
+                        setIsLoggedIn={setIsLoggedIn}
                     />
                 </header>
 
@@ -54,6 +65,10 @@ function App() {
                     <Container className="h-100">
                         <Routes>
                             <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
+                            <Route
+                                path="/login"
+                                element={<LoginForm setIsLoggedIn={setIsLoggedIn} />}
+                            />
                             <Route
                                 path="classes/*"
                                 element={<Classes userRole={userRole} userId={userId} />}

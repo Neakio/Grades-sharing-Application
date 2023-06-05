@@ -29,6 +29,10 @@ function UserTable({ data, removeUser }) {
                 accessor: "lastname",
             },
             {
+                Header: "Email",
+                accessor: "email",
+            },
+            {
                 Header: "Role",
                 id: "role",
                 accessor: ({ role }) => GLOBALS.USER_ROLES[role],
@@ -63,21 +67,18 @@ function UserTable({ data, removeUser }) {
                   accessor: "groups",
                   Cell: ({ value }) => (
                       <div>
-                          {value
-                              ?.slice()
-                              .sort((a, b) => b.title.localeCompare(a.title))
-                              .map((group, i) => (
-                                  <tr key={"row" + i}>
-                                      <td
-                                          key={"td" + i}
-                                          className={`badge rounded-pill ${
-                                              group.state ? "text-bg-success" : "text-bg-danger"
-                                          }`}
-                                      >
-                                          {group.title}
-                                      </td>
-                                  </tr>
-                              ))}
+                          {value?.map((group, i) => (
+                              <tr key={"row" + i}>
+                                  <td
+                                      key={"td" + i}
+                                      className={`badge rounded-pill ${
+                                          group.state ? "text-bg-success" : "text-bg-danger"
+                                      }`}
+                                  >
+                                      {group.title}
+                                  </td>
+                              </tr>
+                          ))}
                       </div>
                   ),
               },

@@ -8,13 +8,15 @@ import { FormControl, FormSelect } from "../../render-components/Form";
 import { getUser } from "../../../services/api";
 import { Util } from "../../../services/Util";
 
-function UserForm({ title, handleSubmitUser }) {
+function UserForm({ title, handleSubmitUser, isEditing = false }) {
     const { id } = useParams();
     const [formValidated, setFormValidated] = useState(false);
     const [userData, setUserData] = useState({
         firstname: null,
         lastname: null,
         role: null,
+        email: null,
+        password: null,
     });
 
     useEffect(() => {
@@ -60,6 +62,15 @@ function UserForm({ title, handleSubmitUser }) {
                     onChange={handleChange}
                     required
                 />
+                <FormControl
+                    label="Email"
+                    name="email"
+                    type="email"
+                    placeholder="firstname.lastname@airbus.com"
+                    value={userData.email}
+                    onChange={handleChange}
+                    required
+                />
                 <FormSelect
                     label="Role"
                     name="role"
@@ -69,13 +80,21 @@ function UserForm({ title, handleSubmitUser }) {
                     onChange={(value) => setUserData({ ...userData, role: value })}
                     required
                 />
-                <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                <Button variant="btn btn-outline-success me-md-2" type="submit">
+                {isEditing ? null : (
+                    <FormControl
+                        label="Password"
+                        name="password"
+                        placeholder="Create a password"
+                        value={userData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                )}
+                <Button variant="primary" type="submit">
                     Submit
                 </Button>
                 </div>
             </Form>
-            <pre>{JSON.stringify(userData, null, 2)}</pre>
         </Fragment>
     );
 }

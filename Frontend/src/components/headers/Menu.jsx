@@ -14,7 +14,7 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
         menuRef.current.classList.toggle("change");
     };
 
-    const isAdmin = userRole.startsWith("Admin");
+    const isAdmin = userRole && userRole.startsWith("Admin");
     const isTeacher = userRole === "Teacher";
     const isReferent = userRole === "Administrator Referent";
 
@@ -40,32 +40,31 @@ const Menu = ({ darkmode, setDarkmode, userRole, isLoggedIn }) => {
                             <a href="/">Home</a>
                         </h2>
 
-                        {isAdmin && (
+                        {isAdmin ? (
                             <h2>
                                 <a href="/users">Users</a>
                             </h2>
-                        )}
-
-                        {isAdmin && (
+                        ) : null}
+                        {isAdmin || isTeacher ? (
                             <h2>
                                 <a href="/courses">Courses</a>
                             </h2>
-                        )}
-                        {isAdmin && (
+                        ) : null}
+                        {isAdmin ? (
                             <h2>
                                 <a href="/modules">Modules</a>
                             </h2>
-                        )}
-                        {(isAdmin || isTeacher) && (
+                        ) : null}
+                        {isAdmin ? (
                             <h2>
                                 <a href="/classes">Classes</a>
                             </h2>
-                        )}
-                        {(isReferent || !isAdmin) && (
+                        ) : null}
+                        {!isAdmin || isReferent ? (
                             <h2>
                                 <a href="/grades">Grades</a>
                             </h2>
-                        )}
+                        ) : null}
                         <div className="additionalComponent">
                             <Darkmode darkmode={darkmode} setDarkmode={setDarkmode} />
                         </div>

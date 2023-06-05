@@ -69,14 +69,7 @@ function TeacherTable({ course, group }) {
         const exist = tableData[row.index].grade.id;
         // If there is an existing entry, update it with PUT request
         if (exist) {
-            await editGrade(
-                exist,
-                undefined,
-                newComment,
-                course,
-                studentId,
-                group,
-            );
+            await editGrade(exist, undefined, newComment, course, studentId, group);
         }
         // If there is no existing entru, create a new comment with POST request
         else {

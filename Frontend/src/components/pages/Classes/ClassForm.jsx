@@ -6,19 +6,24 @@ import { getClass } from "../../../services/api/classes";
 
 import { Util } from "../../../services/Util";
 import { FormCheck, FormControl, FormSelect } from "../../render-components/Form";
+import { getModules } from "../../../services/api";
+import Loader from "../../render-components/Loader";
 
 function ClassForm({ title, handleSubmitClass }) {
     const { id } = useParams();
     const [formValidated, setFormValidated] = useState(false);
+    const [modulesOptions, setModulesOptions] = useState([]);
     const [groupData, setGroupData] = useState({
         level: null,
         name: null,
         year: null,
         isActive: true,
+        modules: [],
     });
 
     useEffect(() => {
         if (id) fetchClass();
+        fetchModules();
     }, [id]);
 
     const fetchClass = async () => {
@@ -26,7 +31,17 @@ function ClassForm({ title, handleSubmitClass }) {
         group.referent = group.referent?.id;
         setGroupData(group);
     };
-
+    const fetchModules = async () => {
+        let modules = await getModules();
+        setModulesOptions(modules.map((module) => makeModulesOption(module)));
+    };
+    const makeModulesOption = (mod) => {
+        return {
+            label: Util.moduleToStr(mod),
+            value: mod.id,
+        };
+    };
+    console.log(modulesOptions);
     const handleChange = (event) => {
         let name = event.target.name;
         let value = event.target.value;
@@ -40,7 +55,7 @@ function ClassForm({ title, handleSubmitClass }) {
         }
         setFormValidated(true);
     };
-
+    if (!modulesOptions) return <Loader />;
     return (
         <Fragment>
             <h1 className="text-center">{title}</h1>
@@ -70,6 +85,16 @@ function ClassForm({ title, handleSubmitClass }) {
                     onChange={handleChange}
                     required
                 />
+                <FormSelect
+                    label="Modules"
+                    name="modules"
+                    placeholder="Select modules..."
+                    options={modulesOptions}
+                    value={groupData.modules}
+                    onChange={(value) => setGroupData({ ...groupData, modules: value })}
+                    isClearable
+                    isMulti
+                />
                 <FormCheck
                     label="Active"
                     checked={groupData.isActive}
@@ -86,7 +111,6 @@ function ClassForm({ title, handleSubmitClass }) {
                 </Button>
                 </div>
             </Form>
-            <pre>{JSON.stringify(groupData, null, 2)}</pre>
         </Fragment>
     );
 }

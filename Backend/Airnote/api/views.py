@@ -1,18 +1,17 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework import viewsets
-from django.http import JsonResponse
+from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 
 from backend.models import User, Comment, Group, Module, Course, Grade
 from .serializers import UserSerializer, CommentSerializer, GroupSerializer, ModuleSerializer, CourseSerializer, GradeSerializer
-
-import json
+from .permissions import IsAdministrator, IsAdminRef, IsStudent, IsTeacher
+from .mixins import PermissionPolicyMixin
 
 class UserViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
     """
+    permission_classes = [IsAuthenticated & (IsAdministrator | IsAdminRef | IsStudent)]
     serializer_class = UserSerializer
 
     def get_queryset(self):
@@ -27,10 +26,16 @@ class UserViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+class GroupViewSet(PermissionPolicyMixin, viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing user instances.
+    A viewset for viewing and editing group instances.
     """
+    permission_classes = [IsAuthenticated & (IsAdministrator | IsAdminRef)]
+    permission_classes_per_method = {
+        "list": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher | IsStudent)],
+        "retrieve": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher | IsStudent)]
+    }
+
     serializer_class = GroupSerializer
     def get_queryset(self):
         queryset = Group.objects.all()
@@ -51,10 +56,15 @@ class GroupViewSet(viewsets.ModelViewSet):
         return queryset
     
 
-class CommentViewSet(viewsets.ModelViewSet):
+class CommentViewSet(PermissionPolicyMixin, viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing user instances.
+    A viewset for viewing and editing comment instances.
     """
+    permission_classes = [IsAuthenticated & IsAdminRef]
+    permission_classes_per_method = {
+        "list": [IsAuthenticated & (IsAdminRef | IsStudent)],
+        "retrieve": [IsAuthenticated & (IsAdminRef | IsStudent)]
+    }
     serializer_class = CommentSerializer
     
     def get_queryset(self):
@@ -65,13 +75,17 @@ class CommentViewSet(viewsets.ModelViewSet):
             queryset = Comment.objects.filter(student_id=student_id, group_id=group_id)
         return queryset
 
-    
 
+class ModuleViewSet(PermissionPolicyMixin, viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing modules instances.
+    """
+    permission_classes = [IsAuthenticated & (IsAdministrator | IsAdminRef)]
+    permission_classes_per_method = {
+        "list": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher)],
+        "retrieve": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher)]
+    }
 
-class ModuleViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing user instances.
-    """
     serializer_class = ModuleSerializer
     def get_queryset(self):
         queryset = Module.objects.all()
@@ -81,10 +95,16 @@ class ModuleViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class CourseViewSet(viewsets.ModelViewSet):
+class CourseViewSet(PermissionPolicyMixin, viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing user instances.
+    A viewset for viewing and editing courses instances.
     """
+    permission_classes = [IsAuthenticated & (IsAdministrator | IsAdminRef)]
+    permission_classes_per_method = {
+        "list": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher)],
+        "retrieve": [IsAuthenticated & (IsAdministrator | IsAdminRef | IsTeacher)]
+    }
+
     serializer_class = CourseSerializer
     def get_queryset(self):
         queryset = Course.objects.all()
@@ -94,19 +114,26 @@ class CourseViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class GradeViewSet(viewsets.ModelViewSet):
+class GradeViewSet(PermissionPolicyMixin, viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing user instances.
+    A viewset for viewing and editing grades instances.
     """
+    permission_classes = [IsAuthenticated & (IsAdminRef | IsTeacher)]
+    permission_classes_per_method = {
+        "list": [IsAuthenticated & (IsAdminRef | IsTeacher | IsStudent)],
+        "retrieve": [IsAuthenticated & (IsAdminRef | IsTeacher| IsStudent)]
+    }
+
     serializer_class = GradeSerializer
     
     def get_queryset(self):
+        student_id = self.request.query_params.get('student')
+        group_id = self.request.query_params.get('group')
+        course_id = self.request.query_params.get('course')
         queryset = Grade.objects.all()
-        student = self.request.query_params.get('student')
-        group = self.request.query_params.get('group')
-        course = self.request.query_params.get('course')
-        if course is not None and group is not None:
-            queryset = Grade.objects.filter(group=group, course=course)
-        if student is not None:
-            queryset = Grade.objects.filter(student=student)
+        if course_id is not None and group_id is not None:
+            queryset = Grade.objects.filter(group_id=group_id, course_id=course_id)
+        if student_id is not None:
+            queryset = Grade.objects.filter(student=student_id)
         return queryset
+    

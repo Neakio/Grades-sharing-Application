@@ -5,7 +5,7 @@ import TeacherTable from "./TeacherTable";
 import { Util } from "../../../services/Util";
 import { FormSelect } from "../../render-components/Form";
 
-function TeacherGrades({ userRole, userId }) {
+function TeacherGrades({ userId }) {
     const [courses, setCourses] = useState(null);
     const [groups, setGroups] = useState(null);
     const [coursesOptions, setCoursesOptions] = useState([]);
