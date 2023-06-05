@@ -42,14 +42,16 @@ function TeacherTable({ course, group }) {
     const handleGradeChange = async (e, row) => {
         const newGrade = parseFloat(e.target.value);
         const studentId = tableData[row.index].id;
-
+        console.log("grade")
+        
         // Check if the student already has an entry or not
-        const exist = tableData[row.index].grade.id;
+        const exist = tableData[row.index]?.grade.id;
+        console.log(studentId)
+        console.log(exist)
         // If there is an existing entry, update it with PUT request
         if (exist) {
-            await editGrade(exist, {
-                comment: newGrade,
-            });
+            await editGrade(exist, newGrade, undefined, course, studentId, group);
+            
         }
         // If there is no existing entry, create a new grade with POST request
         else {
@@ -63,8 +65,8 @@ function TeacherTable({ course, group }) {
 
     const handleCommentChange = async (e, row) => {
         const newComment = e.target.value;
-        const studentId = tableData[row.index].id;
-
+        const studentId = tableData[row.index]?.id;
+        console.log("comment")
         // Check if the student already has an entry or not
         const exist = tableData[row.index].grade.id;
         // If there is an existing entry, update it with PUT request
@@ -85,7 +87,7 @@ function TeacherTable({ course, group }) {
             {
                 Header: "ID",
                 accessor: "id",
-                isVisible: false,
+                isVisible: true,
             },
             {
                 Header: "Grade ID",

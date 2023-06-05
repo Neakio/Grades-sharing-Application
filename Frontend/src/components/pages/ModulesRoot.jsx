@@ -27,16 +27,6 @@ function Modules({ userRole }) {
         let modules = await getModules();
         setModules(modules);
     };
-    // Perform join operation to match module's ID with group information
-    const data = modules.map((module) => {
-        const moduleGroups = groups.filter((group) => {
-            const groupsModulesIds = group.modules.map((module) => module.id);
-            return groupsModulesIds.includes(module.id);
-        });
-
-        const groupsNames = moduleGroups.map((group) => Util.groupToStr(group));
-        return { ...module, groups: groupsNames };
-    });
     const addModules = async (module) => {
         createModule(module.title, module.courses)
             .then(() => {

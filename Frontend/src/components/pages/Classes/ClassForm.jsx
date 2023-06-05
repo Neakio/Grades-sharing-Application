@@ -2,11 +2,9 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
-import { getClass } from "../../../services/api/classes";
-
 import { Util } from "../../../services/Util";
 import { FormCheck, FormControl, FormSelect } from "../../render-components/Form";
-import { getModules } from "../../../services/api";
+import { getModules, getClass } from "../../../services/api";
 import Loader from "../../render-components/Loader";
 
 function ClassForm({ title, handleSubmitClass }) {
@@ -17,8 +15,8 @@ function ClassForm({ title, handleSubmitClass }) {
         level: null,
         name: null,
         year: null,
-        isActive: true,
         modules: [],
+        isActive: true,
     });
 
     useEffect(() => {
@@ -106,11 +104,12 @@ function ClassForm({ title, handleSubmitClass }) {
                     }
                 />
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                <Button variant="btn btn-outline-success me-md-2" type="submit">
-                    Submit
-                </Button>
+                    <Button variant="btn btn-outline-success me-md-2" type="submit">
+                        Submit
+                    </Button>
                 </div>
             </Form>
+            {JSON.stringify(groupData)}
         </Fragment>
     );
 }

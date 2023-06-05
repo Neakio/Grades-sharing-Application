@@ -9,7 +9,6 @@ import { getUsersByRole } from "../../../services/api/users";
 import { Util } from "../../../services/Util";
 import { FormSelect } from "../../render-components/Form";
 import Loader from "../../render-components/Loader";
-import { getModules } from "../../../services/api";
 
 function ClassUserForm({ title, handleSubmitClass }) {
     const { id } = useParams();
@@ -18,11 +17,11 @@ function ClassUserForm({ title, handleSubmitClass }) {
         level: null,
         name: null,
         year: null,
-        isActive: true,
+        modules: [],
         referent: null,
         delegates: [],
         students: [],
-        modules: [],
+        
     });
 
     const [referentsOptions, setReferentsOptions] = useState(null);
@@ -62,10 +61,10 @@ function ClassUserForm({ title, handleSubmitClass }) {
             value: user.id,
         };
     };
-    const makeModuleOption = (module) => {
+    const makeModuleOption = (mod) => {
         return {
-            label: module.title,
-            value: module.id,
+            label: mod.title,
+            value: mod.id,
         };
     };
     const onSubmit = (event) => {
@@ -128,6 +127,8 @@ function ClassUserForm({ title, handleSubmitClass }) {
                     </Button>
                 </div>
             </Form>
+            <pre>{JSON.stringify(groupData, null, 2)}</pre>
+
         </Fragment>
     );
 }

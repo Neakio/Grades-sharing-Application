@@ -12,7 +12,7 @@ function Grades({ userId, userRole }) {
     const getGradesView = () => {
         switch (userRole) {
             case "Administrator Referent":
-                return <div></div>;
+                return <ReferentGrades userRole={userRole} userId={userId} />;
             case "Teacher":
                 return <TeacherGrades userRole={userRole} userId={userId} />;
             case "Student":

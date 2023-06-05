@@ -24,12 +24,14 @@ function ReferentGrades({ userId }) {
 
     const fetchCourses = async () => {
         let group = await getClass(selectedGroup);
+        console.log(group)
         let courses = group.modules.map((module) => module.courses.map((course) => course)).flat();
         let coursesIds = group.modules
             .map((module) => module.courses.map((course) => course.id))
             .flat();
         setCourses(coursesIds);
         setCoursesOptions(courses.map((course) => makeCourseOption(course)));
+        console.log(courses)
     };
 
     const fetchGroups = async () => {

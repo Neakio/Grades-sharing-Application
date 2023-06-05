@@ -33,11 +33,8 @@ function Administration({ groups, fetchGroups, isAdmin, userId, darkmode }) {
             group.level,
             group.name,
             group.year,
-            group.isActive,
-            group.referent,
-            group.delegates,
-            group.students,
             group.modules,
+            group.isActive,           
         )
             .then(() => {
                 toastSuccess("Class successfully created");
@@ -56,7 +53,7 @@ function Administration({ groups, fetchGroups, isAdmin, userId, darkmode }) {
             },
         );
     };
-    const addUser = (group, groupId) => {
+    const manageGroup = (group, groupId) => {
         //Check if the delegates are still in the group
         group.delegates = group.delegates.filter((student) => group.students.includes(student));
         classUser(
@@ -64,11 +61,11 @@ function Administration({ groups, fetchGroups, isAdmin, userId, darkmode }) {
             group.level,
             group.name,
             group.year,
-            group.isActive,
+            group.modules,
             group.referent,
             group.delegates,
             group.students,
-            group.modules,
+
         ).then(() => {
             toastSuccess("Successfully modified");
             redirectToGroup(groupId);
@@ -97,8 +94,8 @@ function Administration({ groups, fetchGroups, isAdmin, userId, darkmode }) {
                     element={<ClassForm title="Edit class" handleSubmitClass={modifyGroups} />}
                 />
                 <Route
-                    path="/:id/adduser"
-                    element={<ClassUserForm title="Manage class" handleSubmitClass={addUser} />}
+                    path="/:id/manageclass"
+                    element={<ClassUserForm title="Manage class" handleSubmitClass={manageGroup} />}
                 />
                 <Route
                     path="/create"

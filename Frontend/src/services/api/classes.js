@@ -51,17 +51,15 @@ export const editClass = (classId, level, name, year, modules, isActive) => {
     return axios.put("api/groups/" + classId, payload);
 };
 
-export const classUser = (classId, level, name, year, isActive, referent, delegates, students, modules) => {
+export const classUser = (classId, level, name, year, modules, referent, delegates, students) => {
     let payload = {
         level,
-        name,
         year,
-        isActive,
+        name,
+        modules,
         referent,
         delegates,
-        students,
-        modules,
-        
+        students,        
     };
     return axios.put("api/groups/" + classId, payload);
 };
