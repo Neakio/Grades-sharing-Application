@@ -20,7 +20,7 @@ RUN apk update \
     && apk add postgresql-client
 RUN apk add git
 # Get the Real World example app
-RUN git clone --depth 1 https://github.com/Neakio/Grades-Sharing-Application.git /drf_src
+RUN git clone -b latest https://github.com/Neakio/Grades-Sharing-Application.git /drf_src
 
 
 # Install any needed packages specified in requirements.txt
