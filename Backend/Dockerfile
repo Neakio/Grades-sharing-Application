@@ -25,7 +25,11 @@ RUN cat /drf_src/Backend/Airnote/Airnote/settings.py
 RUN pip install --upgrade pip
 RUN pip install -r /drf_src/Backend/requirements.txt
 
-RUN python Backend/Airnote/manage.py makemigrations \
-               && python Backend/Airnote/manage.py migrate \
-               && python Backend/Airnote/manage.py runserver 0.0.0.0:8000
+EXPOSE 8000 
+
 VOLUME /drf_src/Backend
+
+RUN python Backend/Airnote/manage.py makemigrations \
+               && python Backend/Airnote/manage.py migrate
+
+CMD python Backend/Airnote/manage.py runserver
