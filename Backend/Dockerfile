@@ -24,4 +24,4 @@ RUN  python Airnote/manage.py makemigrations && python Airnote/manage.py migrate
 # port where the Django app runs  
 EXPOSE 8000  
 # start server  
-CMD python Airnote/manage.py runserver  
+CMD python Airnote/manage.py runserver 0.0.0.0:8000
