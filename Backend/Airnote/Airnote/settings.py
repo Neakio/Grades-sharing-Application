@@ -126,7 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-FRONT_URL = 'http://10.128.4.2:5173'
+FRONT_URL = 'http://10.128.4.2:80'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -180,7 +180,7 @@ REST_FRAMEWORK = {
 # CORS settings
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
-    "10.128.4.2",
+    FRONT_URL,
 )
 
 
