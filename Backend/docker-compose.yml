@@ -6,9 +6,9 @@ services:
     build:
       context: .
     command: >
-      sh -c "python Airnote/manage.py makemigrations &&
-               python Airnote/manage.py migrate &&
-               python Airnote/manage.py runserver 0.0.0.0:8000"
+      sh -c "python Backend/Airnote/manage.py makemigrations &&
+               python Backend/Airnote/manage.py migrate &&
+               python Backend/Airnote/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/drf_src
     ports:
