@@ -178,9 +178,11 @@ REST_FRAMEWORK = {
 
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
-
-
+# CORS settings
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    FRONT_URL,
+)
 
 
 # Keycloak settings
