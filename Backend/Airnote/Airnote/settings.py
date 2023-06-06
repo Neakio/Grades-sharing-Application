@@ -126,7 +126,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-FRONT_URL = 'http://10.128.4.2'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -178,11 +177,7 @@ REST_FRAMEWORK = {
 
 
 # CORS settings
-# CORS settings
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-    FRONT_URL,
-)
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Keycloak settings
