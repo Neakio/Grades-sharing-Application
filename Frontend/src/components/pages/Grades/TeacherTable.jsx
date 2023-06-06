@@ -10,16 +10,18 @@ function TeacherTable({ course, group }) {
     const [students, setStudents] = useState([]);
     const [tableData, setTableData] = useState([]);
     const [grades, setGrades] = useState([]);
+    const [finished, setFinished] = useState(false)
 
     useEffect(() => {
         if (group) {
             fetchGrades();
             fetchStudents();
         }
+        Promise.all([fetchGrades(), fetchStudents()]).then(() => {setFinished(true)})        
     }, [group]);
-    useEffect(() => {
-        initializeTableData();
-    }, [students, grades]);
+    useEffect(()=> {
+        if (finished) {initializeTableData()}
+    },[finished])
 
     const fetchStudents = async () => {
         let studentgroup = await getClass(group);
@@ -29,60 +31,36 @@ function TeacherTable({ course, group }) {
         let grades = await getTeacherGrades(group, course);
         setGrades(grades);
     };
+        
+
+
     const initializeTableData = () => {
-        let data = students.map((student) => {
-            let studentGrade = grades.find((grade) => student.id === grade.student.id);
-            if (studentGrade) student.grade = studentGrade;
-            else student.grade = { id: null, number: null, comment: "" };
-            return student; // Added return statement
-        });
-        setTableData(data);
-    };
+            let data = students.map((student) => { 
+                grades.map(async (grade) => {
+                    let studentGrade = grades.find((grade) => student.id === grade.student.id);
+                    if (studentGrade) {student.grade = studentGrade;}
+                    else {
+                        grade = await addGrade(null, "", course, student.id, group)
+                    };})
+                return student; // Added return statement
+            });
+            setTableData(data);
+        };
 
     const handleGradeChange = async (e, row) => {
         const newGrade = parseFloat(e.target.value);
         const studentId = row.values.id;
-        // Check if the student already has an entry or not
-        const exist = row.values["grade.id"];
-
-        // If there is an existing entry, update it with PUT request
-        if (exist) {
-            await editGrade(exist, newGrade, undefined, course, studentId, group);
-        }
-        // If there is no existing entry, create a new grade with POST request
-        else {
-            const response = await addGrade(newGrade, undefined, course, studentId, group);
-            const createdGrade = response;
-            const updatedData = [...tableData];
-            console.log(row);
-            updatedData[row.index]["grade.number"] = createdGrade.number;
-            updatedData[row.index]["grade.id"] = createdGrade.id;
-            console.log(row);
-            console.log(createdGrade);
-            setTableData(updatedData);
-        }
+        const id = row.values["grade.id"];
+        await editGrade(id, newGrade, undefined, course, studentId, group);
+        
     };
 
     const handleCommentChange = async (e, row) => {
         const newComment = e.target.value;
         const studentId = row.values.id;
-
-        // Check if the student already has an entry or not
-        const exist = row.values["grade.id"];
-        // If there is an existing entry, update it with PUT request
-        if (exist) {
-            await editGrade(exist, undefined, newComment, course, studentId, group);
-        }
-
-        // If there is no existing entry, create a new comment with POST request
-        else {
-            const response = await addGrade(undefined, newComment, course, studentId, group);
-            const createdComment = response;
-            const updatedData = [...tableData];
-            updatedData[row.index]["grade.comment"] = createdComment.comment;
-            updatedData[row.index]["grade.id"] = createdComment.id;
-            setTableData(updatedData);
-        }
+        const id = row.values["grade.id"];
+        await editGrade(id, undefined, newComment, course, studentId, group);
+    
     };
     const columns = React.useMemo(
         () => [
@@ -94,7 +72,7 @@ function TeacherTable({ course, group }) {
             {
                 Header: "Grade ID",
                 accessor: "grade.id",
-                isVisible: true,
+                isVisible: false,
             },
             {
                 Header: "Student",
