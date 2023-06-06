@@ -92,7 +92,7 @@ AUTHENTICATION_BACKENDS = [
 # add postgre db
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'backendDB', 
         'USER': 'backend', 
         'PASSWORD': 'pa$$word',
