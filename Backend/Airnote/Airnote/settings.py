@@ -139,7 +139,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-FRONT_URL = 'http://localhost:5173'
+FRONT_URL = 'http://10.128.4.2:5173'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

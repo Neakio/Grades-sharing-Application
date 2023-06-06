@@ -10,18 +10,28 @@ function TeacherTable({ course, group }) {
     const [students, setStudents] = useState([]);
     const [tableData, setTableData] = useState([]);
     const [grades, setGrades] = useState([]);
-    const [finished, setFinished] = useState(false)
+    const [finished, setFinished] = useState(false);
+    const [checked, setChecked] = useState(false);
 
     useEffect(() => {
         if (group) {
             fetchGrades();
             fetchStudents();
         }
-        Promise.all([fetchGrades(), fetchStudents()]).then(() => {setFinished(true)})        
+        Promise.all([fetchGrades(), fetchStudents()]).then(() => {
+            setFinished(true);
+        });
     }, [group]);
-    useEffect(()=> {
-        if (finished) {initializeTableData()}
-    },[finished])
+    useEffect(() => {
+        if (finished) {
+            checkData();
+        }
+    }, [finished]);
+    useEffect(() => {
+        if (checked) {
+            initializeTableData();
+        }
+    }, [checked]);
 
     const fetchStudents = async () => {
         let studentgroup = await getClass(group);
@@ -31,57 +41,59 @@ function TeacherTable({ course, group }) {
         let grades = await getTeacherGrades(group, course);
         setGrades(grades);
     };
-        
 
-
-    const initializeTableData = () => {
-            let data = students.map((student) => { 
-                grades.map(async (grade) => {
-                    let studentGrade = grades.find((grade) => student.id === grade.student.id);
-                    if (studentGrade) {student.grade = studentGrade;}
-                    else {
-                        grade = await addGrade(null, "", course, student.id, group)
-                    };})
-                return student; // Added return statement
-            });
-            setTableData(data);
-        };
-
+    const checkData = async () => {
+        students
+            .map(async (student) => {
+                let studentGrade = grades.find((grade) => student.id === grade.student.id);
+                if (studentGrade) {
+                    student.grade = studentGrade;
+                } else {
+                    await addGrade(null, "", course, student.id, group);
+                }
+            })
+        await new Promise(resolve => setTimeout(resolve,50))
+        setChecked(true)
+    };
+    const initializeTableData = async () => {
+        let data = await getTeacherGrades(group, course);
+        console.log(data);
+        setTableData(data);
+    };
     const handleGradeChange = async (e, row) => {
         const newGrade = parseFloat(e.target.value);
-        const studentId = row.values.id;
-        const id = row.values["grade.id"];
+        const studentId = row.values["student.id"];
+        const id = row.values["id"];
         await editGrade(id, newGrade, undefined, course, studentId, group);
-        
     };
 
     const handleCommentChange = async (e, row) => {
         const newComment = e.target.value;
-        const studentId = row.values.id;
-        const id = row.values["grade.id"];
+        const studentId = row.values["student.id"];
+        const id = row.values["id"];
         await editGrade(id, undefined, newComment, course, studentId, group);
-    
     };
     const columns = React.useMemo(
         () => [
             {
-                Header: "ID",
-                accessor: "id",
+                Header: "ID Student",
+                accessor: "student.id",
                 isVisible: false,
             },
             {
                 Header: "Grade ID",
-                accessor: "grade.id",
+                accessor: "id",
                 isVisible: false,
             },
             {
                 Header: "Student",
-                accessor: ({ firstname, lastname }) => Util.formatUserName({ firstname, lastname }),
+                accessor: "student",
+                Cell: (row) => `${row.value.firstname} ${row.value.lastname}`,
                 filter: "includes",
             },
             {
                 Header: "Grade",
-                accessor: "grade.number",
+                accessor: "number",
                 Filter: NumberRangeColumnFilter,
                 filter: "between",
                 Cell: ({ row, value }) => (
@@ -95,7 +107,7 @@ function TeacherTable({ course, group }) {
             },
             {
                 Header: "Comment",
-                accessor: "grade.comment",
+                accessor: "comment",
                 disableFilters: true,
                 Cell: ({ row, value }) => (
                     <Form.Control
