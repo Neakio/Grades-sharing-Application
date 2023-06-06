@@ -1,15 +1,16 @@
 import React, { Fragment, useEffect, useState } from "react";
+import axios from "axios";
 
 function Home({ isLoggedIn }) {
     const [quote, setQuote] = useState({});
 
     useEffect(() => {
-        fetch("https://zenquotes.io/api/random")
-            .then((response) => response.json())
-            .then((data) => setQuote(data[0]))
-            .catch((error) => console.error(error));
+        fetchQuote();
     }, []);
-
+    const fetchQuote = async () => {
+        let response = axios.get("https://zenquotes.io/api/random");
+        setQuote(response[0]);
+    };
     return (
         <Fragment>
             {isLoggedIn ? (

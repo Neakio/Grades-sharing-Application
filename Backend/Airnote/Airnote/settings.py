@@ -155,8 +155,6 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
         'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
         # Any other renders
     ),
 
@@ -175,9 +173,13 @@ REST_FRAMEWORK = {
     )
 }
 
-
+FRONT_URL = 'http://10.128.4.2:80'
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    FRONT_URL,
+)
 
 
 # Keycloak settings
