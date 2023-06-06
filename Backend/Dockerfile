@@ -10,9 +10,7 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory to /drf
 # NOTE: all the directives that follow in the Dockerfile will be executed in
 # that directory.
-WORKDIR ./drf_src
-
-RUN ls .
+WORKDIR /drf_src
 
 # Install the required packages
 RUN apk update
@@ -32,4 +30,4 @@ VOLUME /drf_src/Backend
 RUN python Backend/Airnote/manage.py makemigrations \
                && python Backend/Airnote/manage.py migrate
 
-CMD python Backend/Airnote/manage.py runserver
+CMD python /drf_src/Backend/Airnote/manage.py runserver
