@@ -6,7 +6,7 @@ services:
     build:
       context: .
     command: >
-      sh -c " bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python Backend/Airnote/manage.py makemigrations &&
+      sh -c "while !</dev/tcp/db/5432; do sleep 1; done; python Backend/Airnote/manage.py makemigrations &&
                python Backend/Airnote/manage.py migrate &&
                python Backend/Airnote/manage.py runserver 0.0.0.0:8000"
     volumes:
