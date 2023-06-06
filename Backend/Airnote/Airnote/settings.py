@@ -89,18 +89,25 @@ AUTHENTICATION_BACKENDS = [
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# add postgre db
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'backendDB', 
-        'USER': 'backend', 
-        'PASSWORD': 'pa$$word',
-        'HOST': 'db', 
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+# add postgre db
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'backendDB', 
+#        'USER': 'backend', 
+#        'PASSWORD': 'pa$$word',
+#        'HOST': 'db', 
+#        'PORT': '5432',
+#    }
+#}
+#DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
