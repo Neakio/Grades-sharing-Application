@@ -22,7 +22,7 @@ RUN apk add git
 # Get the Real World example app
 RUN git clone --depth 1 https://github.com/Neakio/Grades-Sharing-Application.git /drf_src
 
-
+RUN cat /drf_src/Backend/Airnote/Airnote/settings.py
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip
 RUN pip install -r /drf_src/Backend/requirements.txt
