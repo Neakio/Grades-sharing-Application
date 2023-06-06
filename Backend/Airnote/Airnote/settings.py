@@ -97,6 +97,7 @@ DATABASES = {
         'USER': 'backend', 
         'PASSWORD': 'pa$$word',
         'HOST': 'db', 
+        'PORT': '5432',
     }
 }
 
