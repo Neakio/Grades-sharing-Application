@@ -180,7 +180,7 @@ REST_FRAMEWORK = {
 # CORS settings
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
-    FRONT_URL,
+    "10.128.4.2",
 )
 
 
