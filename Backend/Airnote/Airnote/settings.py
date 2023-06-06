@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-qmawmavk=&q&c&u)e91cimab=n0%%(y@ypl6gdc9+vhchjp^hc
 DEBUG = True
 
 ALLOWED_HOSTS = []
-    #www.airnote.com, keycloak ?
 
 # Application definition
 

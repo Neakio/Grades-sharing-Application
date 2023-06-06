@@ -14,15 +14,12 @@ WORKDIR ./drf_src
 
 RUN ls .
 
-# Install the required packages, including psycopg2 dependencies
-RUN apk update \
-    && apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
-    && apk add postgresql-client
+# Install the required packages
+RUN apk update
 RUN apk add git
 # Get the Real World example app
 RUN git clone --depth 1 https://github.com/Neakio/Grades-Sharing-Application.git /drf_src
 
-RUN cat /drf_src/Backend/Airnote/Airnote/settings.py
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip
 RUN pip install -r /drf_src/Backend/requirements.txt
