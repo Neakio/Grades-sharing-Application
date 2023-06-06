@@ -27,9 +27,6 @@ COPY ./default.conf /etc/nginx/conf.d/default.conf
 ## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy the SSL certificate and key files
-COPY ./ssl/server.crt /etc/nginx/ssl/server.crt
-COPY ./ssl/server.key /etc/nginx/ssl/server.key
 
 # Copy from the stahg 1
 COPY --from=builder /app/dist /usr/share/nginx/html
