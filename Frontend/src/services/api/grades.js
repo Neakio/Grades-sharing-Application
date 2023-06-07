@@ -1,7 +1,7 @@
 import axios from "./axios";
 
 export const getGrades = (userId) => {
-    return axios.get("api/grades?student" + userId);
+    return axios.get("api/grades?student=" + userId);
 };
 
 export const getTeacherGrades = (groupId, courseId) => {
